@@ -2,7 +2,7 @@
 
 # WooCommerce integration for Vue Storefront Next
 
-> **Disclaimer:** This project is still in beta phase and we are looking for contributors! Please write to us in [this thread](https://github.com/Oxyssweden/vsf-woocommerce/discussions/2) or on the [Vue Storefront Discord](https://discord.vuestorefront.io/) 
+> **Disclaimer:** This project is still in beta phase and we are looking for contributors! Please write in the [Vue Storefront Discord](https://discord.vuestorefront.io/) 
 
 This repository is a work in progress integration for [Vue Storefront Next](https://github.com/vuestorefront/vue-storefront/).
 
