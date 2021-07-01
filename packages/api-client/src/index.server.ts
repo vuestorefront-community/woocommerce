@@ -9,6 +9,10 @@ import getCart from './api/getCart';
 import addToCart from './api/addToCart';
 import clearCart from './api/clearCart';
 import updateCart from './api/updateCart';
+import getMe from './api/getMe';
+import addToWishlist from './api/addToWishlist';
+import removeFromWishlist from './api/removeFromWishlist';
+import clearWishlist from './api/clearWishlist';
 require('dotenv').config();
 
 const onCreate = (settings: Config): { config: Config; client: ClientInstance } => {
@@ -35,21 +39,21 @@ const tokenExtension: ApiClientExtension = {
   hooks: (req, res) => {
     return {
       beforeCreate: ({ configuration }) => {
-        const cartCookieName = configuration.cookies?.cartCookieName || defaultSettings.cookies.cartCookieName;
+        const sessionCookieName = configuration.cookies?.sessionCookieName || defaultSettings.cookies.sessionCookieName;
         const customerCookieName = configuration.cookies?.customerCookieName || defaultSettings.cookies.customerCookieName;
         const storeCookieName = configuration.cookies?.storeCookieName || defaultSettings.cookies.storeCookieName;
 
         return {
           ...configuration,
           state: {
-            getCartId: () => req.cookies[cartCookieName],
-            setCartId: (id) => {
+            getSession: () => req.cookies[sessionCookieName],
+            setSession: (id) => {
               if (!id) {
                 // eslint-disable-next-line no-param-reassign
-                delete req.cookies[cartCookieName];
+                delete req.cookies[sessionCookieName];
                 return;
               }
-              res.cookie(cartCookieName, JSON.stringify(id));
+              res.cookie(sessionCookieName, id);
             },
             getCustomerToken: () => req.cookies[customerCookieName] ? req.cookies[customerCookieName] : null,
             setCustomerToken: (token) => {
@@ -80,10 +84,14 @@ const { createApiClient } = apiClientFactory({
   onCreate,
   api: {
     addToCart,
+    addToWishlist,
     clearCart,
+    clearWishlist,
     getProduct,
     getCategory,
     getCart,
+    getMe,
+    removeFromWishlist,
     updateCart
   },
   extensions: [tokenExtension]

@@ -3,7 +3,8 @@ module.exports = {
     woocommerce: {
       location: '@vue-storefront/woocommerce-api/server',
       configuration: {
-        api: process.env.WOOCOMMERCE_GRAPHQL
+        api: process.env.WOOCOMMERCE_GRAPHQL,
+        wishlist: true
       }
     }
   }

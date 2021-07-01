@@ -1,4 +1,3 @@
-import type { Product } from '@vue-storefront/woocommerce-api';
 export { UseCategory, UseProduct } from '@vue-storefront/core';
 
 export type Address = Record<string, unknown>;
@@ -33,8 +32,9 @@ export type ShippingMethod = Record<string, unknown>;
 
 export type WishlistProduct = Record<string, unknown>;
 
-export type Wishlist = Record<string, unknown>;
-
+export type Wishlist = {
+  productIds: number[];
+}
 export type ProductsResponse = {
   data: Product[];
   total: number;

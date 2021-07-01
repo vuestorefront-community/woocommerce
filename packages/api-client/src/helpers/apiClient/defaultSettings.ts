@@ -6,14 +6,15 @@ export const defaultSettings: ClientConfig = {
     currencyCookieName: 'vsf-currency',
     countryCookieName: 'vsf-country',
     localeCookieName: 'vsf-locale',
-    cartCookieName: 'vsf-cart',
+    sessionCookieName: 'wordpress_logged_in_vsf',
     customerCookieName: 'vsf-customer',
     storeCookieName: 'vsf-store'
   },
   currency: 'USD',
+  wishlist: false,
   state: {
-    getCartId: () => '',
-    setCartId: () => {},
+    getSession: () => '',
+    setSession: () => {},
     getCustomerToken: () => '',
     setCustomerToken: () => {},
     getStore: () => '',

@@ -6,18 +6,18 @@ import { mapConfigToSetupObject } from '@vue-storefront/woocommerce/nuxt/helpers
 const moduleOptions = JSON.parse('<%= JSON.stringify(options) %>');
 
 export default integrationPlugin(({ app, integration }) => {
-  const cartCookieName = moduleOptions.cookies?.cartCookieName || defaultConfig.cookies.cartCookieName;
+  const sessionCookieName = moduleOptions.cookies?.sessionCookieName || defaultConfig.cookies.sessionCookieName;
   const customerCookieName = moduleOptions.cookies?.customerCookieName || defaultConfig.cookies.customerCookieName;
   const storeCookieName = moduleOptions.cookies?.storeCookieName || defaultConfig.cookies.storeCookieName;
 
-  const getCartId = () => app.$cookies.get(cartCookieName);
+  const getSession = () => app.$cookies.get(sessionCookieName);
 
-  const setCartId = (id) => {
+  const setSession = (id) => {
     if (!id) {
-      //app.$cookies.remove(cartCookieName);
+      //app.$cookies.remove(sessionCookieName);
       return;
     }
-    app.$cookies.set(cartCookieName, id);
+    app.$cookies.set(sessionCookieName, id);
   };
 
   const getCustomerToken = () => app.$cookies.get(customerCookieName);
@@ -45,8 +45,8 @@ export default integrationPlugin(({ app, integration }) => {
     app,
     additionalProperties: {
       state: {
-        getCartId,
-        setCartId,
+        getSession,
+        setSession,
         getCustomerToken,
         setCustomerToken,
         getStore,

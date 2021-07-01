@@ -6,8 +6,8 @@ import { authLinkFactory, tokenLinkFactory } from './linkHandlers';
 export const createWooConnection = (settings: Config): any => {
   Logger.debug('createWooConnection');
 
-  const authLink = authLinkFactory({ state: settings.state });
-  const tokenLink = tokenLinkFactory({ state: settings.state });
+  const authLink = authLinkFactory({ state: settings.state, cookiesConfig: settings.cookies });
+  const tokenLink = tokenLinkFactory({ state: settings.state, cookiesConfig: settings.cookies });
 
   const apolloLink = apolloLinkFactory(settings, {
     authLink,

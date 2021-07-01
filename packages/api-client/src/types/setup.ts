@@ -12,8 +12,8 @@ export interface Storage {
 }
 
 export type ConfigState = {
-  getCartId(): string;
-  setCartId(id: string): void;
+  getSession(): string;
+  setSession(id: string): void;
   getCustomerToken(): string;
   setCustomerToken(token: string): void;
   getStore(): string;
@@ -26,11 +26,12 @@ export interface ClientConfig {
     currencyCookieName: string;
     countryCookieName: string;
     localeCookieName: string;
-    cartCookieName: string;
+    sessionCookieName: string;
     customerCookieName: string;
     storeCookieName: string;
   },
   currency: string;
+  wishlist: boolean;
   externalCheckout: {
     enable: boolean;
     cmsUrl: string;
@@ -49,4 +50,5 @@ export interface Config<T = any> extends ClientConfig {
   overrides: WoocommerceMethods;
 }
 
-export type ClientInstance = ApolloClient<any>
+export interface ClientInstance extends ApolloClient<any> {
+}

@@ -50,7 +50,11 @@ export const apolloLinkFactory = (settings: Config, handlers?: {
   }));
   const tokenLink = handlers?.tokenLink;
 
-  const httpLink = createHttpLink({ uri: settings.api, fetch });
+  const httpLink = createHttpLink({
+    uri: settings.api,
+    fetch,
+    credentials: 'include'
+  });
 
   const onErrorLink = createErrorHandler();
 

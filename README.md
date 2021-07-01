@@ -15,10 +15,31 @@ This repository is a monorepo containing three projects:
 * **composables** - exposes composable functions used to retrieve data using `api-client` and to map them to universal data formats using `getters`;
 * **theme** - `nuxt` project that glues everything together. It extends our core theme and uses `composables` to retrieve data.
 
+## Wordpress config
+1. Install the following open source Wordpress Plugins into your WP store:
+   - [WPGraphQL CORS](https://github.com/funkhaus/wp-graphql-cors)
+   - [WPGraphQL WooCommerce (WooGraphQL)](https://github.com/wp-graphql/wp-graphql-woocommerce)
+2. add this to wp-config.php: `define( 'LOGGED_IN_COOKIE', 'wordpress_logged_in_vsf' );`
+3. If you want favourites function you must add a plugin for this. An example itegration plugin will be provided soon. You also need to enable favourites in middleware config:
+```
+module.exports = {
+   integrations: {
+      woocommerce: {
+         location: '@vue-storefront/woocommerce-api/server',
+         configuration: {
+            api: process.env.WOOCOMMERCE_GRAPHQL,
+            wishlist: true
+         }
+      }
+   }
+};
+```
+4. If you want to keep using the woocommerce checkout you need to change the woo cart session handling. An example plugin will be provided soon.
+
 ## How to start?
 
-1. Install the free open source Wordpress Plugin [WPGraphQL WooCommerce (WooGraphQL)](https://github.com/wp-graphql/wp-graphql-woocommerce) into your WP store
-
+1. Prepare your wordpress installation as above.
+   
 2. Copy .env.example to .env inside packages/theme and enter your wordpress site URL with GraphQL endpoint.
 
 3. Install all required dependencies:
