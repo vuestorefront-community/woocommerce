@@ -20,7 +20,7 @@ This repository is a monorepo containing three projects:
    - [WPGraphQL CORS](https://github.com/funkhaus/wp-graphql-cors)
    - [WPGraphQL WooCommerce (WooGraphQL)](https://github.com/wp-graphql/wp-graphql-woocommerce)
 2. add this to wp-config.php: `define( 'LOGGED_IN_COOKIE', 'wordpress_logged_in_vsf' );`
-3. If you want favourites function you must add a plugin for this. An example itegration plugin will be provided soon. You also need to enable favourites in middleware config:
+3. If you want favourites function you must add a plugin for this. See example plugin [here](https://github.com/Oxyssweden/vsf-woocommerce-plugin-examples/tree/main). You also need to enable favourites in middleware config:
 ```
 module.exports = {
    integrations: {
@@ -34,7 +34,7 @@ module.exports = {
    }
 };
 ```
-4. If you want to keep using the woocommerce checkout you need to change the woo cart session handling. An example plugin will be provided soon.
+4. If you want to keep using the woocommerce checkout you need to change the woo cart session handling. See example plugin [here](https://github.com/Oxyssweden/vsf-woocommerce-plugin-examples/tree/main).
 
 ## How to start?
 
