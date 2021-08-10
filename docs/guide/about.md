@@ -7,4 +7,4 @@
 
 ## Support
 
-If you have any questions about this integration we will be happy to answer them on  `magento2-vsf2` channel on [our Discord](discord.vuestorefront.io).
+If you have any questions about this integration we will be happy to answer them on  `woocommerce` channel on [our Discord](discord.vuestorefront.io).
