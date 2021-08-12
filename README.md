@@ -1,19 +1,12 @@
-![Vue Storefront](https://camo.githubusercontent.com/48c886ac0703e3a46bc0ec963e20f126337229fc/68747470733a2f2f643968687267346d6e767a6f772e636c6f756466726f6e742e6e65742f7777772e76756573746f726566726f6e742e696f2f32383062313964302d6c6f676f2d76735f3062793032633062793032633030303030302e6a7067)
+<div align="center">
+<img src="https://blog.vuestorefront.io/wp-content/uploads/2020/01/1QU9F6hQlFyHsJIbsdmt6FA.png" height="80px"/>  
+</div>
 
-# WooCommerce integration for Vue Storefront Next
+## Vue Storefront 2 integration with woocommerce
 
-> **Disclaimer:** This project is still in beta phase and we are looking for contributors! Please write in the [Vue Storefront Discord](https://discord.vuestorefront.io/) 
-
-This repository is a work in progress integration for [Vue Storefront Next](https://github.com/vuestorefront/vue-storefront/).
-
-* [General integration documentation](https://docs.vuestorefront.io/v2/integrate/integration-guide.html) (WIP)
-
-
-This repository is a monorepo containing three projects:
-
-* **api-client** - communicates with a backend;
-* **composables** - exposes composable functions used to retrieve data using `api-client` and to map them to universal data formats using `getters`;
-* **theme** - `nuxt` project that glues everything together. It extends our core theme and uses `composables` to retrieve data.
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Wordpress config
 1. Install the following open source Wordpress Plugins into your WP store:
@@ -39,7 +32,7 @@ module.exports = {
 ## How to start?
 
 1. Prepare your wordpress installation as above.
-   
+
 2. Copy .env.example to .env inside packages/theme and enter your wordpress site URL with GraphQL endpoint.
 
 3. Install all required dependencies:
@@ -59,3 +52,52 @@ yarn build
 ```sh
 yarn dev
 ```
+
+## How to start if you want to contribute?
+
+Want to contribute? Ping us on `woocommerce` channel on [our Discord](https://discord.vuestorefront.io)!
+
+### Requirements:
+- NodeJS v14 or later
+
+### Steps
+1. Fork the repo
+2. Clone your fork of the repo
+    ```
+    example:
+    git clone https://github.com/vuestorefront/woocommerce.git
+    cd woocommerce
+    ```
+3. Run `yarn` to install dependencies
+4. Build dependencies `yarn build:api-client && yarn build:composables`
+5. Run `yarn dev:theme` to run theme. You can find other commands in `package.json`
+
+- If you need HMR on Api Client/Composables run `yarn dev:api-client` or `yarn dev:composables` on a separate terminal window.
+
+## Resources
+
+- [Vue Storefront Documentation](https://docs.vuestorefront.io/v2/)
+- [woocommerce integration Documentation](https://docs.vuestorefront.io/woocommerce)
+- [Community Chat](https://discord.vuestorefront.io)
+
+## Support
+
+If you have any questions about this integration we will be happy to answer them on `woocommerce` channel on [our Discord](discord.vuestorefront.io).
+
+## Contributors ✨
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/andreasradloff"><img src="https://avatars.githubusercontent.com/u/1256982?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andreasradloff</b></sub></a><br /><a href="https://github.com/vuestorefront/woocommerce/commits?author=andreasradloff" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
