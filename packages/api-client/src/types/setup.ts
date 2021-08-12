@@ -50,5 +50,4 @@ export interface Config<T = any> extends ClientConfig {
   overrides: WoocommerceMethods;
 }
 
-export interface ClientInstance extends ApolloClient<any> {
-}
+export type ClientInstance = ApolloClient<any>

@@ -91,7 +91,7 @@ If you have any questions about this integration we will be happy to answer them
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/andreasradloff"><img src="https://avatars.githubusercontent.com/u/1256982?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andreasradloff</b></sub></a><br /><a href="https://github.com/vuestorefront/woocommerce/commits?author=andreasradloff" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/andreasradloff"><img src="https://avatars.githubusercontent.com/u/1256982?v=4?s=80" width="80px;" alt=""/><br /><sub><b>andreasradloff</b></sub></a><br /><a href="https://github.com/vuestorefront/woocommerce/commits?author=andreasradloff" title="Code">💻</a></td>
   </tr>
 </table>
 
