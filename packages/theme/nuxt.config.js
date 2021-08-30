@@ -71,6 +71,12 @@ export default {
     locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
+    currency: 'USD',
+    country: 'US',
+    currencies: [
+      { name: 'USD', label: 'Dollar' },
+      { name: 'EUR', label: 'Euro' }
+    ],
     vueI18n: {
       fallbackLocale: 'en',
       messages: {
