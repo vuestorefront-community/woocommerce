@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://blog.vuestorefront.io/wp-content/uploads/2020/01/1QU9F6hQlFyHsJIbsdmt6FA.png" height="80px"/>  
+<img src="https://user-images.githubusercontent.com/1626923/137091487-092436dc-e5f9-49aa-8b6b-924a0d8b46fa.png" height="80px"/>  
 </div>
 
 ## Vue Storefront 2 integration with woocommerce
