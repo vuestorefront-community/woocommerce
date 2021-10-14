@@ -62,8 +62,8 @@ export const PRODUCT_CATEGORIES_SLUGS = gql` query PRODUCT_CATEGORIES_SLUGS {
   }
 }`;
 
-export const PRODUCT_QUERY = gql`query PRODUCT_QUERY($first: Int, $after: String) {
-    products(first: $first, after: $after, where: { supportedTypesOnly: true }) {
+export const PRODUCT_QUERY = gql`query PRODUCT_QUERY($first: Int, $after: String, $where: RootQueryToProductConnectionWhereArgs) {
+    products(first: $first, after: $after, where: $where) {
         edges {
             cursor
             node {
@@ -81,28 +81,60 @@ export const PRODUCT_QUERY = gql`query PRODUCT_QUERY($first: Int, $after: String
                   sourceUrl
                 }
                 name
+                galleryImages {
+                  edges {
+                    node {
+                      sourceUrl
+                      title
+                      uri
+                    }
+                  }
+                }
+                attributes {
+                  edges {
+                    node {
+                      id
+                      options
+                      label
+                    }
+                  }
+                }
+                productCategories {
+                  edges {
+                    node {
+                      id
+                      uri
+                      name
+                    }
+                  }
+                }
                 ... on SimpleProduct {
                   price
                   regularPrice
+                  salePrice
                   id
                 }
                 ... on VariableProduct {
                   price
                   regularPrice
+                  salePrice
                   id
                 }
                 ... on ExternalProduct {
                   price
                   id
                   regularPrice
+                  salePrice
                   externalUrl
                 }
                 ... on GroupProduct {
+                  price
                   products {
                     nodes {
                       ... on SimpleProduct {
                         id
                         regularPrice
+                        salePrice
                         price
                       }
                     }

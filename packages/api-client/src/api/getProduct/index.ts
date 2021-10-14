@@ -7,6 +7,7 @@ import { PRODUCT_QUERY } from './defaultQuery';
 export default async function getProduct(context, params, customQuery?: CustomQuery) {
   const { acceptLanguage } = context.config;
   const defaultVariables = params ? {
+    where: { ...params.where, supportedTypesOnly: true },
     first: 20,
     limit: params.limit,
     offset: params.offset,

@@ -1,4 +1,5 @@
 import webpack from 'webpack';
+import { getRoutes } from './routes';
 
 process.env.DEBUG = 'nuxt:*';
 
@@ -49,7 +50,8 @@ export default {
           apiClient: '@vue-storefront/woocommerce-api',
           composables: '@vue-storefront/woocommerce'
         }
-      }
+      },
+      routes: false
     }],
     // @core-development-only-end
     /* project-only-start
@@ -117,6 +119,10 @@ export default {
       } else {
         return { x: 0, y: 0 };
       }
+    },
+    extendRoutes(routes) {
+      getRoutes(`${__dirname}/_theme`)
+        .forEach((route) => routes.unshift(route));
     }
   }
 };

@@ -40,6 +40,12 @@ export type ProductsResponse = {
   total: number;
 };
 
+export type ProductCategories = {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 export type OrderSearchParams = Record<string, any>;
 
 export type OrdersResponse = {
