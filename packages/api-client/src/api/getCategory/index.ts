@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import GET_CATEGORIES_QUERY from './defaultQuery';
+import { GET_CATEGORIES_QUERY } from './defaultQuery';
 import { ProductCategory } from '../../types/GraphQL';
 import ApolloClient from 'apollo-client';
 import { CustomQuery } from '@vue-storefront/core';

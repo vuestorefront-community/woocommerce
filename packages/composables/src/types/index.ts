@@ -4,20 +4,20 @@ export type Address = Record<string, unknown>;
 
 export type Category = Record<string, unknown>;
 
-export type ProductCategory = {
-  id: string,
-  name: string;
-  parent: ProductCategory;
-  image?: any;
-};
+// export type ProductCategory = {
+//   id: string,
+//   name: string;
+//   parent: ProductCategory;
+//   image?: any;
+// };
 
-export type ProductCategories = {
-  id: string;
-  name: string;
-  slug: string;
-  parent: ProductCategory;
-  image?: any;
-}
+// export type ProductCategories = {
+//   id: string;
+//   name: string;
+//   slug: string;
+//   parent: ProductCategory;
+//   image?: any;
+// }
 
 export type User = {
   firstName?: string;

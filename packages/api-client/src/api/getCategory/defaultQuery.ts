@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 /**
  * GraphQL categories query.
  */
-const GET_CATEGORIES_QUERY = gql`query {
+export const GET_CATEGORIES_QUERY = gql`query GET_CATEGORIES_QUERY{
 	productCategories {
     edges {
       node {
@@ -24,4 +24,3 @@ const GET_CATEGORIES_QUERY = gql`query {
   }
 }`;
 
-export default GET_CATEGORIES_QUERY;
