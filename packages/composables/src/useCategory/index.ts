@@ -8,9 +8,10 @@ import { Category } from '../types';
 const params: UseCategoryFactoryParams<Category, any> = {
   categorySearch: async (context: Context, params) => {
     const { customQuery, ...searchParams } = params;
-    console.log(searchParams);
+    const categoryResponse = await context.$woocommerce.api.getCategory(searchParams, customQuery);
+    console.log('useCategory.ts', searchParams, categoryResponse);
 
-    return await context.$woocommerce.api.getCategory(searchParams, customQuery);
+    return categoryResponse;
   }
 };
 

@@ -25,7 +25,6 @@ const getCategory = async (context, params, customQuery?: CustomQuery) => {
     variables: categories.variables,
     fetchPolicy: 'no-cache'
   });
-
   return request;
 };
 

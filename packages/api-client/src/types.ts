@@ -16,7 +16,11 @@ export type Category = {
   id: number;
   name: string;
   slug: string;
-  items: Category[];
+  parent: { id: string };
+  image: {
+    sourceUrl: string,
+    srcSet: any,
+  }
 };
 export type CategoryFilter = Record<string, unknown>;
 export type ShippingMethod = Record<string, unknown>;
