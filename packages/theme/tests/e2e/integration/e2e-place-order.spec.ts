@@ -1,16 +1,17 @@
 import page from '../pages/factory';
 
-before(() => {
-  cy.fixture('test-data/e2e-place-order').then((fixture) => {
-    cy.fixtures = {
-      data: fixture
-    };
-  });
-});
-
 context('Order placement', () => {
-  it(['e2e', 'happypath'], 'Should successfully place an order', () => {
-    const data = cy.fixtures.data;
+  // eslint-disable-next-line
+  beforeEach(function () {
+    cy.fixture('test-data/e2e-place-order').then((fixture) => {
+      this.fixtures = {
+        data: fixture
+      };
+    });
+  });
+  // eslint-disable-next-line
+  it(['happypath', 'regression'], 'Should successfully place an order', function () {
+    const data = this.fixtures.data;
     page.home.visit();
     page.home.header.categories.first().click();
     page.category.products.first().click();
