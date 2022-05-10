@@ -4,48 +4,38 @@ import {
   useWishlistFactory,
   UseWishlistFactoryParams
 } from '@vue-storefront/core';
-import { ref, Ref } from '@vue/composition-api';
-import { Wishlist, WishlistProduct, Product } from '../types';
-import useUser from '../useUser';
-import {AddToWishlistMutationResponse, ClearWishlistMutationResponse} from '@vue-storefront/woocommerce-api';
-import {RemoveFromWishlistMutationResponse} from '../../../api-client/src';
+import type { Wishlist, WishlistItem, Product } from '@vue-storefront/woocommerce-api';
 
-export const wishlist: Ref<Wishlist> = ref(null);
-
-// @ts-ignore
-const params: UseWishlistFactoryParams<Wishlist, WishlistProduct, Product> = {
-  provide() {
-    return {
-      user: useUser()
-    };
-  },
+const params: UseWishlistFactoryParams<Wishlist, WishlistItem, Product> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   load: async (context: Context) => {
-    return context.user.load().then(() => ({
-      productIds: (context.user.user.value && context.user.user.value.wishlist) ? context.user.user.value.wishlist : []
-    }));
+    console.log('Mocked: useWishlist.load');
+    return {};
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addItem: async (context: Context, { currentWishlist, product }) => {
-    const response : AddToWishlistMutationResponse = await context.$woocommerce.api.addToWishlist(product.databaseId);
-    return { productIds: response.data.addToWishlist.wishlist };
+    console.log('Mocked: useWishlist.addItem');
+    return {};
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeItem: async (context: Context, { currentWishlist, product }) => {
-    const response : RemoveFromWishlistMutationResponse = await context.$woocommerce.api.removeFromWishlist(product.databaseId);
-    return { productIds: response.data.removeFromWishlist.wishlist };
+    console.log('Mocked: useWishlist.removeItem');
+    return {};
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   clear: async (context: Context, { currentWishlist }) => {
-    const response : ClearWishlistMutationResponse = await context.$woocommerce.api.clearWishlist();
-    return { productIds: response.data.clearWishlist.wishlist };
+    console.log('Mocked: useWishlist.clear');
+    return {};
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isInWishlist: (context: Context, { currentWishlist, product }) => currentWishlist.productIds.indexOf(parseInt(<any> product.databaseId)) !== -1
+  isInWishlist: (context: Context, { currentWishlist, product }) => {
+    console.log('Mocked: useWishlist.isInWishlist');
+    return false;
+  }
 };
 
-export default useWishlistFactory<Wishlist, WishlistProduct, Product>(params);
+export const useWishlist = useWishlistFactory<Wishlist, WishlistItem, Product>(params);
