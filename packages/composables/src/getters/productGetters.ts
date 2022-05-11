@@ -1,103 +1,113 @@
 import {
-  AgnosticMediaGalleryItem,
-  AgnosticAttribute,
   AgnosticPrice,
   ProductGetters
-} from '@vue-storefront/core';
-import type { Product } from '@vue-storefront/woocommerce-api';
-import {getVariantByAttributes} from './_utils';
-
-type ProductVariantFilters = any
-
-// TODO: Add interfaces for some of the methods in core
-// Product
+} from '../types';
+import type { Product, ProductFilter } from '@vue-storefront/woocommerce-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductName = (product: Product): string => product?.name || 'Product\'s name';
+function getName(product: Product): string {
+  return product?.title || 'No name';
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductSlug = (product: Product): string => product.sku || 'product/' + product.id;
+function getSlug(product: Product): string {
+  return product?.slug || 'no-slug';
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductPrice = (product): AgnosticPrice => {
+function getPrice(product: Product): AgnosticPrice {
   return {
-    regular: parseFloat(product.price) || 0,
-    special: parseFloat(product.salePrice) || 0
+    regular: parseFloat(product?.price?.original || '0'),
+    special: parseFloat(product?.price?.current || '0')
   };
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductGallery = (product: Product): AgnosticMediaGalleryItem[] => {
-  const original = product.image?.sourceUrl || 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg';
+function getGallery(product: Product): string[] {
+  return product?.images || [];
+}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getCoverImage(product: Product): string {
+  return product?.coverImage || 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg';
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getFiltered(products: Product[], filters: ProductFilter): Product[] {
   return [
     {
-      small: original,
-      normal: original,
-      big: original
-    },
-    {
-      small: original,
-      normal: original,
-      big: original
+      id: 1,
+      type: 'simple',
+      title: 'Black jacket',
+      description: 'Some description',
+      slug: 'black-jacket',
+      price: {
+        original: '12.34',
+        current: '10.00'
+      },
+      sku: 'black-jacket',
+      sales: 0,
+      inStock: true,
+      coverImage: 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg',
+      parent: 0,
+      featured: false,
+      categories: [],
+      images: [
+        'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg'
+      ],
+      attributes: [],
+      variants: []
     }
   ];
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getAttributes(product: Product, filterByAttributeName?: string[]): Array<Record<string, string>> {
+  return product?.attributes || [];
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getDescription(product: Product): string {
+  return product?.description || '';
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getCategories(product: Product): string[] {
+  return product?.categories || [];
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getId(product: Product): number {
+  return product?.id || -1;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getFormattedPrice(price: number): string {
+  return '';
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getTotalReviews(product: Product): number {
+  return 0;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getAverageRating(product: Product): number {
+  return 0;
+}
+
+export const productGetters: ProductGetters<Product, ProductFilter> = {
+  getName,
+  getSlug,
+  getPrice,
+  getGallery,
+  getCoverImage,
+  getFiltered,
+  getAttributes,
+  getDescription,
+  getCategories,
+  getId,
+  getFormattedPrice,
+  getTotalReviews,
+  getAverageRating
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductCoverImage = (product: Product): string => product.image?.sourceUrl || 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductFiltered = (products: (Product)[], filters: ProductVariantFilters | any = {}): (Product)[] => {
-  if (!products) {
-    return [];
-  }
-
-  if (filters.attributes && Object.keys(filters.attributes).length > 0) {
-    return [getVariantByAttributes(products, filters.attributes)];
-  }
-
-  if (filters.master) {
-    // @todo implement master filtering?
-    // return products.filter((product) => (product as any)._master);
-  }
-
-  return products;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductAttributes = (products: (Product)[] | Product, filterByAttributeName?: string[]): Record<string, AgnosticAttribute | string> => {
-  return {};
-};
-
-export const getProductDescription = (product: Product): any => (product as any)?.description || '';
-
-export const getProductCategoryIds = (product: Product): string[] => (product as any)?.productCategories || '';
-
-export const getProductId = (product: Product): string => (product as any)?.id || '';
-
-export const getFormattedPrice = (price: number) => String(price);
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductTotalReviews = (product: Product): number => 0;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getProductAverageRating = (product: Product): number => 0;
-
-const productGetters: ProductGetters<Product, ProductVariantFilters> = {
-  getName: getProductName,
-  getSlug: getProductSlug,
-  getPrice: getProductPrice,
-  getGallery: getProductGallery,
-  getCoverImage: getProductCoverImage,
-  getFiltered: getProductFiltered,
-  getAttributes: getProductAttributes,
-  getDescription: getProductDescription,
-  getCategoryIds: getProductCategoryIds,
-  getId: getProductId,
-  getFormattedPrice: getFormattedPrice,
-  getTotalReviews: getProductTotalReviews,
-  getAverageRating: getProductAverageRating
-};
-
-export default productGetters;

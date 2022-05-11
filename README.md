@@ -16,25 +16,10 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Wordpress config
-1. Install the following open source Wordpress Plugins into your WP store:
-   - [WPGraphQL CORS](https://github.com/funkhaus/wp-graphql-cors)
-   - [WPGraphQL WooCommerce (WooGraphQL)](https://github.com/wp-graphql/wp-graphql-woocommerce)
-2. add this to wp-config.php: `define( 'LOGGED_IN_COOKIE', 'wordpress_logged_in_vsf' );`
-3. If you want favourites function you must add a plugin for this. See example plugin [here](https://github.com/Oxyssweden/vsf-woocommerce-plugin-examples/tree/main). You also need to enable favourites in middleware config:
-```
-module.exports = {
-   integrations: {
-      woocommerce: {
-         location: '@vue-storefront/woocommerce-api/server',
-         configuration: {
-            api: process.env.WOOCOMMERCE_GRAPHQL,
-            wishlist: true
-         }
-      }
-   }
-};
-```
-4. If you want to keep using the woocommerce checkout you need to change the woo cart session handling. See example plugin [here](https://github.com/Oxyssweden/vsf-woocommerce-plugin-examples/tree/main).
+1. Install the following open source Wordpress Plugin into your WP store:
+   - [Vue Storefront WooCommerce Integration](https://github.com/SwiftComZA/vsf-wc-api)
+
+Note: This plugin is still in development and has no major release yet. The development of this plugin is being done in parallel with this integration.
 
 ## How to start?
 
@@ -99,6 +84,7 @@ If you have any questions about this integration we will be happy to answer them
 <table>
   <tr>
     <td align="center"><a href="https://github.com/andreasradloff"><img src="https://avatars.githubusercontent.com/u/1256982?v=4?s=80" width="80px;" alt=""/><br /><sub><b>andreasradloff</b></sub></a><br /><a href="https://github.com/vuestorefront/woocommerce/commits?author=andreasradloff" title="Code">💻</a></td>
+   <td align="center"><a href="https://github.com/jack-of-blades"><img src="https://avatars.githubusercontent.com/u/48649182?s=96&v=4" width="80px;" alt=""/><br /><sub><b>jack-of-blades</b></sub></a><br /><a href="https://github.com/vuestorefront/woocommerce/commits?author=jack-of-blades" title="Code">💻</a></td>
   </tr>
 </table>
 

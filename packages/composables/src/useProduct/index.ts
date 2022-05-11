@@ -1,18 +1,19 @@
 import {
   Context,
   useProductFactory,
-  ProductsSearchParams,
   UseProductFactoryParams
 } from '@vue-storefront/core';
-import { ProductsResponse } from '../types';
+import type { Product } from '@vue-storefront/woocommerce-api';
+import type {
+  UseProductSearchParams as SearchParams
+} from '../types';
 
-const params: UseProductFactoryParams<ProductsResponse, any> = {
-  productsSearch: async (context: Context, params: ProductsSearchParams): Promise<ProductsResponse> => {
-    console.log('Mocked: productsSearch');
-    const { customQuery, ...searchParams } = params;
-
-    return await context.$woocommerce.api.getProduct(searchParams, customQuery);
+const params: UseProductFactoryParams<Product, SearchParams> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  productsSearch: async (context: Context, params) => {
+    const data = await context.$woocommerce.api.getProduct(params);
+    return data.products;
   }
 };
 
-export default useProductFactory<ProductsResponse, any>(params);
+export const useProduct = useProductFactory<Product, SearchParams>(params);
