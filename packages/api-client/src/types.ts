@@ -24,6 +24,18 @@ export type OrderItem = TODO;
 
 export type PasswordResetResult = TODO;
 
+export declare type GetProductSearchParams = {
+    categorySlug?: string;
+    rootCatSlug?: string;
+    term?: string;
+    page?: number;
+    itemsPerPage?: number;
+    sort?: string;
+    filters?: Record<string, string[]>;
+    metadata?: any;
+    [x: string]: any;
+}
+
 export type Product = {
     id: number,
     type: string,

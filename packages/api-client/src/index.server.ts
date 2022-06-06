@@ -2,6 +2,7 @@ import { apiClientFactory } from '@vue-storefront/core';
 import axios from 'axios';
 
 import { getProduct } from './api/getProduct';
+import { getCategory } from './api/getCategory';
 
 function onCreate(settings) {
   const client = axios.create({
@@ -17,7 +18,8 @@ function onCreate(settings) {
 const { createApiClient } = apiClientFactory<any, any>({
   onCreate,
   api: {
-    getProduct
+    getProduct,
+    getCategory
   }
 });
 
