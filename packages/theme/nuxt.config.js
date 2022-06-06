@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import theme from './themeConfig';
+import { getRoutes } from './routes';
 
 export default {
   server: {
@@ -132,6 +133,10 @@ export default {
   },
 
   router: {
+    extendRoutes(routes) {
+      getRoutes()
+        .forEach((route) => routes.unshift(route));
+    },
     middleware: ['checkout']
   },
   publicRuntimeConfig: {
