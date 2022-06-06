@@ -82,10 +82,10 @@ import {
   SfHeading,
   SfFilter,
   SfAccordion,
-  SfColor
+  SfColor,
 } from '@storefront-ui/vue';
 
-import { ref, computed, onMounted } from '@nuxtjs/composition-api';
+import { ref, computed, onMounted, useRoute } from '@nuxtjs/composition-api';
 import { useFacet, facetGetters } from '@vue-storefront/woocommerce';
 import { useUiHelpers, useUiState } from '~/composables';
 import Vue from 'vue';
@@ -98,16 +98,16 @@ export default {
     SfFilter,
     SfAccordion,
     SfColor,
-    SfHeading
+    SfHeading,
   },
   setup(props, context) {
+    const route = useRoute();
+    const categorySlug = route.value.params.slug_1;
     const { changeFilters, isFacetColor } = useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
-    const { result } = useFacet();
+    const { result } = useFacet(categorySlug);
 
-    const facets = computed(() =>
-      facetGetters.getGrouped(result.value, ['color', 'size'])
-    );
+    const facets = computed(() => facetGetters.getGrouped(result.value));
     const selectedFilters = ref({});
 
     const setSelectedFilters = () => {
@@ -116,7 +116,7 @@ export default {
       selectedFilters.value = facets.value.reduce(
         (prev, curr) => ({
           ...prev,
-          [curr.id]: curr.options.filter((o) => o.selected).map((o) => o.id)
+          [curr.id]: curr.options.filter((o) => o.selected).map((o) => o.id),
         }),
         {}
       );
@@ -164,9 +164,9 @@ export default {
       isFilterSidebarOpen,
       toggleFilterSidebar,
       clearFilters,
-      applyFilters
+      applyFilters,
     };
-  }
+  },
 };
 </script>
 

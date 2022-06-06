@@ -1,12 +1,36 @@
+
+import { useRoute, useRouter } from '@nuxtjs/composition-api';
+
+const nonFilters = new Set(['page', 'sort', 'term', 'itemsPerPage']);
+
+const reduceFilters = (query) => (prev, curr) => {
+  const makeArray = Array.isArray(query[curr]) || nonFilters.has(curr);
+
+  return {
+    ...prev,
+    [curr]: makeArray ? query[curr] : [query[curr]],
+  };
+};
+
+
 // eslint-disable-next-line
 const useUiHelpers = () => {
-  const getFacetsFromURL = () => {
-    console.warn('[VSF] please implement useUiHelpers.getFacets.');
+  const route = useRoute();
+  const router = useRouter();
+  const { query } = route.value;
 
+  const getFiltersDataFromUrl = (onlyFilters) => Object.keys(query)
+    .filter((f) => (onlyFilters ? !nonFilters.has(f) : nonFilters.has(f)))
+    // eslint-disable-next-line unicorn/prefer-object-from-entries
+    .reduce(reduceFilters(query), {});
+
+  const getFacetsFromURL = () => {
     return {
-      categorySlug: null,
-      page: 1
-    } as any;
+      filters: getFiltersDataFromUrl(true),
+      sort: query.sort as string || '',
+      itemsPerPage: Number.parseInt(query.itemsPerPage as string, 10) || 20,
+      page: Number.parseInt(query.page as string, 10) || 1,
+    }
   };
 
   // eslint-disable-next-line
@@ -17,20 +41,23 @@ const useUiHelpers = () => {
   };
 
   // eslint-disable-next-line
-  const changeSorting = (sort) => {
-    console.warn('[VSF] please implement useUiHelpers.changeSorting.');
-
-    return 'latest';
+  const changeSorting = async (sort: string) => {
+    await router.push({ query: { ...query, sort, } });
   };
 
   // eslint-disable-next-line
-  const changeFilters = (filters) => {
-    console.warn('[VSF] please implement useUiHelpers.changeFilters.');
+  const changeFilters = async (filters: any) => {
+    await router.push({
+      query: {
+        ...getFiltersDataFromUrl(false),
+        ...filters,
+      },
+    });
   };
 
   // eslint-disable-next-line
-  const changeItemsPerPage = (itemsPerPage) => {
-    console.warn('[VSF] please implement useUiHelpers.changeItemsPerPage.');
+  const changeItemsPerPage = async (itemsPerPage) => {
+    await router.push({ query: { ...query, itemsPerPage, } });
   };
 
   // eslint-disable-next-line
@@ -39,11 +66,7 @@ const useUiHelpers = () => {
   };
 
   // eslint-disable-next-line
-  const isFacetColor = (facet): boolean => {
-    console.warn('[VSF] please implement useUiHelpers.isFacetColor.');
-
-    return false;
-  };
+  const isFacetColor = (facet: any): boolean => facet.id === 'pa_colour';
 
   // eslint-disable-next-line
   const isFacetCheckbox = (facet): boolean => {

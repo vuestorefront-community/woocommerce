@@ -127,7 +127,7 @@ import {
   SfBannerGrid,
   SfHeading,
   SfArrow,
-  SfButton
+  SfButton,
 } from '@storefront-ui/vue';
 import { useContext, onMounted, computed } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
@@ -154,26 +154,24 @@ export default {
     SfArrow,
     SfButton,
     NewsletterModal,
-    LazyHydrate
+    LazyHydrate,
   },
   setup() {
     const { $config } = useContext();
     const { toggleNewsletterModal } = useUiState();
 
-    const { products: productsRaw, search } = useProduct();
+    const { products, search } = useProduct('match-with-it');
 
     onMounted(async () => {
-      await search();
+      await search({});
     });
-
-    const products = computed(() => productsRaw.value);
 
     const heroes = [
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#eceff1',
-        image: addBasePath('/homepage/bannerH.webp')
+        image: addBasePath('/homepage/bannerH.webp'),
       },
       {
         title: 'Colorful summer dresses are already in store',
@@ -181,14 +179,14 @@ export default {
         background: '#efebe9',
         image: addBasePath('/homepage/bannerA.webp'),
         className:
-          'sf-hero-item--position-bg-top-left sf-hero-item--align-right'
+          'sf-hero-item--position-bg-top-left sf-hero-item--align-right',
       },
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#fce4ec',
-        image: addBasePath('/homepage/bannerB.webp')
-      }
+        image: addBasePath('/homepage/bannerB.webp'),
+      },
     ];
     const banners = [
       {
@@ -196,25 +194,25 @@ export default {
         subtitle: 'Dresses',
         title: 'Cocktail & Party',
         description:
-          'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
         buttonText: 'Shop now',
         image: {
           mobile: addBasePath($config.theme.home.bannerA.image.mobile),
-          desktop: addBasePath($config.theme.home.bannerA.image.desktop)
+          desktop: addBasePath($config.theme.home.bannerA.image.desktop),
         },
         class: 'sf-banner--slim desktop-only',
-        link: $config.theme.home.bannerA.link
+        link: $config.theme.home.bannerA.link,
       },
       {
         slot: 'banner-B',
         subtitle: 'Dresses',
         title: 'Linen Dresses',
         description:
-          'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
         buttonText: 'Shop now',
         image: addBasePath($config.theme.home.bannerB.image),
         class: 'sf-banner--slim banner-central desktop-only',
-        link: $config.theme.home.bannerB.link
+        link: $config.theme.home.bannerB.link,
       },
       {
         slot: 'banner-C',
@@ -222,7 +220,7 @@ export default {
         title: 'The Office Life',
         image: addBasePath($config.theme.home.bannerC.image),
         class: 'sf-banner--slim banner__tshirt',
-        link: $config.theme.home.bannerC.link
+        link: $config.theme.home.bannerC.link,
       },
       {
         slot: 'banner-D',
@@ -230,8 +228,8 @@ export default {
         title: 'Eco Sandals',
         image: addBasePath($config.theme.home.bannerD.image),
         class: 'sf-banner--slim',
-        link: $config.theme.home.bannerD.link
-      }
+        link: $config.theme.home.bannerD.link,
+      },
     ];
 
     const onSubscribe = (emailAddress) => {
@@ -251,9 +249,9 @@ export default {
       banners,
       heroes,
       products,
-      productGetters
+      productGetters,
     };
-  }
+  },
 };
 </script>
 

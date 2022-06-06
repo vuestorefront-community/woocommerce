@@ -31,21 +31,10 @@
               $n(productGetters.getPrice(product).special, 'currency')
             "
           />
-          <div>
-            <div class="product__rating">
-              <SfRating :score="averageRating" :max="5" />
-              <a v-if="!!totalReviews" href="#" class="product__count">
-                ({{ totalReviews }})
-              </a>
-            </div>
-            <SfButton class="sf-button--text">{{
-              $t('Read all reviews')
-            }}</SfButton>
-          </div>
         </div>
         <div>
           <p class="product__description desktop-only">
-            {{ description }}
+            {{ productGetters.getDescription(product) }}
           </p>
           <SfButton class="sf-button--text desktop-only product__guide">
             {{ $t('Size guide') }}
@@ -95,7 +84,7 @@
           <SfTabs :open-tab="1" class="product__tabs">
             <SfTab title="Description">
               <div class="product__description">
-                {{ $t('Product description') }}
+                {{ productGetters.getDescription(product) }}
               </div>
               <SfProperty
                 v-for="(property, i) in properties"
@@ -110,21 +99,6 @@
                   </SfButton>
                 </template>
               </SfProperty>
-            </SfTab>
-            <SfTab title="Read reviews">
-              <SfReview
-                v-for="review in reviews"
-                :key="reviewGetters.getReviewId(review)"
-                :author="reviewGetters.getReviewAuthor(review)"
-                :date="reviewGetters.getReviewDate(review)"
-                :message="reviewGetters.getReviewMessage(review)"
-                :max-rating="5"
-                :rating="reviewGetters.getReviewRating(review)"
-                :char-limit="250"
-                read-more-text="Read more"
-                hide-full-text="Read less"
-                class="product__review"
-              />
             </SfTab>
             <SfTab
               title="Additional Information"
@@ -151,14 +125,6 @@
     </div>
 
     <LazyHydrate when-visible>
-      <RelatedProducts
-        :products="relatedProducts"
-        :loading="relatedLoading"
-        title="Match it with"
-      />
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
       <InstagramFeed />
     </LazyHydrate>
   </div>
@@ -181,7 +147,7 @@ import {
   SfReview,
   SfBreadcrumbs,
   SfButton,
-  SfColor
+  SfColor,
 } from '@storefront-ui/vue';
 
 import InstagramFeed from '~/components/InstagramFeed.vue';
@@ -191,8 +157,6 @@ import {
   useProduct,
   useCart,
   productGetters,
-  useReview,
-  reviewGetters
 } from '@vue-storefront/woocommerce';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
@@ -205,23 +169,12 @@ export default {
     const qty = ref(1);
     const route = useRoute();
     const router = useRouter();
-    const { products, search } = useProduct('products');
-    const {
-      products: relatedProducts,
-      search: searchRelatedProducts,
-      loading: relatedLoading
-    } = useProduct('relatedProducts');
+    const id = route.value.params.id;
+    const { products, search } = useProduct(id);
     const { addItem, loading } = useCart();
-    const { reviews: productReviews, search: searchReviews } =
-      useReview('productReviews');
 
-    const id = computed(() => route.value.params.id);
-    const product = computed(
-      () =>
-        productGetters.getFiltered(products.value, {
-          master: true,
-          attributes: route.value.query
-        })[0]
+    const product = computed(() =>
+      productGetters.getSingleProduct(products.value)
     );
     const options = computed(() =>
       productGetters.getAttributes(products.value, ['color', 'size'])
@@ -229,28 +182,22 @@ export default {
     const configuration = computed(() =>
       productGetters.getAttributes(product.value, ['color', 'size'])
     );
-    const categories = computed(() =>
-      productGetters.getCategoryIds(product.value)
-    );
-    const reviews = computed(() =>
-      reviewGetters.getItems(productReviews.value)
-    );
 
     // TODO: Breadcrumbs are temporary disabled because productGetters return undefined. We have a mocks in data
     // const breadcrumbs = computed(() => productGetters.getBreadcrumbs ? productGetters.getBreadcrumbs(product.value) : props.fallbackBreadcrumbs);
     const productGallery = computed(() =>
-      productGetters.getGallery(product.value).map((img) => ({
-        mobile: { url: addBasePath(img.small) },
-        desktop: { url: addBasePath(img.normal) },
-        big: { url: addBasePath(img.big) },
-        alt: product.value._name || product.value.name
-      }))
+      productGetters
+        .getGallery(productGetters.getSingleProduct(products.value))
+        ?.map((img) => ({
+          mobile: { url: img },
+          desktop: { url: img },
+          big: { url: img },
+          alt: product?.value?.name || 'gallery image',
+        }))
     );
 
     onSSR(async () => {
-      await search({ id: id.value });
-      await searchRelatedProducts({ catId: [categories.value[0]], limit: 8 });
-      await searchReviews({ productId: id.value });
+      await search({ id: id });
     });
 
     const updateFilter = (filter) => {
@@ -258,8 +205,8 @@ export default {
         path: route.value.path,
         query: {
           ...configuration.value,
-          ...filter
-        }
+          ...filter,
+        },
       });
     };
 
@@ -267,24 +214,12 @@ export default {
       updateFilter,
       configuration,
       product,
-      reviews,
-      reviewGetters,
-      averageRating: computed(() =>
-        productGetters.getAverageRating(product.value)
-      ),
-      totalReviews: computed(() =>
-        productGetters.getTotalReviews(product.value)
-      ),
-      relatedProducts: computed(() =>
-        productGetters.getFiltered(relatedProducts.value, { master: true })
-      ),
-      relatedLoading,
       options,
       qty,
       addItem,
       loading,
       productGetters,
-      productGallery
+      productGallery,
     };
   },
   components: {
@@ -307,7 +242,7 @@ export default {
     SfButton,
     InstagramFeed,
     RelatedProducts,
-    LazyHydrate
+    LazyHydrate,
   },
   data() {
     return {
@@ -315,20 +250,20 @@ export default {
       properties: [
         {
           name: 'Product Code',
-          value: '578902-00'
+          value: '578902-00',
         },
         {
           name: 'Category',
-          value: 'Pants'
+          value: 'Pants',
         },
         {
           name: 'Material',
-          value: 'Cotton'
+          value: 'Cotton',
         },
         {
           name: 'Country',
-          value: 'Germany'
-        }
+          value: 'Germany',
+        },
       ],
       description:
         'Find stunning women cocktail and party dresses. Stand out in lace and metallic cocktail dresses and party dresses from all your favorite brands.',
@@ -340,24 +275,24 @@ export default {
         {
           text: 'Home',
           route: {
-            link: '#'
-          }
+            link: '#',
+          },
         },
         {
           text: 'Category',
           route: {
-            link: '#'
-          }
+            link: '#',
+          },
         },
         {
           text: 'Pants',
           route: {
-            link: '#'
-          }
-        }
-      ]
+            link: '#',
+          },
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 

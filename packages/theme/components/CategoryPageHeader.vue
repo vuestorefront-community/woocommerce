@@ -27,11 +27,11 @@
         >
           <SfSelectOption
             v-for="option in sortBy.options"
-            :key="option.id"
-            :value="option.id"
+            :key="option"
+            :value="option"
             class="sort-by__option"
           >
-            {{ option.value }}
+            {{ option }}
           </SfSelectOption>
         </SfSelect>
       </LazyHydrate>
@@ -93,12 +93,12 @@ export default {
     SfIcon,
     SfSelect,
     LazyHydrate,
-    FiltersSidebar
+    FiltersSidebar,
   },
   props: {
     pagination: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   setup() {
     const th = useUiHelpers();
@@ -106,7 +106,7 @@ export default {
       toggleFilterSidebar,
       isCategoryGridView,
       changeToCategoryGridView,
-      changeToCategoryListView
+      changeToCategoryListView,
     } = useUiState();
     const { result } = useFacet();
 
@@ -122,9 +122,9 @@ export default {
       toggleFilterSidebar,
       isCategoryGridView,
       changeToCategoryGridView,
-      changeToCategoryListView
+      changeToCategoryListView,
     };
-  }
+  },
 };
 </script>
 

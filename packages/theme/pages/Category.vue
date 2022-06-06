@@ -252,16 +252,16 @@ import {
   SfBreadcrumbs,
   SfLoader,
   SfColor,
-  SfProperty
+  SfProperty,
 } from '@storefront-ui/vue';
-import { computed, ref } from '@nuxtjs/composition-api';
+import { computed, ref, useRoute } from '@nuxtjs/composition-api';
 import {
   useCart,
   useWishlist,
   productGetters,
   useFacet,
   facetGetters,
-  wishlistGetters
+  wishlistGetters,
 } from '@vue-storefront/woocommerce';
 import { useUiHelpers, useUiState } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
@@ -273,15 +273,17 @@ import { addBasePath } from '@vue-storefront/core';
 export default {
   transition: 'fade',
   setup(props, context) {
+    const route = useRoute();
+    const categorySlug = route.value.params.slug_1;
     const th = useUiHelpers();
     const uiState = useUiState();
     const { addItem: addItemToCart, isInCart } = useCart();
-    const { result, search, loading, error } = useFacet();
+    const { result, search, loading, error } = useFacet(categorySlug);
     const {
       addItem: addItemToWishlist,
       isInWishlist,
       removeItem: removeItemFromWishlist,
-      wishlist
+      wishlist,
     } = useWishlist();
 
     const productsQuantity = ref({});
@@ -322,12 +324,15 @@ export default {
       const { id, sku } = product;
       addItemToCart({
         product: { id, sku },
-        quantity
+        quantity,
       });
     };
 
     onSSR(async () => {
-      await search(th.getFacetsFromURL());
+      await search({
+        ...th.getFacetsFromURL(),
+        categorySlug: categorySlug,
+      });
       if (error?.value?.search) context.root.$nuxt.error({ statusCode: 404 });
     });
 
@@ -347,7 +352,7 @@ export default {
       addToCart,
       isInCart,
       productsQuantity,
-      addBasePath
+      addBasePath,
     };
   },
   components: {
@@ -368,8 +373,8 @@ export default {
     SfColor,
     SfHeading,
     SfProperty,
-    LazyHydrate
-  }
+    LazyHydrate,
+  },
 };
 </script>
 
