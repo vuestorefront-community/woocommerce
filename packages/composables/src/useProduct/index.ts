@@ -1,7 +1,8 @@
 import {
   Context,
   useProductFactory,
-  UseProductFactoryParams
+  UseProductFactoryParams,
+  AgnosticFacetSearchParams
 } from '@vue-storefront/core';
 import type { Product } from '@vue-storefront/woocommerce-api';
 import type {
@@ -10,9 +11,9 @@ import type {
 
 const params: UseProductFactoryParams<Product, SearchParams> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  productsSearch: async (context: Context, params) => {
+  productsSearch: async (context: Context, params: AgnosticFacetSearchParams) => {
     const data = await context.$woocommerce.api.getProduct(params);
-    return data.products;
+    return data;
   }
 };
 

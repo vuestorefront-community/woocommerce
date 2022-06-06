@@ -10,8 +10,12 @@ import type {
 const factoryParams = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   search: async (context: Context, params: FacetSearchResult<SearchParams>) => {
-    console.log('Mocked: useFacet.search');
-    return {};
+    params.input = params?.input || {};
+
+    params.input.facet = true;
+
+    const data = await context.$woocommerce.api.getProduct(params.input);
+    return data;
   }
 };
 

@@ -11,6 +11,16 @@ function getTree(category: Category): AgnosticCategoryTree {
   };
 }
 
+function getName(category: Category): string {
+  return category?.title || 'No Name'
+}
+
+function getSlug(category: Category): string {
+  return category?.slug || ''
+}
+
 export const categoryGetters: CategoryGetters<Category> = {
-  getTree
+  getTree,
+  getName,
+  getSlug
 };

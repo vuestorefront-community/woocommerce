@@ -10,7 +10,14 @@ export type Cart = TODO;
 
 export type CartItem = TODO;
 
-export type Category = TODO;
+export declare type Category = {
+    type?: string;
+    id?: number;
+    title?: string;
+    description?: string;
+    slug?: string;
+    count?: number;
+};
 
 export type Coupon = TODO;
 

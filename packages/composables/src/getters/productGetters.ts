@@ -6,7 +6,7 @@ import type { Product, ProductFilter } from '@vue-storefront/woocommerce-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getName(product: Product): string {
-  return product?.title || 'No name';
+  return product?.title || 'Loading...';
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -24,7 +24,7 @@ function getPrice(product: Product): AgnosticPrice {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getGallery(product: Product): string[] {
-  return product?.images || [];
+  return [].concat(product?.coverImage || [], product?.images || []);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -96,6 +96,10 @@ function getAverageRating(product: Product): number {
   return 0;
 }
 
+function getSingleProduct(products: Product[]): Product {
+  return products[0] || null;
+}
+
 export const productGetters: ProductGetters<Product, ProductFilter> = {
   getName,
   getSlug,
@@ -109,5 +113,6 @@ export const productGetters: ProductGetters<Product, ProductFilter> = {
   getId,
   getFormattedPrice,
   getTotalReviews,
-  getAverageRating
+  getAverageRating,
+  getSingleProduct
 };
