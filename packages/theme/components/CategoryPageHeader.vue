@@ -27,11 +27,11 @@
         >
           <SfSelectOption
             v-for="option in sortBy.options"
-            :key="option"
-            :value="option"
+            :key="option.key"
+            :value="option.key"
             class="sort-by__option"
           >
-            {{ option }}
+            {{ option.label }}
           </SfSelectOption>
         </SfSelect>
       </LazyHydrate>

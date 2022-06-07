@@ -16,35 +16,43 @@ import type { Facet, FacetSearchCriteria } from '@vue-storefront/woocommerce-api
 const availableSortingOptions = {
   'name_ASC': {
     order: 'ASC',
-    orderby: 'name'
+    orderby: 'name',
+    label: 'Name from a to z'
   },
   'name_DESC': {
     order: 'DESC',
-    orderby: 'name'
+    orderby: 'name',
+    label: 'Name from z to a'
   },
-  'id_ASC': {
-    order: 'ASC',
-    orderby: 'id'
-  },
-  'id_DESC': {
-    order: 'DESC',
-    orderby: 'id'
-  },
+  // 'id_ASC': {
+  //   order: 'ASC',
+  //   orderby: 'id',
+  //   label: 'ID in ASCENDING order'
+  // },
+  // 'id_DESC': {
+  //   order: 'DESC',
+  //   orderby: 'id',
+  //   label: 'ID in DESCENDING order'
+  // },
   'date_ASC': {
     order: 'ASC',
-    orderby: 'date'
+    orderby: 'date',
+    label: 'Date from old to new'
   },
   'date_DESC': {
     order: 'DESC',
-    orderby: 'date'
+    orderby: 'date',
+    label: 'Date from new to old'
   },
   'price_ASC': {
     order: 'ASC',
-    orderby: 'price'
+    orderby: 'price',
+    label: 'Price from low to high'
   },
   'price_DESC': {
     order: 'DESC',
-    orderby: 'price'
+    orderby: 'price',
+    label: 'Price from high to low'
   }
 };
 
@@ -89,7 +97,7 @@ function getGrouped(params: FacetSearchResult<any>): AgnosticGroupedFacet[] {
 
 function getSortOptions(params: FacetSearchResult<any>): any {
   return {
-    options: Object.keys(availableSortingOptions).map(key => key),
+    options: Object.keys(availableSortingOptions).map(key => { return { key, label: availableSortingOptions[key].label } }),
     selected: params?.input?.sort || 'name_ASC'
   };
 }
