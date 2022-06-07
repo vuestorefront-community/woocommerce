@@ -1,7 +1,7 @@
 <template>
   <div class="sf-header__navigation desktop" v-if="!isMobile">
     <SfHeaderNavigationItem
-      v-for="(category, index) in categories.slice(0, 3)"
+      v-for="(category, index) in categories.slice(0, 10)"
       :key="index"
       class="nav-item"
       v-e2e="`app-header-url_${categoryGetters.getSlug(category)}`"
@@ -11,7 +11,7 @@
   </div>
   <SfModal v-else :visible="isMobileMenuOpen">
     <SfHeaderNavigationItem
-      v-for="(category, index) in categories.slice(0, 3)"
+      v-for="(category, index) in categories.slice(0, 10)"
       :key="index"
       class="nav-item"
       v-e2e="`app-header-url_${categoryGetters.getSlug(category)}`"
@@ -31,7 +31,7 @@
 <script>
 import { SfMenuItem, SfModal } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
-import { onMounted, computed } from '@nuxtjs/composition-api';
+import { computed, useAsync } from '@nuxtjs/composition-api';
 import { useCategory, categoryGetters } from '@vue-storefront/woocommerce';
 
 export default {
@@ -51,11 +51,13 @@ export default {
 
     const { categories: categoriesRaw, search } = useCategory();
 
-    onMounted(async () => {
-      await search({});
+    useAsync(() => {
+      search({});
     });
 
-    const categories = computed(() => categoriesRaw.value);
+    const categories = computed(() =>
+      categoryGetters.getParentCategories(categoriesRaw.value)
+    );
 
     return {
       categories,

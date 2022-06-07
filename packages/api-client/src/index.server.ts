@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { getProduct } from './api/getProduct';
 import { getCategory } from './api/getCategory';
+import { getFacet } from './api/getFacet';
 
 function onCreate(settings) {
   const client = axios.create({
@@ -19,7 +20,8 @@ const { createApiClient } = apiClientFactory<any, any>({
   onCreate,
   api: {
     getProduct,
-    getCategory
+    getCategory,
+    getFacet
   }
 });
 

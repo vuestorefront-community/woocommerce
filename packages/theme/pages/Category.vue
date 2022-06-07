@@ -254,7 +254,7 @@ import {
   SfColor,
   SfProperty,
 } from '@storefront-ui/vue';
-import { computed, ref, useRoute } from '@nuxtjs/composition-api';
+import { computed, ref, useRoute, useAsync } from '@nuxtjs/composition-api';
 import {
   useCart,
   useWishlist,
@@ -262,6 +262,7 @@ import {
   useFacet,
   facetGetters,
   wishlistGetters,
+  useProduct,
 } from '@vue-storefront/woocommerce';
 import { useUiHelpers, useUiState } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
@@ -278,7 +279,17 @@ export default {
     const th = useUiHelpers();
     const uiState = useUiState();
     const { addItem: addItemToCart, isInCart } = useCart();
-    const { result, search, loading, error } = useFacet(categorySlug);
+    const {
+      result,
+      search: facetsSearch,
+      loading: facetsLoading,
+      error,
+    } = useFacet(`facet-${categorySlug}`);
+    const {
+      products: productsRaw,
+      search: productsSearch,
+      loading,
+    } = useProduct(`product-${categorySlug}`);
     const {
       addItem: addItemToWishlist,
       isInWishlist,
@@ -287,14 +298,18 @@ export default {
     } = useWishlist();
 
     const productsQuantity = ref({});
-    const products = computed(() => facetGetters.getProducts(result.value));
+    const products = computed(() =>
+      productGetters.getProducts(productsRaw.value)
+    );
     const categoryTree = computed(() =>
       facetGetters.getCategoryTree(result.value)
     );
     const breadcrumbs = computed(() =>
       facetGetters.getBreadcrumbs(result.value)
     );
-    const pagination = computed(() => facetGetters.getPagination(result.value));
+    const pagination = computed(() =>
+      productGetters.getPagination(productsRaw.value)
+    );
     const activeCategory = computed(() => {
       const items = categoryTree.value.items;
 
@@ -328,11 +343,21 @@ export default {
       });
     };
 
-    onSSR(async () => {
-      await search({
+    useAsync(() => {
+      productsSearch({
         ...th.getFacetsFromURL(),
         categorySlug: categorySlug,
       });
+    });
+
+    useAsync(() => {
+      facetsSearch({
+        ...th.getFacetsFromURL(),
+        categorySlug: categorySlug,
+      });
+    });
+
+    onSSR(async () => {
       if (error?.value?.search) context.root.$nuxt.error({ statusCode: 404 });
     });
 

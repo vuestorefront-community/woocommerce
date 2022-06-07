@@ -1,7 +1,7 @@
 import { Context } from '@vue-storefront/core';
 
 export async function getCategory(context: Context): Promise<any> {
-  console.log('Fetching categories...');
+  // console.log('getCategory: Fetching categories...');
 
   const url = new URL('/wp-json/vsf-wc-api/v1/categories', context.config.api.url);
 

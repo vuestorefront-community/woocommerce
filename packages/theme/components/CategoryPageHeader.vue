@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { computed } from '@nuxtjs/composition-api';
+import { computed, useRoute } from '@nuxtjs/composition-api';
 import { useUiHelpers, useUiState } from '~/composables';
 import { useFacet, facetGetters } from '@vue-storefront/woocommerce';
 import FiltersSidebar from '~/components/FiltersSidebar';
@@ -102,13 +102,15 @@ export default {
   },
   setup() {
     const th = useUiHelpers();
+    const route = useRoute();
+    const categorySlug = route.value.params.slug_1;
     const {
       toggleFilterSidebar,
       isCategoryGridView,
       changeToCategoryGridView,
       changeToCategoryListView,
     } = useUiState();
-    const { result } = useFacet();
+    const { result } = useFacet(`facet-${categorySlug}`);
 
     const sortBy = computed(() => facetGetters.getSortOptions(result.value));
     const facets = computed(() =>

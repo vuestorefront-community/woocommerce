@@ -174,20 +174,32 @@ export default {
     const { addItem, loading } = useCart();
 
     const product = computed(() =>
-      productGetters.getSingleProduct(products.value)
+      productGetters.getSingleProduct(
+        productGetters.getProducts(products.value)
+      )
     );
     const options = computed(() =>
-      productGetters.getAttributes(products.value, ['color', 'size'])
+      productGetters.getAttributes(productGetters.getProducts(products.value), [
+        'color',
+        'size',
+      ])
     );
     const configuration = computed(() =>
-      productGetters.getAttributes(product.value, ['color', 'size'])
+      productGetters.getAttributes(productGetters.getProducts(products.value), [
+        'color',
+        'size',
+      ])
     );
 
     // TODO: Breadcrumbs are temporary disabled because productGetters return undefined. We have a mocks in data
     // const breadcrumbs = computed(() => productGetters.getBreadcrumbs ? productGetters.getBreadcrumbs(product.value) : props.fallbackBreadcrumbs);
     const productGallery = computed(() =>
       productGetters
-        .getGallery(productGetters.getSingleProduct(products.value))
+        .getGallery(
+          productGetters.getSingleProduct(
+            productGetters.getProducts(products.value)
+          )
+        )
         ?.map((img) => ({
           mobile: { url: img },
           desktop: { url: img },

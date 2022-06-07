@@ -17,11 +17,12 @@ export declare type Category = {
     description?: string;
     slug?: string;
     count?: number;
+    parent_id?: number;
 };
 
 export type Coupon = TODO;
 
-export type Facet = TODO;
+export type Facet = Object;
 
 export type FacetSearchCriteria = TODO;
 
@@ -41,6 +42,14 @@ export declare type GetProductSearchParams = {
     filters?: Record<string, string[]>;
     metadata?: any;
     [x: string]: any;
+}
+
+export type ProductsResult = {
+    products: Product[];
+    total?: number;
+    pages?: number;
+    page?: number;
+    perPage?: number;
 }
 
 export type Product = {

@@ -19,8 +19,13 @@ function getSlug(category: Category): string {
   return category?.slug || ''
 }
 
+function getParentCategories(categories: Category[]): Category[] {
+  return categories.filter(cat => cat.parent_id == 0)
+}
+
 export const categoryGetters: CategoryGetters<Category> = {
   getTree,
   getName,
-  getSlug
+  getSlug,
+  getParentCategories
 };

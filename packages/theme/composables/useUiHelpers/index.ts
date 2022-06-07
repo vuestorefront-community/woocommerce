@@ -66,7 +66,7 @@ const useUiHelpers = () => {
   };
 
   // eslint-disable-next-line
-  const isFacetColor = (facet: any): boolean => facet.id === 'pa_colour';
+  const isFacetColor = (facet: any): boolean => facet.id === 'pa_colour' || facet.id === 'pa_color';
 
   // eslint-disable-next-line
   const isFacetCheckbox = (facet): boolean => {

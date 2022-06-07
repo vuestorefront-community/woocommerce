@@ -105,7 +105,7 @@ export default {
     const categorySlug = route.value.params.slug_1;
     const { changeFilters, isFacetColor } = useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
-    const { result } = useFacet(categorySlug);
+    const { result } = useFacet(`facet-${categorySlug}`);
 
     const facets = computed(() => facetGetters.getGrouped(result.value));
     const selectedFilters = ref({});
@@ -165,6 +165,7 @@ export default {
       toggleFilterSidebar,
       clearFilters,
       applyFilters,
+      result,
     };
   },
 };

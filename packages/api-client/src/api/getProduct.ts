@@ -36,7 +36,7 @@ const availableSortingOptions = {
 };
 
 export async function getProduct(context: Context, params: AgnosticFacetSearchParams): Promise<any> {
-  console.log('Fetching products...');
+  // console.log('getProduct: Fetching products...');
 
   // Prepare getProduct query parameters
   const getProductParams = {
@@ -45,7 +45,7 @@ export async function getProduct(context: Context, params: AgnosticFacetSearchPa
     categories: params?.categorySlug || '',
     order: params?.sort ? availableSortingOptions[params.sort].order : availableSortingOptions.name_ASC.order,
     orderby: params?.sort ? availableSortingOptions[params.sort].orderby : availableSortingOptions.name_ASC.orderby,
-    facet: params?.facet || false
+    paginate: params?.paginate || false
   };
 
   if (params.id) {
