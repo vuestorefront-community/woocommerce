@@ -57,9 +57,9 @@ function getAll(params: FacetSearchResult<any>, criteria?: FacetSearchCriteria):
       facets.push({
         type: key,
         id: val,
-        value: val,
+        value: params.data[key].values[val].title,
         selected: (params.input?.filters[key] || []).includes(val),
-        count: params.data[key].values[val]
+        count: params.data[key].values[val].count
       })
     })
   })
@@ -76,9 +76,9 @@ function getGrouped(params: FacetSearchResult<any>): AgnosticGroupedFacet[] {
         return {
           type: params.data[key].id,
           id: val,
-          value: val,
+          value: params.data[key].values[val].title,
           selected: (params.input?.filters[key] || []).includes(val),
-          count: params.data[key].values[val]
+          count: params.data[key].values[val].count
         }
       })
     }
