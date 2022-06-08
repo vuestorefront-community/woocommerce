@@ -1,7 +1,7 @@
 
 import { useRoute, useRouter } from '@nuxtjs/composition-api';
 
-const nonFilters = new Set(['page', 'sort', 'term', 'itemsPerPage']);
+const nonFilters = new Set(['sort', 'term', 'itemsPerPage']);
 
 const reduceFilters = (query) => (prev, curr) => {
   const makeArray = Array.isArray(query[curr]) || nonFilters.has(curr);
