@@ -206,9 +206,17 @@ export default {
   }
   &__colors {
     display: flex;
+    flex-wrap: wrap;
   }
   &__color {
     margin: var(--spacer-xs) var(--spacer-xs) var(--spacer-xs) 0;
+    box-shadow: var(
+      --color-box-shadow,
+      var(--color-box-shadow-h-offset, 0px)
+        var(--color-box-shadow-v-offset, 0.2px)
+        var(--color-box-shadow-blur, 6px) var(--color-box-shadow-spread, 0px)
+        var(--color-box-shadow-color, var(--c-black))
+    );
   }
   &__chosen {
     color: var(--c-text-muted);
