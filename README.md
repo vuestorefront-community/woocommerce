@@ -63,6 +63,7 @@ Want to contribute? Ping us on `woocommerce` channel on [our Discord](https://di
 3. Run `yarn` to install dependencies
 4. Build dependencies `yarn build:api-client && yarn build:composables`
 5. Run `yarn dev:theme` to run theme. You can find other commands in `package.json`
+6. Before you can commit, you must have `npm install -g commitizen` installed
 
 - If you need HMR on Api Client/Composables run `yarn dev:api-client` or `yarn dev:composables` on a separate terminal window.
 

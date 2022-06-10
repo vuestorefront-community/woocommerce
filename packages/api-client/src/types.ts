@@ -22,7 +22,7 @@ export declare type Category = {
 
 export type Coupon = TODO;
 
-export type Facet = Object;
+export type Facet = Record<string, unknown>;
 
 export type FacetSearchCriteria = TODO;
 
@@ -42,14 +42,6 @@ export declare type GetProductSearchParams = {
     filters?: Record<string, string[]>;
     metadata?: any;
     [x: string]: any;
-}
-
-export type ProductsResult = {
-    products: Product[];
-    total?: number;
-    pages?: number;
-    page?: number;
-    perPage?: number;
 }
 
 export type Product = {
@@ -73,6 +65,14 @@ export type Product = {
     attributes: Array<Record<string, string>>,
     variants: Array<Product>
 };
+
+export type ProductsResult = {
+    products: Product[];
+    total?: number;
+    pages?: number;
+    page?: number;
+    perPage?: number;
+}
 
 export type ProductFilter = TODO;
 

@@ -62,7 +62,6 @@ export interface ProductGetters<PRODUCT, PRODUCT_FILTER> {
   [getterName: string]: any;
 }
 
-
 export interface FacetsGetters<SEARCH_DATA, RESULTS, CRITERIA = any> {
   getAll: (searchData: FacetSearchResult<SEARCH_DATA>, criteria?: CRITERIA) => AgnosticFacet[];
   getGrouped: (searchData: Facet[]) => AgnosticGroupedFacet[];

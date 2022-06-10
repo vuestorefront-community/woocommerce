@@ -147,7 +147,7 @@ import {
   SfReview,
   SfBreadcrumbs,
   SfButton,
-  SfColor,
+  SfColor
 } from '@storefront-ui/vue';
 
 import InstagramFeed from '~/components/InstagramFeed.vue';
@@ -156,11 +156,10 @@ import { ref, computed, useRoute, useRouter } from '@nuxtjs/composition-api';
 import {
   useProduct,
   useCart,
-  productGetters,
+  productGetters
 } from '@vue-storefront/woocommerce';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
-import { addBasePath } from '@vue-storefront/core';
 
 export default {
   name: 'Product',
@@ -181,13 +180,13 @@ export default {
     const options = computed(() =>
       productGetters.getAttributes(productGetters.getProducts(products.value), [
         'color',
-        'size',
+        'size'
       ])
     );
     const configuration = computed(() =>
       productGetters.getAttributes(productGetters.getProducts(products.value), [
         'color',
-        'size',
+        'size'
       ])
     );
 
@@ -204,7 +203,7 @@ export default {
           mobile: { url: img },
           desktop: { url: img },
           big: { url: img },
-          alt: product?.value?.name || 'gallery image',
+          alt: product?.value?.name || 'gallery image'
         }))
     );
 
@@ -217,8 +216,8 @@ export default {
         path: route.value.path,
         query: {
           ...configuration.value,
-          ...filter,
-        },
+          ...filter
+        }
       });
     };
 
@@ -231,7 +230,7 @@ export default {
       addItem,
       loading,
       productGetters,
-      productGallery,
+      productGallery
     };
   },
   components: {
@@ -254,7 +253,7 @@ export default {
     SfButton,
     InstagramFeed,
     RelatedProducts,
-    LazyHydrate,
+    LazyHydrate
   },
   data() {
     return {
@@ -262,20 +261,20 @@ export default {
       properties: [
         {
           name: 'Product Code',
-          value: '578902-00',
+          value: '578902-00'
         },
         {
           name: 'Category',
-          value: 'Pants',
+          value: 'Pants'
         },
         {
           name: 'Material',
-          value: 'Cotton',
+          value: 'Cotton'
         },
         {
           name: 'Country',
-          value: 'Germany',
-        },
+          value: 'Germany'
+        }
       ],
       description:
         'Find stunning women cocktail and party dresses. Stand out in lace and metallic cocktail dresses and party dresses from all your favorite brands.',
@@ -287,24 +286,24 @@ export default {
         {
           text: 'Home',
           route: {
-            link: '#',
-          },
+            link: '#'
+          }
         },
         {
           text: 'Category',
           route: {
-            link: '#',
-          },
+            link: '#'
+          }
         },
         {
           text: 'Pants',
           route: {
-            link: '#',
-          },
-        },
-      ],
+            link: '#'
+          }
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 

@@ -49,7 +49,7 @@ export async function getProduct(context: Context, params: AgnosticFacetSearchPa
   };
 
   if (params.id) {
-    getProductParams['id'] = params.id;
+    getProductParams.id = params.id;
   }
 
   // Add each filter to the list of parameters and combine filter values into comma separated string

@@ -84,7 +84,7 @@ import {
   SfHeading,
   SfFilter,
   SfAccordion,
-  SfColor,
+  SfColor
 } from '@storefront-ui/vue';
 
 import { ref, computed, onMounted, useRoute } from '@nuxtjs/composition-api';
@@ -100,7 +100,7 @@ export default {
     SfFilter,
     SfAccordion,
     SfColor,
-    SfHeading,
+    SfHeading
   },
   setup(props, context) {
     const route = useRoute();
@@ -118,7 +118,7 @@ export default {
       selectedFilters.value = facets.value.reduce(
         (prev, curr) => ({
           ...prev,
-          [curr.id]: curr.options.filter((o) => o.selected).map((o) => o.id),
+          [curr.id]: curr.options.filter((o) => o.selected).map((o) => o.id)
         }),
         {}
       );
@@ -167,9 +167,9 @@ export default {
       toggleFilterSidebar,
       clearFilters,
       applyFilters,
-      result,
+      result
     };
-  },
+  }
 };
 </script>
 

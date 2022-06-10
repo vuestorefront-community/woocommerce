@@ -1,12 +1,11 @@
 import {
-  AgnosticPagination,
+  AgnosticPagination
 } from '@vue-storefront/core';
 import {
   AgnosticPrice,
   ProductGetters
 } from '../types';
 import type { Product, ProductFilter, ProductsResult } from '@vue-storefront/woocommerce-api';
-
 
 function getProducts(productsResult: ProductsResult): Product[] {
   return productsResult?.products || [];
@@ -99,7 +98,6 @@ function getAverageRating(product: Product): number {
 function getSingleProduct(products: Product[]): Product {
   return products[0] || null;
 }
-
 
 function getPagination(productsResult: ProductsResult): AgnosticPagination {
   return {

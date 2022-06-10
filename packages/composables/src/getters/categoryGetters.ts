@@ -12,15 +12,15 @@ function getTree(category: Category): AgnosticCategoryTree {
 }
 
 function getName(category: Category): string {
-  return category?.title || 'No Name'
+  return category?.title || 'No Name';
 }
 
 function getSlug(category: Category): string {
-  return category?.slug || ''
+  return category?.slug || '';
 }
 
 function getParentCategories(categories: Category[]): Category[] {
-  return categories.filter(cat => cat.parent_id == 0)
+  return categories.filter(cat => cat.parent_id === 0);
 }
 
 export const categoryGetters: CategoryGetters<Category> = {

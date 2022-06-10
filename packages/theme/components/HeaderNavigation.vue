@@ -38,13 +38,13 @@ export default {
   name: 'HeaderNavigation',
   components: {
     SfMenuItem,
-    SfModal,
+    SfModal
   },
   props: {
     isMobile: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   setup() {
     const { isMobileMenuOpen, toggleMobileMenu } = useUiState();
@@ -63,9 +63,9 @@ export default {
       categories,
       categoryGetters,
       isMobileMenuOpen,
-      toggleMobileMenu,
+      toggleMobileMenu
     };
-  },
+  }
 };
 </script>
 

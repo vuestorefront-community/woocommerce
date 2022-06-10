@@ -4,7 +4,7 @@ import {
   UseProductFactoryParams,
   AgnosticFacetSearchParams
 } from '@vue-storefront/core';
-import type { Product, ProductsResult } from '@vue-storefront/woocommerce-api';
+import type { ProductsResult } from '@vue-storefront/woocommerce-api';
 import type {
   UseProductSearchParams as SearchParams
 } from '../types';

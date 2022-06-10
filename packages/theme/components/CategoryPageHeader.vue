@@ -93,12 +93,12 @@ export default {
     SfIcon,
     SfSelect,
     LazyHydrate,
-    FiltersSidebar,
+    FiltersSidebar
   },
   props: {
     pagination: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   setup() {
     const th = useUiHelpers();
@@ -108,7 +108,7 @@ export default {
       toggleFilterSidebar,
       isCategoryGridView,
       changeToCategoryGridView,
-      changeToCategoryListView,
+      changeToCategoryListView
     } = useUiState();
     const { result } = useFacet(`facet-${categorySlug}`);
 
@@ -124,9 +124,9 @@ export default {
       toggleFilterSidebar,
       isCategoryGridView,
       changeToCategoryGridView,
-      changeToCategoryListView,
+      changeToCategoryListView
     };
-  },
+  }
 };
 </script>
 

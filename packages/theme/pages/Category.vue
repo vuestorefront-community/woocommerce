@@ -252,7 +252,7 @@ import {
   SfBreadcrumbs,
   SfLoader,
   SfColor,
-  SfProperty,
+  SfProperty
 } from '@storefront-ui/vue';
 import { computed, ref, useRoute, useAsync } from '@nuxtjs/composition-api';
 import {
@@ -262,7 +262,7 @@ import {
   useFacet,
   facetGetters,
   wishlistGetters,
-  useProduct,
+  useProduct
 } from '@vue-storefront/woocommerce';
 import { useUiHelpers, useUiState } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
@@ -282,19 +282,18 @@ export default {
     const {
       result,
       search: facetsSearch,
-      loading: facetsLoading,
-      error,
+      error
     } = useFacet(`facet-${categorySlug}`);
     const {
       products: productsRaw,
       search: productsSearch,
-      loading,
+      loading
     } = useProduct(`product-${categorySlug}`);
     const {
       addItem: addItemToWishlist,
       isInWishlist,
       removeItem: removeItemFromWishlist,
-      wishlist,
+      wishlist
     } = useWishlist();
 
     const productsQuantity = ref({});
@@ -339,21 +338,21 @@ export default {
       const { id, sku } = product;
       addItemToCart({
         product: { id, sku },
-        quantity,
+        quantity
       });
     };
 
     useAsync(() => {
       productsSearch({
         ...th.getFacetsFromURL(),
-        categorySlug: categorySlug,
+        categorySlug: categorySlug
       });
     });
 
     useAsync(() => {
       facetsSearch({
         ...th.getFacetsFromURL(),
-        categorySlug: categorySlug,
+        categorySlug: categorySlug
       });
     });
 
@@ -377,7 +376,7 @@ export default {
       addToCart,
       isInCart,
       productsQuantity,
-      addBasePath,
+      addBasePath
     };
   },
   components: {
@@ -398,8 +397,8 @@ export default {
     SfColor,
     SfHeading,
     SfProperty,
-    LazyHydrate,
-  },
+    LazyHydrate
+  }
 };
 </script>
 

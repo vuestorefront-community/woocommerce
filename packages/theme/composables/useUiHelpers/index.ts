@@ -8,10 +8,9 @@ const reduceFilters = (query) => (prev, curr) => {
 
   return {
     ...prev,
-    [curr]: makeArray ? query[curr] : [query[curr]],
+    [curr]: makeArray ? query[curr] : [query[curr]]
   };
 };
-
 
 // eslint-disable-next-line
 const useUiHelpers = () => {
@@ -21,7 +20,6 @@ const useUiHelpers = () => {
 
   const getFiltersDataFromUrl = (onlyFilters) => Object.keys(query)
     .filter((f) => (onlyFilters ? !nonFilters.has(f) : nonFilters.has(f)))
-    // eslint-disable-next-line unicorn/prefer-object-from-entries
     .reduce(reduceFilters(query), {});
 
   const getFacetsFromURL = () => {
@@ -29,8 +27,8 @@ const useUiHelpers = () => {
       filters: getFiltersDataFromUrl(true),
       sort: query.sort as string || '',
       itemsPerPage: Number.parseInt(query.itemsPerPage as string, 10) || 20,
-      page: Number.parseInt(query.page as string, 10) || 1,
-    }
+      page: Number.parseInt(query.page as string, 10) || 1
+    };
   };
 
   // eslint-disable-next-line
@@ -42,7 +40,7 @@ const useUiHelpers = () => {
 
   // eslint-disable-next-line
   const changeSorting = async (sort: string) => {
-    await router.push({ query: { ...query, sort, } });
+    await router.push({ query: { ...query, sort } });
   };
 
   // eslint-disable-next-line
@@ -50,14 +48,14 @@ const useUiHelpers = () => {
     await router.push({
       query: {
         ...getFiltersDataFromUrl(false),
-        ...filters,
-      },
+        ...filters
+      }
     });
   };
 
   // eslint-disable-next-line
   const changeItemsPerPage = async (itemsPerPage) => {
-    await router.push({ query: { ...query, itemsPerPage, } });
+    await router.push({ query: { ...query, itemsPerPage } });
   };
 
   // eslint-disable-next-line
