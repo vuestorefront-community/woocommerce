@@ -87,7 +87,13 @@ import {
   SfColor
 } from '@storefront-ui/vue';
 
-import { ref, computed, onMounted, useRoute } from '@nuxtjs/composition-api';
+import {
+  ref,
+  computed,
+  onMounted,
+  useRoute,
+  onUpdated
+} from '@nuxtjs/composition-api';
 import { useFacet, facetGetters } from '@vue-storefront/woocommerce';
 import { useUiHelpers, useUiState } from '~/composables';
 import Vue from 'vue';
@@ -124,8 +130,9 @@ export default {
       );
     };
 
-    const isFilterSelected = (facet, option) =>
-      (selectedFilters.value[facet.id] || []).includes(option.id);
+    const isFilterSelected = (facet, option) => {
+      return (selectedFilters.value[facet.id] || []).includes(option.id);
+    };
 
     const selectFilter = (facet, option) => {
       if (!selectedFilters.value[facet.id]) {
@@ -155,6 +162,9 @@ export default {
 
     onMounted(() => {
       context.root.$scrollTo(context.root.$el, 2000);
+    });
+
+    onUpdated(() => {
       setSelectedFilters();
     });
 
