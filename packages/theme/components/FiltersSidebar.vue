@@ -115,7 +115,11 @@ export default {
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
     const { result } = useFacet(`facet-${categorySlug}`);
 
-    const facets = computed(() => facetGetters.getGrouped(result.value));
+    const facets = computed(() =>
+      facetGetters.getGrouped(result.value).length > 0
+        ? facetGetters.getGrouped(result.value)
+        : facetGetters.getPreviousFacets(result.value)
+    );
     const selectedFilters = ref({});
 
     const setSelectedFilters = () => {

@@ -93,6 +93,29 @@ function getGrouped(params: FacetSearchResult<any>): AgnosticGroupedFacet[] {
   return groupedFacet;
 }
 
+function getPreviousFacets(params: FacetSearchResult<any>): AgnosticGroupedFacet[] {
+  if (!params?.input?.prevFacets) {
+    return [];
+  }
+  const groupedFacet = params?.input?.prevFacets.map(key => {
+    return {
+      id: key.id,
+      label: key.label,
+      options: key.options.map(val => {
+        return {
+          type: val.type,
+          id: val.id,
+          value: val.value,
+          selected: (params.input?.filters[key.id] || []).includes(val.id),
+          count: val.count
+        };
+      })
+    };
+  });
+
+  return groupedFacet;
+}
+
 function getSortOptions(params: FacetSearchResult<any>): any {
   return {
     options: Object.keys(availableSortingOptions).map(key => {
@@ -139,5 +162,6 @@ export const facetGetters: FacetsGetters<Facet, FacetSearchCriteria> = {
   getProducts,
   getCategoryTree,
   getBreadcrumbs,
-  getPagination
+  getPagination,
+  getPreviousFacets
 };

@@ -352,7 +352,11 @@ export default {
     useAsync(() => {
       facetsSearch({
         ...th.getFacetsFromURL(),
-        categorySlug: categorySlug
+        categorySlug: categorySlug,
+        prevFacets:
+          facetGetters.getGrouped(result.value).length > 0
+            ? facetGetters.getGrouped(result.value)
+            : facetGetters.getPreviousFacets(result.value)
       });
     });
 
