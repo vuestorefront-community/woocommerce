@@ -6,16 +6,26 @@
     />
     <div class="product">
       <LazyHydrate when-idle>
-        <SfGallery :images="productGallery" class="product__gallery" />
+        <SfLoader
+          :class="{ 'loading--product-gallery': productLoading }"
+          :loading="productLoading"
+        >
+          <SfGallery :images="productGallery" class="product__gallery" />
+        </SfLoader>
       </LazyHydrate>
 
       <div class="product__info">
         <div class="product__header">
-          <SfHeading
-            :title="productGetters.getName(product)"
-            :level="3"
-            class="sf-heading--no-underline sf-heading--left"
-          />
+          <SfLoader
+            :class="{ 'loading--product-gallery': productLoading }"
+            :loading="productLoading"
+          >
+            <SfHeading
+              :title="productGetters.getName(product)"
+              :level="3"
+              class="sf-heading--no-underline sf-heading--left"
+            />
+          </SfLoader>
           <SfIcon
             icon="drag"
             size="xxl"
@@ -147,7 +157,8 @@ import {
   SfReview,
   SfBreadcrumbs,
   SfButton,
-  SfColor
+  SfColor,
+  SfLoader
 } from '@storefront-ui/vue';
 
 import InstagramFeed from '~/components/InstagramFeed.vue';
@@ -169,7 +180,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const id = route.value.params.id;
-    const { products, search } = useProduct(id);
+    const { products, search, loading: productLoading } = useProduct(id);
     const { addItem, loading } = useCart();
 
     const product = computed(() =>
@@ -230,7 +241,8 @@ export default {
       addItem,
       loading,
       productGetters,
-      productGallery
+      productGallery,
+      productLoading
     };
   },
   components: {
@@ -253,7 +265,8 @@ export default {
     SfButton,
     InstagramFeed,
     RelatedProducts,
-    LazyHydrate
+    LazyHydrate,
+    SfLoader
   },
   data() {
     return {
