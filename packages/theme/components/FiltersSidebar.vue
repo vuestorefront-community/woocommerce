@@ -6,42 +6,46 @@
       class="sidebar-filters"
       @close="toggleFilterSidebar"
     >
-      <div class="filters desktop-only">
-        <div v-for="(facet, i) in facets" :key="i">
-          <SfHeading
-            :level="4"
-            :title="facet.label"
-            class="filters__title sf-heading--left"
-            :key="`filter-title-${facet.id}`"
-          />
-          <div
-            v-if="isFacetColor(facet)"
-            class="filters__colors"
-            :key="`${facet.id}-colors`"
-          >
-            <SfColor
-              v-for="option in facet.options"
-              :key="`${facet.id}-${option.value}`"
-              :color="option.value"
-              :selected="isFilterSelected(facet, option)"
-              class="filters__color"
-              @click="() => selectFilter(facet, option)"
+      <SfLoader
+        :class="{ 'loading--product-gallery': facetsLoading }"
+        :loading="facetsLoading"
+      >
+        <div class="filters desktop-only">
+          <div v-for="(facet, i) in facets" :key="i">
+            <SfHeading
+              :level="4"
+              :title="facet.label"
+              class="filters__title sf-heading--left"
+              :key="`filter-title-${facet.id}`"
             />
-          </div>
-          <div v-else>
-            <SfFilter
-              v-for="option in facet.options"
-              :key="`${facet.id}-${option.value}`"
-              :label="
-                option.value + `${option.count ? ` (${option.count})` : ''}`
-              "
-              :selected="isFilterSelected(facet, option)"
-              class="filters__item"
-              @change="() => selectFilter(facet, option)"
-            />
-          </div>
-        </div>
-      </div>
+            <div
+              v-if="isFacetColor(facet)"
+              class="filters__colors"
+              :key="`${facet.id}-colors`"
+            >
+              <SfColor
+                v-for="option in facet.options"
+                :key="`${facet.id}-${option.value}`"
+                :color="option.value"
+                :selected="isFilterSelected(facet, option)"
+                class="filters__color"
+                @click="() => selectFilter(facet, option)"
+              />
+            </div>
+            <div v-else>
+              <SfFilter
+                v-for="option in facet.options"
+                :key="`${facet.id}-${option.value}`"
+                :label="
+                  option.value + `${option.count ? ` (${option.count})` : ''}`
+                "
+                :selected="isFilterSelected(facet, option)"
+                class="filters__item"
+                @change="() => selectFilter(facet, option)"
+              />
+            </div>
+          </div></div
+      ></SfLoader>
       <SfAccordion class="filters smartphone-only">
         <div v-for="(facet, i) in facets" :key="i">
           <SfAccordionItem
@@ -84,6 +88,7 @@ import {
   SfHeading,
   SfFilter,
   SfAccordion,
+  SfLoader,
   SfColor
 } from '@storefront-ui/vue';
 
@@ -106,6 +111,7 @@ export default {
     SfFilter,
     SfAccordion,
     SfColor,
+    SfLoader,
     SfHeading
   },
   setup(props, context) {
@@ -113,7 +119,9 @@ export default {
     const categorySlug = route.value.params.slug_1;
     const { changeFilters, isFacetColor } = useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
-    const { result } = useFacet(`facet-${categorySlug}`);
+    const { result, loading: facetsLoading } = useFacet(
+      `facet-${categorySlug}`
+    );
 
     const facets = computed(() =>
       facetGetters.getGrouped(result.value).length > 0
@@ -181,7 +189,8 @@ export default {
       toggleFilterSidebar,
       clearFilters,
       applyFilters,
-      result
+      result,
+      facetsLoading
     };
   }
 };
