@@ -64,9 +64,57 @@ function getFiltered(products: Product[], filters: ProductFilter): Product[] {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getAttributes(product: Product, filterByAttributeName?: string[]): Array<Record<string, string>> {
-  return product?.attributes || [];
+function getAttributes(product: Product, filterByAttributeName?: string[]): any {
+  const attributes = {};
+
+  Object.values(product?.variants || {}).forEach((variant) => {
+    Object.keys(variant.attributes).forEach((attName) => {
+      if (!attributes[attName] || !attributes[attName].includes(variant.attributes[attName]))
+        attributes[attName] = [...(attributes[attName] || []), variant.attributes[attName]].sort();
+    });
+  });
+
+  return attributes;
 }
+
+function getConfigurations(product: Product): any {
+  const configurations = [];
+
+  Object.values(product?.variants || {}).forEach((variant) => {
+    const currentProductConfig = [];
+    Object.keys(variant.attributes).forEach((attName) => {
+      currentProductConfig.push({
+        [attName]: variant.attributes[attName]
+      });
+    });
+    configurations.push(currentProductConfig);
+  });
+  return configurations;
+}
+
+function getFilteredAttributes(product: Product, filters: any = {}): any {
+  const attributes = {};
+
+  Object.values(product?.variants || {}).forEach((variant) => {
+    Object.keys(variant.attributes).forEach((attName) => {
+      if (!attributes[attName] || !attributes[attName].includes(variant.attributes[attName])) {
+        if (Object.keys(filters).includes(attName)) {
+          attributes[attName] = [...(attributes[attName] || []), variant.attributes[attName]].sort();
+        } else if (Object.keys(filters).reduce((total, curr) => total && variant.attributes[curr] && filters[curr].includes(variant.attributes[curr]), true)) {
+          attributes[attName] = [...(attributes[attName] || []), variant.attributes[attName]].sort();
+        } else {
+          attributes[attName] = [...(attributes[attName] || [])].sort();
+        }
+      }
+    });
+  });
+
+  return attributes;
+}
+
+// function getVariant(product: Product, attributes: string[]): Product {
+
+// }
 
 function getDescription(product: Product): string {
   return product?.description || '';
@@ -98,7 +146,6 @@ function getAverageRating(product: Product): number {
 function getSingleProduct(products: Product[]): Product {
   return products[0] || null;
 }
-
 function getPagination(productsResult: ProductsResult): AgnosticPagination {
   return {
     currentPage: productsResult?.page || 0,
@@ -125,5 +172,7 @@ export const productGetters: ProductGetters<Product, ProductFilter> = {
   getTotalReviews,
   getAverageRating,
   getSingleProduct,
-  getPagination
+  getPagination,
+  getConfigurations,
+  getFilteredAttributes
 };

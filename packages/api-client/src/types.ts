@@ -62,7 +62,7 @@ export type Product = {
     featured: boolean,
     categories: Array<string>,
     images: Array<string>,
-    attributes: Array<Record<string, string>>,
+    attributes: any,
     variants: Array<Product>
 };
 

@@ -17,7 +17,7 @@
       <div class="product__info">
         <div class="product__header">
           <SfLoader
-            :class="{ 'loading--product-gallery': productLoading }"
+            :class="{ 'loading--product-header': productLoading }"
             :loading="productLoading"
           >
             <SfHeading
@@ -49,35 +49,34 @@
           <SfButton class="sf-button--text desktop-only product__guide">
             {{ $t('Size guide') }}
           </SfButton>
-          <SfSelect
-            v-e2e="'size-select'"
-            v-if="options.size"
-            :value="configuration.size"
-            @input="(size) => updateFilter({ size })"
-            label="Size"
-            class="sf-select--underlined product__select-size"
-            :required="true"
-          >
-            <SfSelectOption
-              v-for="size in options.size"
-              :key="size.value"
-              :value="size.value"
+          <div v-for="(option, att) in options" :key="option.id">
+            <div
+              v-if="att === 'pa_colour' && option.length > 1"
+              class="product__colors desktop-only"
             >
-              {{ size.label }}
-            </SfSelectOption>
-          </SfSelect>
-          <div
-            v-if="options.color && options.color.length > 1"
-            class="product__colors desktop-only"
-          >
-            <p class="product__color-label">{{ $t('Color') }}:</p>
-            <SfColor
-              v-for="(color, i) in options.color"
-              :key="i"
-              :color="color.value"
-              class="product__color"
-              @click="updateFilter({ color: color.value })"
-            />
+              <p class="product__color-label">{{ $t('Color') }}:</p>
+              <SfColor
+                v-for="(color, i) in option"
+                :key="i"
+                :color="color"
+                :selected="selectedOptions.filters.pa_colour == color"
+                class="product__color"
+                @click="updateFilter({ pa_colour: color })"
+              />
+            </div>
+            <SfSelect
+              v-else
+              v-e2e="'size-select'"
+              :value="selectedOptions.filters.size"
+              @input="(size) => updateFilter({ size })"
+              label="Size"
+              class="sf-select--underlined product__select-size"
+              :required="true"
+            >
+              <SfSelectOption v-for="size in option" :key="size" :value="size">
+                {{ size }}
+              </SfSelectOption>
+            </SfSelect>
           </div>
           <SfAddToCart
             v-e2e="'product_add-to-cart'"
@@ -163,13 +162,13 @@ import {
 
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import RelatedProducts from '~/components/RelatedProducts.vue';
-import { ref, computed, useRoute, useRouter } from '@nuxtjs/composition-api';
+import { ref, computed, useRoute, useAsync } from '@nuxtjs/composition-api';
 import {
   useProduct,
   useCart,
   productGetters
 } from '@vue-storefront/woocommerce';
-import { onSSR } from '@vue-storefront/core';
+import { useUiHelpers } from '~/composables';
 import LazyHydrate from 'vue-lazy-hydration';
 
 export default {
@@ -178,9 +177,9 @@ export default {
   setup() {
     const qty = ref(1);
     const route = useRoute();
-    const router = useRouter();
     const id = route.value.params.id;
     const { products, search, loading: productLoading } = useProduct(id);
+    const { changeFilters, getFacetsFromURL } = useUiHelpers();
     const { addItem, loading } = useCart();
 
     const product = computed(() =>
@@ -189,17 +188,13 @@ export default {
       )
     );
     const options = computed(() =>
-      productGetters.getAttributes(productGetters.getProducts(products.value), [
-        'color',
-        'size'
-      ])
+      productGetters.getFilteredAttributes(
+        productGetters.getSingleProduct(
+          productGetters.getProducts(products.value)
+        )
+      )
     );
-    const configuration = computed(() =>
-      productGetters.getAttributes(productGetters.getProducts(products.value), [
-        'color',
-        'size'
-      ])
-    );
+    const selectedOptions = ref(getFacetsFromURL());
 
     // TODO: Breadcrumbs are temporary disabled because productGetters return undefined. We have a mocks in data
     // const breadcrumbs = computed(() => productGetters.getBreadcrumbs ? productGetters.getBreadcrumbs(product.value) : props.fallbackBreadcrumbs);
@@ -214,27 +209,20 @@ export default {
           mobile: { url: img },
           desktop: { url: img },
           big: { url: img },
-          alt: product?.value?.name || 'gallery image'
+          alt: 'gallery image'
         }))
     );
 
-    onSSR(async () => {
-      await search({ id: id });
+    useAsync(() => {
+      search({ id: id });
     });
 
     const updateFilter = (filter) => {
-      router.push({
-        path: route.value.path,
-        query: {
-          ...configuration.value,
-          ...filter
-        }
-      });
+      changeFilters(filter);
     };
 
     return {
       updateFilter,
-      configuration,
       product,
       options,
       qty,
@@ -242,7 +230,8 @@ export default {
       loading,
       productGetters,
       productGallery,
-      productLoading
+      productLoading,
+      selectedOptions
     };
   },
   components: {
@@ -413,6 +402,13 @@ export default {
   }
   &__color {
     margin: 0 var(--spacer-2xs);
+    box-shadow: var(
+      --color-box-shadow,
+      var(--color-box-shadow-h-offset, 0px)
+        var(--color-box-shadow-v-offset, 0.2px)
+        var(--color-box-shadow-blur, 6px) var(--color-box-shadow-spread, 0px)
+        var(--color-box-shadow-color, var(--c-black))
+    );
   }
   &__add-to-cart {
     margin: var(--spacer-base) var(--spacer-sm) 0;

@@ -164,12 +164,12 @@ export default {
     const clearFilters = () => {
       toggleFilterSidebar();
       selectedFilters.value = {};
-      changeFilters(selectedFilters.value);
+      changeFilters(selectedFilters.value, false);
     };
 
     const applyFilters = () => {
       toggleFilterSidebar();
-      changeFilters(selectedFilters.value);
+      changeFilters(selectedFilters.value, false);
     };
 
     onMounted(() => {

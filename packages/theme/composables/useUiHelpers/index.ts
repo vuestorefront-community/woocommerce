@@ -44,10 +44,10 @@ const useUiHelpers = () => {
   };
 
   // eslint-disable-next-line
-  const changeFilters = async (filters: any) => {
+  const changeFilters = async (filters: any, onlyFilters: boolean = true) => {
     await router.push({
       query: {
-        ...getFiltersDataFromUrl(false),
+        ...getFiltersDataFromUrl(onlyFilters),
         ...filters
       }
     });
