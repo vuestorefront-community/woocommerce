@@ -3,7 +3,6 @@ import {
   FacetSearchResult,
   AgnosticFacet,
   AgnosticGroupedFacet,
-  AgnosticCategoryTree,
   AgnosticSort,
   AgnosticPagination
 } from '@vue-storefront/core';
@@ -43,6 +42,15 @@ export interface AgnosticPrice {
   regular: number | null;
   special?: number | null;
 }
+export interface AgnosticCategoryTree {
+  label: string;
+  slug?: string;
+  slugPath?: string;
+  items: AgnosticCategoryTree[];
+  isCurrent: boolean;
+  count?: number;
+  [x: string]: unknown;
+}
 
 export interface ProductGetters<PRODUCT, PRODUCT_FILTER> {
   getName: (product: PRODUCT) => string;
@@ -71,4 +79,10 @@ export interface FacetsGetters<SEARCH_DATA, RESULTS, CRITERIA = any> {
   getPagination: (searchData: FacetSearchResult<SEARCH_DATA>) => AgnosticPagination;
   getBreadcrumbs: (searchData: FacetSearchResult<SEARCH_DATA>) => AgnosticBreadcrumb[];
   [getterName: string]: (element: any, options?: any) => unknown;
+}
+
+export interface CategoryGetters<CATEGORY> {
+  getTree: (categories: CATEGORY[], currentCategory: string) => AgnosticCategoryTree | null;
+  getBreadcrumbs?: (category: CATEGORY) => AgnosticBreadcrumb[];
+  [getterName: string]: any;
 }

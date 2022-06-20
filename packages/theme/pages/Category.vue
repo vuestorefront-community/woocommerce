@@ -40,7 +40,7 @@
                       <SfMenuItem :count="cat.count || ''" :label="cat.label">
                         <template #label>
                           <nuxt-link
-                            :to="localePath(th.getCatLink(cat))"
+                            :to="localePath(`/c/${cat.slugPath}`)"
                             :class="
                               cat.isCurrent ? 'sidebar--cat-selected' : ''
                             "
@@ -61,7 +61,7 @@
                       >
                         <template #label="{ label }">
                           <nuxt-link
-                            :to="localePath(th.getCatLink(subCat))"
+                            :to="localePath(`/c/${subCat.slugPath}`)"
                             :class="
                               subCat.isCurrent ? 'sidebar--cat-selected' : ''
                             "
@@ -261,6 +261,8 @@ import {
   productGetters,
   useFacet,
   facetGetters,
+  useCategory,
+  categoryGetters,
   wishlistGetters,
   useProduct
 } from '@vue-storefront/woocommerce';
@@ -275,7 +277,7 @@ export default {
   transition: 'fade',
   setup(props, context) {
     const route = useRoute();
-    const categorySlug = route.value.params.slug_1;
+    const categorySlug = route.value.path.replace('/c/', '');
     const th = useUiHelpers();
     const uiState = useUiState();
     const { addItem: addItemToCart, isInCart } = useCart();
@@ -300,9 +302,12 @@ export default {
     const products = computed(() =>
       productGetters.getProducts(productsRaw.value)
     );
+    const { categories } = useCategory();
+
     const categoryTree = computed(() =>
-      facetGetters.getCategoryTree(result.value)
+      categoryGetters.getTree(categories.value, `${categorySlug}/`)
     );
+
     const breadcrumbs = computed(() =>
       facetGetters.getBreadcrumbs(result.value)
     );
@@ -323,6 +328,16 @@ export default {
 
       return category?.label || items[0].label;
     });
+
+    const currentCategory = () => {
+      const cats = Object.values(route?.value?.params || []).filter((cat) =>
+        Boolean(cat)
+      );
+
+      const slug = cats[cats.length - 1];
+
+      return slug;
+    };
 
     const removeProductFromWishlist = (productItem) => {
       const productsInWhishlist = computed(() =>
@@ -345,14 +360,14 @@ export default {
     useAsync(() => {
       productsSearch({
         ...th.getFacetsFromURL(),
-        categorySlug: categorySlug
+        categorySlug: currentCategory()
       });
     });
 
     useAsync(() => {
       facetsSearch({
         ...th.getFacetsFromURL(),
-        categorySlug: categorySlug,
+        categorySlug: currentCategory(),
         prevFacets:
           facetGetters.getGrouped(result.value).length > 0
             ? facetGetters.getGrouped(result.value)

@@ -18,6 +18,7 @@ export declare type Category = {
     slug?: string;
     count?: number;
     parent_id?: number;
+    category_slug_path?: string;
 };
 
 export type Coupon = TODO;
