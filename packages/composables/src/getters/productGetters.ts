@@ -81,11 +81,9 @@ function getConfigurations(product: Product): any {
   const configurations = [];
 
   Object.values(product?.variants || {}).forEach((variant) => {
-    const currentProductConfig = [];
+    const currentProductConfig = {};
     Object.keys(variant.attributes).forEach((attName) => {
-      currentProductConfig.push({
-        [attName]: variant.attributes[attName]
-      });
+      currentProductConfig[attName] = variant.attributes[attName];
     });
     configurations.push(currentProductConfig);
   });
@@ -94,27 +92,18 @@ function getConfigurations(product: Product): any {
 
 function getFilteredAttributes(product: Product, filters: any = {}): any {
   const attributes = {};
+  const configurations = getConfigurations(product);
 
-  Object.values(product?.variants || {}).forEach((variant) => {
-    Object.keys(variant.attributes).forEach((attName) => {
-      if (!attributes[attName] || !attributes[attName].includes(variant.attributes[attName])) {
-        if (Object.keys(filters).includes(attName)) {
-          attributes[attName] = [...(attributes[attName] || []), variant.attributes[attName]].sort();
-        } else if (Object.keys(filters).reduce((total, curr) => total && variant.attributes[curr] && filters[curr].includes(variant.attributes[curr]), true)) {
-          attributes[attName] = [...(attributes[attName] || []), variant.attributes[attName]].sort();
-        } else {
-          attributes[attName] = [...(attributes[attName] || [])].sort();
-        }
+  configurations.forEach((config) => {
+    Object.keys(config).forEach((attribute) => {
+      if (Object.keys(config).filter((c) => c !== attribute).reduce((total, curr) => (total && (!filters[curr] || filters[curr].includes(config[curr]))), true) && (!attributes[attribute] || !attributes[attribute].includes(config[attribute]))) {
+        attributes[attribute] = [...(attributes[attribute] || []), config[attribute]].sort();
       }
     });
   });
 
   return attributes;
 }
-
-// function getVariant(product: Product, attributes: string[]): Product {
-
-// }
 
 function getDescription(product: Product): string {
   return product?.description || '';

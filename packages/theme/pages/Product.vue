@@ -51,7 +51,9 @@
           </SfButton>
           <div v-for="(option, att) in options" :key="option.id">
             <div
-              v-if="att === 'pa_colour' && option.length > 1"
+              v-if="
+                (att === 'pa_colour' || att === 'pa_color') && option.length > 1
+              "
               class="product__colors desktop-only"
             >
               <p class="product__color-label">{{ $t('Color') }}:</p>
@@ -61,15 +63,15 @@
                 :color="color"
                 :selected="selectedOptions.filters.pa_colour == color"
                 class="product__color"
-                @click="updateFilter({ pa_colour: color })"
+                @click="updateFilter({ [att]: color })"
               />
             </div>
             <SfSelect
               v-else
               v-e2e="'size-select'"
-              :value="selectedOptions.filters.size"
-              @input="(size) => updateFilter({ size })"
-              label="Size"
+              :value="selectedOptions.filters[att]"
+              @input="(size) => updateFilter({ [att]: size })"
+              :label="att"
               class="sf-select--underlined product__select-size"
               :required="true"
             >
@@ -187,14 +189,16 @@ export default {
         productGetters.getProducts(products.value)
       )
     );
+    const selectedOptions = ref(getFacetsFromURL());
+
     const options = computed(() =>
       productGetters.getFilteredAttributes(
         productGetters.getSingleProduct(
           productGetters.getProducts(products.value)
-        )
+        ),
+        selectedOptions?.value?.filters
       )
     );
-    const selectedOptions = ref(getFacetsFromURL());
 
     // TODO: Breadcrumbs are temporary disabled because productGetters return undefined. We have a mocks in data
     // const breadcrumbs = computed(() => productGetters.getBreadcrumbs ? productGetters.getBreadcrumbs(product.value) : props.fallbackBreadcrumbs);
