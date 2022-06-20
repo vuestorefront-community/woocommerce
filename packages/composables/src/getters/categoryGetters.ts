@@ -20,7 +20,7 @@ function getTree(categories: Category[], currentCategory: string): AgnosticCateg
   const categoryTree = [];
 
   categories.forEach(category => {
-    if (category.parent_id) {
+    if (category.parent_id && hashTable[category.parent_id]) {
       hashTable[category.parent_id].items.push(hashTable[category.id]);
     } else {
       categoryTree.push(hashTable[category.id]);
