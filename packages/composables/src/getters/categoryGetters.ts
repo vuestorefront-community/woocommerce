@@ -4,9 +4,6 @@ import type { Category } from '@vue-storefront/woocommerce-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTree(categories: Category[], currentCategory: string): AgnosticCategoryTree {
-
-  console.log(categories);
-
   const hashTable = Object.create(null);
   categories.forEach(category => hashTable[category.id] = {
     label: category.title,
@@ -31,14 +28,24 @@ function getTree(categories: Category[], currentCategory: string): AgnosticCateg
     label: '',
     slug: '',
     slugPath: '',
-    items: [],
+    items: categoryTree,
     isCurrent: false
   };
 
-  categoryTree.forEach(cat => {
-    if (cat.slugPath === currentCategory || cat.items.some((item) => item.slugPath === currentCategory)) {
-      selectedTree = cat;
+  const path = currentCategory.split('/').filter((item) => Boolean(item));
+
+  path.every((item) => {
+    for (let i = 0; i < selectedTree.items.length; i++) {
+      if (selectedTree.items[i].slug === `${item}/` || selectedTree.items[i].slug === item) {
+        selectedTree = selectedTree.items[i];
+
+        if (selectedTree.items.some((item) => item.slugPath === currentCategory)) {
+          return false;
+        }
+      }
     }
+
+    return true;
   });
 
   return selectedTree;
