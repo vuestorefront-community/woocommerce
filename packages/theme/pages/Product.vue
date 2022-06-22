@@ -7,7 +7,7 @@
     <div class="product">
       <LazyHydrate when-idle>
         <SfLoader
-          :class="{ 'loading--product-gallery': productLoading }"
+          :class="{ 'product__loading-gallery': productLoading }"
           :loading="productLoading"
         >
           <SfGallery :images="productGallery" class="product__gallery" />
@@ -17,7 +17,7 @@
       <div class="product__info">
         <div class="product__header">
           <SfLoader
-            :class="{ 'loading--product-header': productLoading }"
+            :class="{ 'product__loading-header': productLoading }"
             :loading="productLoading"
           >
             <SfHeading
@@ -43,12 +43,10 @@
           />
         </div>
         <div>
-          <p class="product__description desktop-only">
-            {{ productGetters.getDescription(product) }}
-          </p>
-          <SfButton class="sf-button--text desktop-only product__guide">
-            {{ $t('Size guide') }}
-          </SfButton>
+          <p
+            class="product__description desktop-only"
+            v-html="productGetters.getDescription(product)"
+          ></p>
           <div v-for="(option, att) in options" :key="option.id">
             <div
               v-if="
@@ -94,9 +92,10 @@
         <LazyHydrate when-idle>
           <SfTabs :open-tab="1" class="product__tabs">
             <SfTab title="Description">
-              <div class="product__description">
-                {{ productGetters.getDescription(product) }}
-              </div>
+              <div
+                class="product__description"
+                v-html="productGetters.getDescription(product)"
+              ></div>
               <SfProperty
                 v-for="(property, i) in properties"
                 :key="i"
@@ -208,8 +207,6 @@ export default {
       )
     );
 
-    // TODO: Breadcrumbs are temporary disabled because productGetters return undefined. We have a mocks in data
-    // const breadcrumbs = computed(() => productGetters.getBreadcrumbs ? productGetters.getBreadcrumbs(product.value) : props.fallbackBreadcrumbs);
     const productGallery = computed(() =>
       productGetters
         .getGallery(
