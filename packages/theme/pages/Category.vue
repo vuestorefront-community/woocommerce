@@ -9,7 +9,7 @@
         <LazyHydrate never>
           <SfHeading
             :level="3"
-            :title="$t('Categories')"
+            :title="$t(categoryTree.label ? categoryTree.label : 'Categories')"
             class="navbar__title"
           />
         </LazyHydrate>
