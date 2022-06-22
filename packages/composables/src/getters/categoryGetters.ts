@@ -42,9 +42,9 @@ function getTree(categories: Category[], currentCategory: string): AgnosticCateg
   // so that the current category is a dropdown in the list.
   // The root shoud be higher than the parent if the currently displayed categories
   // have no children, i.e. we cannot go deeper so that there is always useful information.
-  path.every((item) => {
+  path.every((slug) => {
     for (let i = 0; i < categoryTreeRoot.items.length; i++) {
-      if (categoryTreeRoot.items[i].slug === `${item}/` || categoryTreeRoot.items[i].slug === item) {
+      if (categoryTreeRoot.items[i].slug === `${slug}/` || categoryTreeRoot.items[i].slug === slug) {
 
         const previousTree = categoryTreeRoot;
 
@@ -80,9 +80,25 @@ function getParentCategories(categories: Category[]): Category[] {
   return categories.filter(cat => cat.parent_id === 0);
 }
 
+function getCategoryBreadcrumbs(slugPath: string): any {
+  const breadcrumbs = [];
+  let path = '/c';
+
+  slugPath.split('/').filter((slug) => Boolean(slug)).forEach((slug) => {
+    path = `${path}/${slug}`;
+    breadcrumbs.push({
+      text: slug.toUpperCase(),
+      link: path
+    });
+  });
+
+  return breadcrumbs;
+}
+
 export const categoryGetters: CategoryGetters<Category> = {
   getTree,
   getName,
   getSlug,
-  getParentCategories
+  getParentCategories,
+  getCategoryBreadcrumbs
 };

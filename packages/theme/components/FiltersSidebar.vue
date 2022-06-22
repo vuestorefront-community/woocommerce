@@ -116,7 +116,7 @@ export default {
   },
   setup(props, context) {
     const route = useRoute();
-    const categorySlug = route.value.params.slug_1;
+    const categorySlug = route.value.path.replace('/c/', '');
     const { changeFilters, isFacetColor } = useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
     const { result, loading: facetsLoading } = useFacet(

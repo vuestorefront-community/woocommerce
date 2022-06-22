@@ -309,7 +309,7 @@ export default {
     );
 
     const breadcrumbs = computed(() =>
-      facetGetters.getBreadcrumbs(result.value)
+      categoryGetters.getCategoryBreadcrumbs(categorySlug)
     );
     const pagination = computed(() =>
       productGetters.getPagination(productsRaw.value)
