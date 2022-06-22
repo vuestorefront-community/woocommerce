@@ -55,7 +55,7 @@ const useUiHelpers = () => {
 
   // eslint-disable-next-line
   const changeItemsPerPage = async (itemsPerPage) => {
-    await router.push({ query: { ...query, itemsPerPage } });
+    await router.push({ query: { ...query, itemsPerPage, page: undefined } });
   };
 
   // eslint-disable-next-line

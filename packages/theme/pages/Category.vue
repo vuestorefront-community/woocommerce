@@ -233,7 +233,7 @@
         <div v-else>
           <SfHeading
             :level="3"
-            title="There are no products matching the selected filters"
+            title="There are no products matching the current filter selection."
             class="products___no-products-text"
           />
         </div>

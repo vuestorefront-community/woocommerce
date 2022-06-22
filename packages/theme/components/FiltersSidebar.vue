@@ -49,7 +49,7 @@
         <div v-else>
           <SfHeading
             :level="4"
-            title="There are no filters for the current selection"
+            title="There are no filters matching the current category selection."
             class="filters__title sf-heading--left"
           />
         </div>
