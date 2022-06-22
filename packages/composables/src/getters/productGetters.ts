@@ -135,6 +135,7 @@ function getAverageRating(product: Product): number {
 function getSingleProduct(products: Product[]): Product {
   return products[0] || null;
 }
+
 function getPagination(productsResult: ProductsResult): AgnosticPagination {
   return {
     currentPage: productsResult?.page || 0,
@@ -143,6 +144,36 @@ function getPagination(productsResult: ProductsResult): AgnosticPagination {
     itemsPerPage: productsResult?.perPage || 20,
     pageOptions: [20, 60, 100]
   };
+}
+
+function getProductBreadcrumbs(product: Product): any {
+  const breadcrumbs = [];
+  let path = '/c';
+
+  let slugs = [];
+
+  (product?.categories || []).forEach((cat) => {
+    const s = cat.split('/').filter((slug) => Boolean(slug));
+
+    if (s.length > slugs.length) {
+      slugs = s;
+    }
+  });
+
+  slugs.forEach((slug) => {
+    path = `${path}/${slug}`;
+    breadcrumbs.push({
+      text: slug.toUpperCase(),
+      link: path
+    });
+  });
+
+  breadcrumbs.push({
+    text: product?.title.toUpperCase(),
+    link: `/p/${product?.id}/${product?.slug}`
+  });
+
+  return breadcrumbs;
 }
 
 export const productGetters: ProductGetters<Product, ProductFilter> = {
@@ -163,5 +194,6 @@ export const productGetters: ProductGetters<Product, ProductFilter> = {
   getSingleProduct,
   getPagination,
   getConfigurations,
-  getFilteredAttributes
+  getFilteredAttributes,
+  getProductBreadcrumbs
 };

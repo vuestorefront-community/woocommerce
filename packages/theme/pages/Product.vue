@@ -191,6 +191,14 @@ export default {
     );
     const selectedOptions = ref(getFacetsFromURL());
 
+    const breadcrumbs = computed(() =>
+      productGetters.getProductBreadcrumbs(
+        productGetters.getSingleProduct(
+          productGetters.getProducts(products.value)
+        )
+      )
+    );
+
     const options = computed(() =>
       productGetters.getFilteredAttributes(
         productGetters.getSingleProduct(
@@ -235,7 +243,8 @@ export default {
       productGetters,
       productGallery,
       productLoading,
-      selectedOptions
+      selectedOptions,
+      breadcrumbs
     };
   },
   components: {
@@ -287,27 +296,7 @@ export default {
       detailsIsActive: false,
       brand:
         'Brand name is the perfect pairing of quality and design. This label creates major everyday vibes with its collection of modern brooches, silver and gold jewellery, or clips it back with hair accessories in geo styles.',
-      careInstructions: 'Do not wash!',
-      breadcrumbs: [
-        {
-          text: 'Home',
-          route: {
-            link: '#'
-          }
-        },
-        {
-          text: 'Category',
-          route: {
-            link: '#'
-          }
-        },
-        {
-          text: 'Pants',
-          route: {
-            link: '#'
-          }
-        }
-      ]
+      careInstructions: 'Do not wash!'
     };
   }
 };
