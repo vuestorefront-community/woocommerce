@@ -52,7 +52,7 @@ function getTree(categories: Category[], currentCategory: string): AgnosticCateg
 
         // If the currently selected root's child is the selected category, but it has no children
         // then the root should be higher up.
-        if (categoryTreeRoot.items.find((item) => item.slugPath === currentCategory)?.items?.length === 0 && previousTree.label) {
+        if (categoryTreeRoot.items.every((item) => item?.items?.length === 0) && previousTree.label) {
           categoryTreeRoot = previousTree;
         }
 
