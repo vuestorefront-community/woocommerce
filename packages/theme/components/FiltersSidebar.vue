@@ -10,7 +10,7 @@
         :class="{ 'loading--product-gallery': facetsLoading }"
         :loading="facetsLoading"
       >
-        <div class="filters desktop-only">
+        <div v-if="facets.length > 0" class="filters desktop-only">
           <div v-for="(facet, i) in facets" :key="i">
             <SfHeading
               :level="4"
@@ -44,8 +44,17 @@
                 @change="() => selectFilter(facet, option)"
               />
             </div>
-          </div></div
-      ></SfLoader>
+          </div>
+        </div>
+        <div v-else>
+          <SfHeading
+            :level="4"
+            title="There are no filters for the current selection"
+            class="filters__title sf-heading--left"
+          />
+        </div>
+        ></SfLoader
+      >
       <SfAccordion class="filters smartphone-only">
         <div v-for="(facet, i) in facets" :key="i">
           <SfAccordionItem

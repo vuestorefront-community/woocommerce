@@ -79,7 +79,7 @@
         </LazyHydrate>
       </div>
       <SfLoader :class="{ loading }" :loading="loading">
-        <div class="products" v-if="!loading">
+        <div class="products" v-if="products.length > 0">
           <transition-group
             v-if="isCategoryGridView"
             appear
@@ -229,6 +229,13 @@
               </SfSelect>
             </LazyHydrate>
           </div>
+        </div>
+        <div v-else>
+          <SfHeading
+            :level="3"
+            title="There are no products matching the selected filters"
+            class="products___no-products-text"
+          />
         </div>
       </SfLoader>
     </div>
@@ -491,6 +498,9 @@ export default {
     @include for-desktop {
       justify-content: flex-start;
     }
+  }
+  &___no-products-text {
+    margin-top: 20px;
   }
   &__grid,
   &__list {
