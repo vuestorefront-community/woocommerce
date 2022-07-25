@@ -133,7 +133,7 @@ function getAverageRating(product: Product): number {
 }
 
 function getSingleProduct(products: Product[]): Product {
-  return products[0] || null;
+  return (products && products[0]) || null;
 }
 
 function getPagination(productsResult: ProductsResult): AgnosticPagination {

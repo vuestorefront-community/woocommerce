@@ -266,13 +266,14 @@ import {
   useCart,
   useWishlist,
   productGetters,
-  useFacet,
   facetGetters,
-  useCategory,
   categoryGetters,
-  wishlistGetters,
-  useProduct
+  wishlistGetters
 } from '@vue-storefront/woocommerce';
+import { useCategory } from '~/composables';
+import { useFacet } from '~/composables';
+
+import { useProduct } from '~/composables';
 import { useUiHelpers, useUiState } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
@@ -288,16 +289,12 @@ export default {
     const th = useUiHelpers();
     const uiState = useUiState();
     const { addItem: addItemToCart, isInCart } = useCart();
+    const { facets: result, getFacets: facetsSearch, error } = useFacet();
     const {
-      result,
-      search: facetsSearch,
-      error
-    } = useFacet(`facet-${categorySlug}`);
-    const {
-      products: productsRaw,
-      search: productsSearch,
+      getProductsPaginated,
+      paginatedProducts: productsRaw,
       loading
-    } = useProduct(`product-${categorySlug}`);
+    } = useProduct();
     const {
       addItem: addItemToWishlist,
       isInWishlist,
@@ -364,8 +361,8 @@ export default {
       });
     };
 
-    useAsync(() => {
-      productsSearch({
+    useAsync(async () => {
+      getProductsPaginated({
         ...th.getFacetsFromURL(),
         categorySlug: currentCategory()
       });

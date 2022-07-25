@@ -101,14 +101,9 @@ import {
   SfColor
 } from '@storefront-ui/vue';
 
-import {
-  ref,
-  computed,
-  onMounted,
-  useRoute,
-  onUpdated
-} from '@nuxtjs/composition-api';
-import { useFacet, facetGetters } from '@vue-storefront/woocommerce';
+import { ref, computed, onMounted, onUpdated } from '@nuxtjs/composition-api';
+import { facetGetters } from '@vue-storefront/woocommerce';
+import { useFacet } from '~/composables';
 import { useUiHelpers, useUiState } from '~/composables';
 import Vue from 'vue';
 
@@ -124,13 +119,9 @@ export default {
     SfHeading
   },
   setup(props, context) {
-    const route = useRoute();
-    const categorySlug = route.value.path.replace('/c/', '');
     const { changeFilters, isFacetColor } = useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
-    const { result, loading: facetsLoading } = useFacet(
-      `facet-${categorySlug}`
-    );
+    const { facets: result, loading: facetsLoading } = useFacet();
 
     const facets = computed(() =>
       facetGetters.getGrouped(result.value).length > 0
@@ -198,7 +189,6 @@ export default {
       toggleFilterSidebar,
       clearFilters,
       applyFilters,
-      result,
       facetsLoading
     };
   }

@@ -164,11 +164,8 @@ import {
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import RelatedProducts from '~/components/RelatedProducts.vue';
 import { ref, computed, useRoute, useAsync } from '@nuxtjs/composition-api';
-import {
-  useProduct,
-  useCart,
-  productGetters
-} from '@vue-storefront/woocommerce';
+import { useCart, productGetters } from '@vue-storefront/woocommerce';
+import { useProduct } from '~/composables';
 import { useUiHelpers } from '~/composables';
 import LazyHydrate from 'vue-lazy-hydration';
 
@@ -179,41 +176,35 @@ export default {
     const qty = ref(1);
     const route = useRoute();
     const id = route.value.params.id;
-    const { products, search, loading: productLoading } = useProduct(id);
+    const {
+      singleProduct,
+      getProductSingle: search,
+      loading: productLoading
+    } = useProduct(id);
     const { changeFilters, getFacetsFromURL } = useUiHelpers();
     const { addItem, loading } = useCart();
 
     const product = computed(() =>
-      productGetters.getSingleProduct(
-        productGetters.getProducts(products.value)
-      )
+      productGetters.getSingleProduct(singleProduct.value)
     );
     const selectedOptions = ref(getFacetsFromURL());
 
     const breadcrumbs = computed(() =>
       productGetters.getProductBreadcrumbs(
-        productGetters.getSingleProduct(
-          productGetters.getProducts(products.value)
-        )
+        productGetters.getSingleProduct(singleProduct.value)
       )
     );
 
     const options = computed(() =>
       productGetters.getFilteredAttributes(
-        productGetters.getSingleProduct(
-          productGetters.getProducts(products.value)
-        ),
+        productGetters.getSingleProduct(singleProduct.value),
         selectedOptions?.value?.filters
       )
     );
 
     const productGallery = computed(() =>
       productGetters
-        .getGallery(
-          productGetters.getSingleProduct(
-            productGetters.getProducts(products.value)
-          )
-        )
+        .getGallery(productGetters.getSingleProduct(singleProduct.value))
         ?.map((img) => ({
           mobile: { url: img },
           desktop: { url: img },

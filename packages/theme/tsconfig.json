@@ -15,11 +15,16 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
     },
     "types": [
       "@types/node",
+      "@pinia/nuxt",
       "@nuxt/types",
       "nuxt-i18n"
     ],

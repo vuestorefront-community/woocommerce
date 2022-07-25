@@ -32,7 +32,8 @@
 import { SfMenuItem, SfModal } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
 import { computed, useAsync } from '@nuxtjs/composition-api';
-import { useCategory, categoryGetters } from '@vue-storefront/woocommerce';
+import { categoryGetters } from '@vue-storefront/woocommerce';
+import { useCategory } from '~/composables';
 
 export default {
   name: 'HeaderNavigation',
@@ -49,10 +50,10 @@ export default {
   setup() {
     const { isMobileMenuOpen, toggleMobileMenu } = useUiState();
 
-    const { categories: categoriesRaw, search } = useCategory();
+    const { categories: categoriesRaw, getCategories } = useCategory();
 
     useAsync(() => {
-      search({});
+      getCategories({});
     });
 
     const categories = computed(() =>

@@ -22,15 +22,17 @@
     "update:update": "ncu -u"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.1.9",
     "@storefront-ui/vue": "0.11.4",
-    "@vue-storefront/woocommerce": "2.3.0",
     "@vue-storefront/middleware": "~2.5.4",
     "@vue-storefront/nuxt": "~2.5.4",
     "@vue-storefront/nuxt-theme": "~2.5.4",
+    "@vue-storefront/woocommerce": "2.3.0",
     "cookie-universal-nuxt": "^2.1.5",
     "core-js": "^3.19.0",
     "nuxt": "^2.15.8",
     "nuxt-i18n": "^6.5.0",
+    "pinia": "^2.0.14",
     "vee-validate": "^3.4.13",
     "vue-scrollto": "^2.20.0"
   },

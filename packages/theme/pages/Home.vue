@@ -59,30 +59,6 @@
             @click="go('next')"
           />
         </template>
-        <SfCarouselItem
-          class="carousel__item"
-          v-for="(product, i) in products"
-          :key="i"
-        >
-          <SfProductCard
-            :title="productGetters.getName(product)"
-            :image="productGetters.getCoverImage(product)"
-            :regular-price="productGetters.getPrice(product).regular"
-            :max-rating="0"
-            :score-rating="0"
-            :show-add-to-cart-button="true"
-            :is-on-wishlist="product.isInWishlist"
-            :link="
-              localePath(
-                `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                  product
-                )}`
-              )
-            "
-            class="carousel__item__product"
-            @click:wishlist="toggleWishlist(i)"
-          />
-        </SfCarouselItem>
       </SfCarousel>
     </LazyHydrate>
 
@@ -129,14 +105,12 @@ import {
   SfArrow,
   SfButton
 } from '@storefront-ui/vue';
-import { useContext, onMounted } from '@nuxtjs/composition-api';
+import { useContext } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '../composables';
 import { addBasePath } from '@vue-storefront/core';
-
-import { useProduct, productGetters } from '@vue-storefront/woocommerce';
 
 export default {
   name: 'Home',
@@ -159,12 +133,6 @@ export default {
   setup() {
     const { $config } = useContext();
     const { toggleNewsletterModal } = useUiState();
-
-    const { products, search } = useProduct('match-with-it');
-
-    onMounted(async () => {
-      await search({});
-    });
 
     const heroes = [
       {
@@ -237,19 +205,16 @@ export default {
       toggleNewsletterModal();
     };
 
-    const toggleWishlist = (index) => {
-      products.value[index].isInWishlist = !products.value[index].isInWishlist;
-    };
+    // const toggleWishlist = (index) => {
+    //   products.value[index].isInWishlist = !products.value[index].isInWishlist;
+    // };
 
     return {
-      toggleWishlist,
       toggleNewsletterModal,
       onSubscribe,
       addBasePath,
       banners,
-      heroes,
-      products,
-      productGetters
+      heroes
     };
   }
 };

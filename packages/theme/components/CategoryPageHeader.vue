@@ -79,9 +79,10 @@
 </template>
 
 <script>
-import { computed, useRoute } from '@nuxtjs/composition-api';
+import { computed } from '@nuxtjs/composition-api';
 import { useUiHelpers, useUiState } from '~/composables';
-import { useFacet, facetGetters } from '@vue-storefront/woocommerce';
+import { facetGetters } from '@vue-storefront/woocommerce';
+import { useFacet } from '~/composables';
 import FiltersSidebar from '~/components/FiltersSidebar';
 import { SfButton, SfIcon, SfSelect } from '@storefront-ui/vue';
 import LazyHydrate from 'vue-lazy-hydration';
@@ -102,15 +103,13 @@ export default {
   },
   setup() {
     const th = useUiHelpers();
-    const route = useRoute();
-    const categorySlug = route.value.params.slug_1;
     const {
       toggleFilterSidebar,
       isCategoryGridView,
       changeToCategoryGridView,
       changeToCategoryListView
     } = useUiState();
-    const { result } = useFacet(`facet-${categorySlug}`);
+    const { facets: result } = useFacet();
 
     const sortBy = computed(() => facetGetters.getSortOptions(result.value));
     const facets = computed(() =>

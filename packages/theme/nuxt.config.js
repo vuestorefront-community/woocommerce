@@ -43,6 +43,7 @@ export default {
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
+    '@pinia/nuxt',
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     ['@vue-storefront/nuxt', {
@@ -129,7 +130,14 @@ export default {
           lastCommit: process.env.LAST_COMMIT || ''
         })
       })
-    ]
+    ],
+    extend(config) {
+      config.module.rules.push({
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      })
+    },
   },
 
   router: {
