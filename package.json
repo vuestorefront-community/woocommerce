@@ -29,7 +29,11 @@
     "test:composables": "cd packages/composables && yarn test --passWithNoTests",
     "test:theme": "cd packages/theme && yarn test --passWithNoTests",
     "update:check": "ncu && lerna run update:check --stream",
-    "update:update": "ncu -u && lerna run update:update --stream"
+    "update:update": "ncu -u && lerna run update:update --stream",
+    "clean": "rm -rf packages/api-client/lib packages/composables/lib packages/theme/.nuxt",
+    "clean:all": "rm -rf node_modules packages/api-client/lib packages/api-client/node_modules packages/composables/lib packages/theme/.nuxt packages/theme/node_modules",
+    "clean:build": "rm -rf packages/api-client/lib packages/composables/lib packages/theme/.nuxt",
+    "clean:node": "rm -rf node_modules packages/api-client/node_modules packages/theme/node_modules"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
