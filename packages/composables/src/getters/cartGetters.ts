@@ -8,36 +8,36 @@ import {
 } from '@vue-storefront/core';
 import type { Cart, CartItem } from '@vue-storefront/woocommerce-api';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItems(cart: Cart): CartItem[] {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItems(cart: any): CartItem[] {
   return cart.contents;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemName(item: CartItem): string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItemName(item: any): string {
   return item.name;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemImage(item: CartItem): string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItemImage(item: any): string {
   return item.image;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemPrice(item: CartItem): AgnosticPrice {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItemPrice(item: any): AgnosticPrice {
   return {
     regular: item.priceEach,
     special: item.priceEach
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemQty(item: CartItem): number {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItemQty(item: any): number {
   return item.quantity;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemKey(item: CartItem): string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItemKey(item: any): string {
   return item.key;
 }
 
@@ -48,13 +48,13 @@ function getItemAttributes(item: CartItem, filterByAttributeName?: Array<string>
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemSku(item: CartItem): string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getItemSku(item: any): string {
   return item.sku;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getTotals(cart: Cart): AgnosticTotals {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getTotals(cart: any): AgnosticTotals {
   let total = 0;
   let subtotal = 0;
   // const special = 0;
@@ -76,8 +76,8 @@ function getShippingPrice(cart: Cart): number {
   return 0;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getTotalItems(cart: Cart): number {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function getTotalItems(cart: any): number {
   let total = 0;
 
   (cart?.contents || []).forEach((item) => {
