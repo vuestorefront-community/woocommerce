@@ -230,8 +230,8 @@ import {
 } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
-import { useUser, useForgotPassword } from '@vue-storefront/woocommerce';
-import { useUiState } from '~/composables';
+import { useForgotPassword } from '@vue-storefront/woocommerce';
+import { useUiState, useUser } from '~/composables';
 
 extend('email', {
   ...email,
@@ -310,7 +310,7 @@ export default {
 
     const handleForm = (fn) => async () => {
       resetErrorValues();
-      await fn({ user: form.value });
+      await fn(form.value);
 
       const hasUserErrors = userError.value.register || userError.value.login;
 

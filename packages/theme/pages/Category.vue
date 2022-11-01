@@ -105,7 +105,7 @@
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
               :is-in-wishlist="isInWishlist({ product })"
-              :is-added-to-cart="isInCart({ product })"
+              :is-added-to-cart="isInCart"
               :link="
                 localePath(
                   `/p/${productGetters.getId(product)}/${productGetters.getSlug(
@@ -119,7 +119,7 @@
                   ? addItemToWishlist({ product })
                   : removeProductFromWishlist(product)
               "
-              @click:add-to-cart="addToCart({ product, quantity: 1 })"
+              @click:add-to-cart="addToCart({product, quantity: 1})"
             />
           </transition-group>
           <transition-group
@@ -263,7 +263,6 @@ import {
 } from '@storefront-ui/vue';
 import { computed, ref, useRoute, useAsync } from '@nuxtjs/composition-api';
 import {
-  useCart,
   useWishlist,
   productGetters,
   facetGetters,
@@ -272,6 +271,7 @@ import {
 } from '@vue-storefront/woocommerce';
 import { useCategory } from '~/composables';
 import { useFacet } from '~/composables';
+import { useCart } from '~/composables';
 
 import { useProduct } from '~/composables';
 import { useUiHelpers, useUiState } from '~/composables';
@@ -288,7 +288,7 @@ export default {
     const categorySlug = route.value.path.replace('/c/', '');
     const th = useUiHelpers();
     const uiState = useUiState();
-    const { addItem: addItemToCart, isInCart } = useCart();
+    const { add: addItemToCart } = useCart();
     const { facets: result, getFacets: facetsSearch, error } = useFacet();
     const {
       getProductsPaginated,
@@ -301,6 +301,8 @@ export default {
       removeItem: removeItemFromWishlist,
       wishlist
     } = useWishlist();
+
+    const isInCart = false;
 
     const productsQuantity = ref({});
     const products = computed(() =>
@@ -354,9 +356,9 @@ export default {
     };
 
     const addToCart = ({ product, quantity }) => {
-      const { id, sku } = product;
+
       addItemToCart({
-        product: { id, sku },
+        id: productGetters.getId(product),
         quantity
       });
     };

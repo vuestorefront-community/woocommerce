@@ -6,6 +6,10 @@ import { getProductSingle } from './api/getProductSingle';
 import { getProductsPaginated } from './api/getProductsPaginated';
 import { getCategory } from './api/getCategory';
 import { getFacet } from './api/getFacet';
+import { postRegister } from './api/postRegister';
+import { postToken } from './api/postToken';
+import { getCart } from './api/getCart';
+import { postCart } from './api/postCart';
 
 function onCreate(settings) {
   const client = axios.create({
@@ -25,7 +29,11 @@ const { createApiClient } = apiClientFactory<any, any>({
     getProductSingle,
     getProductsPaginated,
     getCategory,
-    getFacet
+    getFacet,
+    postRegister,
+    postToken,
+    getCart,
+    postCart
   }
 });
 

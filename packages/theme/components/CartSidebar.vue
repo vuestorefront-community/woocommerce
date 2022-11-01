@@ -33,7 +33,7 @@
                   $n(cartGetters.getItemPrice(product).special, 'currency')
                 "
                 :stock="99999"
-                @click:remove="removeItem({ product: { id: product.id } })"
+                @click:remove="remove({key: cartGetters.getItemKey(product)})"
                 class="collected-product"
               >
                 <template #configuration>
@@ -55,17 +55,10 @@
                       :disabled="loading"
                       :qty="cartGetters.getItemQty(product)"
                       class="sf-collected-product__quantity-selector"
-                      @input="
-                        updateQuantity({
-                          product: { id: product.id },
-                          quantity: Number($event),
-                        })
-                      "
+                      @input="updateQuantity({ key: cartGetters.getItemKey(product), quantity: Number($event) })"
                     />
                   </div>
                 </template>
-                <!-- @TODO: remove if https://github.com/vuestorefront/storefront-ui/issues/2022 is done -->
-                <template #more-actions>{{}}</template>
               </SfCollectedProduct>
             </transition-group>
           </div>
@@ -141,8 +134,9 @@ import {
   SfImage,
   SfQuantitySelector
 } from '@storefront-ui/vue';
-import { computed } from '@nuxtjs/composition-api';
-import { useCart, cartGetters } from '@vue-storefront/woocommerce';
+import { computed, useAsync } from '@nuxtjs/composition-api';
+import { cartGetters } from '@vue-storefront/woocommerce';
+import { useCart } from '~/composables';
 import { useUiState } from '~/composables';
 import debounce from 'lodash.debounce';
 import { addBasePath } from '@vue-storefront/core';
@@ -162,26 +156,30 @@ export default {
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
-    const { cart, removeItem, updateItemQty, loading } = useCart();
+    const { cart, get, update, remove, loading } = useCart();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
 
-    const updateQuantity = debounce(async ({ product, quantity }) => {
-      await updateItemQty({ product, quantity });
+    const updateQuantity = debounce(async ({ key, quantity }) => {
+      await update({ key, quantity });
     }, 500);
+
+    useAsync(() => {
+      get();
+    });
 
     return {
       addBasePath,
-      updateQuantity,
       loading,
       products,
-      removeItem,
       isCartSidebarOpen,
       toggleCartSidebar,
       totals,
       totalItems,
-      cartGetters
+      cartGetters,
+      remove,
+      updateQuantity
     };
   }
 };

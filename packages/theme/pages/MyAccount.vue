@@ -47,7 +47,6 @@ import {
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api';
-import { useUser } from '@vue-storefront/woocommerce';
 import MyProfile from './MyAccount/MyProfile';
 import ShippingDetails from './MyAccount/ShippingDetails';
 import BillingDetails from './MyAccount/BillingDetails';
@@ -57,6 +56,7 @@ import {
   mapMobileObserver,
   unMapMobileObserver
 } from '@storefront-ui/vue/src/utilities/mobile-observer.js';
+import { useUser } from '~/composables';
 
 export default {
   name: 'MyAccount',
@@ -74,7 +74,10 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
-    const { logout } = useUser();
+    const {
+      logout
+    } = useUser();
+
     const isMobile = computed(() => mapMobileObserver().isMobile.get());
     const activePage = computed(() => {
       const { pageName } = route.value.params;

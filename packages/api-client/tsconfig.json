@@ -6,12 +6,6 @@
     "baseUrl": "./",
     "lib": []
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "__tests__",
-    "lib",
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["__tests__", "lib", "node_modules"]
 }

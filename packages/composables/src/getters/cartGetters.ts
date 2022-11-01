@@ -10,32 +10,35 @@ import type { Cart, CartItem } from '@vue-storefront/woocommerce-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getItems(cart: Cart): CartItem[] {
-  return [
-    {}
-  ];
+  return cart.contents;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getItemName(item: CartItem): string {
-  return 'Name';
+  return item.name;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getItemImage(item: CartItem): string {
-  return 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg';
+  return item.image;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getItemPrice(item: CartItem): AgnosticPrice {
   return {
-    regular: 12,
-    special: 10
+    regular: item.priceEach,
+    special: item.priceEach
   };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getItemQty(item: CartItem): number {
-  return 1;
+  return item.quantity;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getItemKey(item: CartItem): string {
+  return item.key;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -47,15 +50,24 @@ function getItemAttributes(item: CartItem, filterByAttributeName?: Array<string>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getItemSku(item: CartItem): string {
-  return '';
+  return item.sku;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTotals(cart: Cart): AgnosticTotals {
+  let total = 0;
+  let subtotal = 0;
+  // const special = 0;
+
+  (cart?.contents || []).forEach((item) => {
+    total += item.priceTotal;
+    subtotal += item.priceSubtotal;
+  });
+
   return {
-    total: 12,
-    subtotal: 12,
-    special: 10
+    total: total,
+    subtotal: subtotal,
+    special: subtotal
   };
 }
 
@@ -66,7 +78,13 @@ function getShippingPrice(cart: Cart): number {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTotalItems(cart: Cart): number {
-  return 1;
+  let total = 0;
+
+  (cart?.contents || []).forEach((item) => {
+    total += item.quantity;
+  });
+
+  return total;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -97,5 +115,6 @@ export const cartGetters: CartGetters<Cart, CartItem> = {
   getFormattedPrice,
   getTotalItems,
   getCoupons,
-  getDiscounts
+  getDiscounts,
+  getItemKey
 };

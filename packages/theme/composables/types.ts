@@ -69,3 +69,57 @@ export interface FacetSearchResult<S> {
   data: S;
   input: GetFacetSearchParams;
 }
+
+export interface PostRegisterParams {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface PostTokenParams {
+  username: string;
+  password: string;
+}
+
+export interface User {
+  token: string;
+  email: string;
+  displayName: string;
+}
+
+export interface AddToCartParams {
+  id: number;
+  quantity?: number;
+  cartMethod: string;
+}
+
+export interface UpdateCartParams {
+  key: string;
+  quantity: number;
+  cartMethod: string;
+}
+
+export interface RemoveFromCartParams {
+  key: string;
+  cartMethod: string;
+}
+
+interface CartContents {
+  key: string;
+  quanityt: number;
+  priceEach: string;
+  priceTax: number;
+  priceSubtotal: number;
+  priceTotal: number;
+  name: string;
+  id: number;
+  type: string;
+  slug: string;
+  sku: string;
+  image: string
+}
+
+export interface Cart {
+  contents: CartContents
+}

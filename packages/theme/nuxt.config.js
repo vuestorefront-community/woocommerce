@@ -14,7 +14,11 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      {
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || ''
+      }
     ],
     link: [
       {
@@ -29,7 +33,8 @@ export default {
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap'
+        href:
+          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap'
       }
     ]
   },
@@ -46,29 +51,29 @@ export default {
     '@pinia/nuxt',
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
-    ['@vue-storefront/nuxt', {
-      // @core-development-only-start
-      coreDevelopment: true,
-      // @core-development-only-end
-      useRawSource: {
-        dev: [
-          '@vue-storefront/woocommerce',
-          '@vue-storefront/core'
-        ],
-        prod: [
-          '@vue-storefront/woocommerce',
-          '@vue-storefront/core'
-        ]
+    [
+      '@vue-storefront/nuxt',
+      {
+        // @core-development-only-start
+        coreDevelopment: true,
+        // @core-development-only-end
+        useRawSource: {
+          dev: ['@vue-storefront/woocommerce', '@vue-storefront/core'],
+          prod: ['@vue-storefront/woocommerce', '@vue-storefront/core']
+        }
       }
-    }],
+    ],
     ['@vue-storefront/woocommerce/nuxt', {}]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    ['nuxt-i18n', {
-      baseUrl: process.env.BASE_URL || 'http://localhost:3000'
-    }],
+    [
+      'nuxt-i18n',
+      {
+        baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+      }
+    ],
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
     '@vue-storefront/middleware/nuxt'
@@ -100,12 +105,16 @@ export default {
       numberFormats: {
         en: {
           currency: {
-            style: 'currency', currency: 'USD', currencyDisplay: 'symbol'
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'symbol'
           }
         },
         de: {
           currency: {
-            style: 'currency', currency: 'EUR', currencyDisplay: 'symbol'
+            style: 'currency',
+            currency: 'EUR',
+            currencyDisplay: 'symbol'
           }
         }
       }
@@ -114,14 +123,16 @@ export default {
   },
 
   styleResources: {
-    scss: [require.resolve('@storefront-ui/shared/styles/_helpers.scss', { paths: [process.cwd()] })]
+    scss: [
+      require.resolve('@storefront-ui/shared/styles/_helpers.scss', {
+        paths: [process.cwd()]
+      })
+    ]
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [
-      'vee-validate/dist/rules'
-    ],
+    transpile: ['vee-validate/dist/rules'],
     plugins: [
       new webpack.DefinePlugin({
         'process.VERSION': JSON.stringify({
@@ -135,15 +146,14 @@ export default {
       config.module.rules.push({
         test: /\.mjs$/,
         include: /node_modules/,
-        type: 'javascript/auto',
-      })
-    },
+        type: 'javascript/auto'
+      });
+    }
   },
 
   router: {
     extendRoutes(routes) {
-      getRoutes()
-        .forEach((route) => routes.unshift(route));
+      getRoutes().forEach((route) => routes.unshift(route));
     },
     middleware: ['checkout']
   },

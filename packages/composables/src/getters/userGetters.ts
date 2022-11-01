@@ -18,7 +18,7 @@ function getFullName(user: User): string {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getEmailAddress(user: User): string {
-  return '';
+  return user.email;
 }
 
 export const userGetters: UserGetters<User> = {

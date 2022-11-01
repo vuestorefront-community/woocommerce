@@ -19,7 +19,7 @@
       <p class="message">
         {{ $t('Change password your account') }}:<br />
         {{ $t('Your current email address is') }}
-        <span class="message__label">example@email.com</span>
+        <span class="message__label">{{userGetters.getEmailAddress(user)}}</span>
       </p>
 
       <PasswordResetForm @submit="updatePassword" />
@@ -33,7 +33,8 @@ import { email, required, min, confirmed } from 'vee-validate/dist/rules';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm';
 import { SfTabs, SfInput, SfButton } from '@storefront-ui/vue';
-import { useUser } from '@vue-storefront/woocommerce';
+import { useUser } from '~/composables';
+import { userGetters } from '@vue-storefront/woocommerce';
 
 extend('email', {
   ...email,
@@ -76,7 +77,7 @@ export default {
   },
 
   setup() {
-    const { updateUser, changePassword } = useUser();
+    const { user, updateUser, changePassword } = useUser();
 
     const formHandler = async (fn, onComplete, onError) => {
       try {
@@ -102,7 +103,9 @@ export default {
 
     return {
       updatePersonalData,
-      updatePassword
+      updatePassword,
+      user,
+      userGetters
     };
   }
 };

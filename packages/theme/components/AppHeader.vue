@@ -113,7 +113,7 @@ import {
   SfOverlay
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
-import { useCart, useUser, cartGetters } from '@vue-storefront/woocommerce';
+import { cartGetters } from '@vue-storefront/woocommerce';
 import {
   computed,
   ref,
@@ -121,7 +121,7 @@ import {
   onBeforeUnmount,
   useRouter
 } from '@nuxtjs/composition-api';
-import { useUiHelpers } from '~/composables';
+import { useUiHelpers, useCart, useUser } from '~/composables';
 import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 import HeaderNavigation from './HeaderNavigation';
@@ -157,7 +157,7 @@ export default {
       isMobileMenuOpen
     } = useUiState();
     const { setTermForUrl, getFacetsFromURL } = useUiHelpers();
-    const { isAuthenticated } = useUser();
+    const { user } = useUser();
     const { cart } = useCart();
     const term = ref(getFacetsFromURL().phrase);
     const isSearchOpen = ref(false);
@@ -171,12 +171,12 @@ export default {
     });
 
     const accountIcon = computed(() =>
-      isAuthenticated.value ? 'profile_fill' : 'profile'
+      user.value.token ? 'profile_fill' : 'profile'
     );
 
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
     const handleAccountClick = async () => {
-      if (isAuthenticated.value) {
+      if (user.value.token) {
         const localeAccountPath = root.localePath({ name: 'my-account' });
         return router.push(localeAccountPath);
       }

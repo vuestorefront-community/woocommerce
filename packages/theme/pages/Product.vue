@@ -80,12 +80,12 @@
           </div>
           <SfAddToCart
             v-e2e="'product_add-to-cart'"
-            :stock="stock"
+            :stock="0"
             v-model="qty"
             :disabled="loading"
-            :canAddToCart="stock > 0"
+            :canAddToCart="false"
             class="product__add-to-cart"
-            @click="addItem({ product, quantity: parseInt(qty) })"
+            @click="add({ id: product.id })"
           />
         </div>
 
@@ -133,10 +133,6 @@
         </LazyHydrate>
       </div>
     </div>
-
-    <LazyHydrate when-visible>
-      <InstagramFeed />
-    </LazyHydrate>
   </div>
 </template>
 <script>
@@ -164,9 +160,10 @@ import {
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import RelatedProducts from '~/components/RelatedProducts.vue';
 import { ref, computed, useRoute, useAsync } from '@nuxtjs/composition-api';
-import { useCart, productGetters } from '@vue-storefront/woocommerce';
+import { productGetters } from '@vue-storefront/woocommerce';
 import { useProduct } from '~/composables';
 import { useUiHelpers } from '~/composables';
+import { useCart } from '~/composables';
 import LazyHydrate from 'vue-lazy-hydration';
 
 export default {
@@ -182,7 +179,7 @@ export default {
       loading: productLoading
     } = useProduct(id);
     const { changeFilters, getFacetsFromURL } = useUiHelpers();
-    const { addItem, loading } = useCart();
+    const { add, loading } = useCart();
 
     const product = computed(() =>
       productGetters.getSingleProduct(singleProduct.value)
@@ -226,7 +223,7 @@ export default {
       product,
       options,
       qty,
-      addItem,
+      add,
       loading,
       productGetters,
       productGallery,
