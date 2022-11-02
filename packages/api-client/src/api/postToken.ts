@@ -15,7 +15,8 @@ export async function postToken(context: Context, params: any): Promise<any> {
     headers: {
       Cookie: cookies
     }
-  });
+  })
+    .catch((error) => ({ data: { ...error.response.data, error: true }, headers: error.response.headers }));
 
   // Get set-cookie header from response and pass along
   if (headers['set-cookie']) {

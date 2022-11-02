@@ -10,6 +10,10 @@ export const postRegisterCommand = {
 
     const data = await context.$woocommerce.api.postRegister(params);
 
+    if (data.error) {
+      throw new Error(data.message || `An unknown error occurred with status code: ${data.data.status}`);
+    }
+
     // console.log('[Result]:', { data });
 
     return data;

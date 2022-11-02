@@ -54,8 +54,12 @@
                     <SfQuantitySelector
                       :disabled="loading"
                       :qty="cartGetters.getItemQty(product)"
+                      :min="0"
                       class="sf-collected-product__quantity-selector"
-                      @input="updateQuantity({ key: cartGetters.getItemKey(product), quantity: Number($event) })"
+                      @input="updateQuantity({
+                          key: cartGetters.getItemKey(product),
+                          quantity: Number($event) === 1 && Number($event) === cartGetters.getItemQty(product) ? 0 :  Number($event)
+                        })"
                     />
                   </div>
                 </template>
@@ -74,7 +78,7 @@
               title="Your cart is empty"
               :level="2"
               class="empty-cart__heading"
-              description="Looks like you haven’t added any items to the bag yet. Start
+              description="Looks like you haven't added any items to the bag yet. Start
               shopping to fill it in."
             />
           </div>

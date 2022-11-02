@@ -82,10 +82,9 @@
             v-e2e="'product_add-to-cart'"
             :stock="0"
             v-model="qty"
-            :disabled="loading"
-            :canAddToCart="false"
+            :disabled="loading || !product.inStock"
             class="product__add-to-cart"
-            @click="add({ id: product.id })"
+            @click="add({ id: product.id, quantity: parseInt(qty) })"
           />
         </div>
 

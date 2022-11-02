@@ -102,6 +102,18 @@ function getDiscounts(cart: Cart): AgnosticDiscount[] {
   return [];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+function isInCart(cart: any, product: number): boolean {
+  let inCart = false;
+  (cart?.contents || []).forEach((item) => {
+    if (item.id === product) {
+      inCart = true;
+    }
+  });
+
+  return inCart;
+}
+
 export const cartGetters: CartGetters<Cart, CartItem> = {
   getTotals,
   getShippingPrice,
@@ -116,5 +128,6 @@ export const cartGetters: CartGetters<Cart, CartItem> = {
   getTotalItems,
   getCoupons,
   getDiscounts,
-  getItemKey
+  getItemKey,
+  isInCart
 };

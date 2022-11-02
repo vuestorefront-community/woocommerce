@@ -24,6 +24,15 @@ export function useUser(): UseUserInterface {
 
   const userStore = useUserStore();
 
+  // Get user state from localStorage
+  if (process.client) {
+    userStore.$patch({
+      token: localStorage.getItem('pinia_user_token'),
+      email: localStorage.getItem('pinia_user_email'),
+      displayName: localStorage.getItem('pinia_user_display_name')
+    });
+  }
+
   const { app } = useContext();
   const context = app.$vsf;
 
@@ -54,6 +63,12 @@ export function useUser(): UseUserInterface {
         email: data.user_email,
         displayName: data.user_display_name
       });
+
+      if (process.client) {
+        localStorage.setItem('pinia_user_token', data.token);
+        localStorage.setItem('pinia_user_email', data.user_email);
+        localStorage.setItem('pinia_user_display_name', data.user_display_name);
+      }
     } catch (err) {
       error.value.login = err;
       console.error('useUser/login', err);
@@ -70,6 +85,10 @@ export function useUser(): UseUserInterface {
         displayName: null
       }
     );
+
+    localStorage.removeItem('pinia_user_token');
+    localStorage.removeItem('pinia_user_email');
+    localStorage.removeItem('pinia_user_display_name');
   };
 
   return {

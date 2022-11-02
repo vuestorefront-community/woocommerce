@@ -103,9 +103,9 @@
               "
               :max-rating="5"
               :score-rating="productGetters.getAverageRating(product)"
-              :show-add-to-cart-button="true"
+              :add-to-cart-disabled="!product.inStock"
               :is-in-wishlist="isInWishlist({ product })"
-              :is-added-to-cart="isInCart"
+              :is-added-to-cart="cartGetters.isInCart(cart, productGetters.getId(product))"
               :link="
                 localePath(
                   `/p/${productGetters.getId(product)}/${productGetters.getSlug(
@@ -267,7 +267,8 @@ import {
   productGetters,
   facetGetters,
   categoryGetters,
-  wishlistGetters
+  wishlistGetters,
+  cartGetters
 } from '@vue-storefront/woocommerce';
 import { useCategory } from '~/composables';
 import { useFacet } from '~/composables';
@@ -288,7 +289,7 @@ export default {
     const categorySlug = route.value.path.replace('/c/', '');
     const th = useUiHelpers();
     const uiState = useUiState();
-    const { add: addItemToCart } = useCart();
+    const { add: addItemToCart, cart } = useCart();
     const { facets: result, getFacets: facetsSearch, error } = useFacet();
     const {
       getProductsPaginated,
@@ -301,8 +302,6 @@ export default {
       removeItem: removeItemFromWishlist,
       wishlist
     } = useWishlist();
-
-    const isInCart = false;
 
     const productsQuantity = ref({});
     const products = computed(() =>
@@ -368,6 +367,7 @@ export default {
         ...th.getFacetsFromURL(),
         categorySlug: currentCategory()
       });
+      console.log(products);
     });
 
     useAsync(() => {
@@ -399,9 +399,10 @@ export default {
       removeProductFromWishlist,
       isInWishlist,
       addToCart,
-      isInCart,
       productsQuantity,
-      addBasePath
+      addBasePath,
+      cart,
+      cartGetters
     };
   },
   components: {
