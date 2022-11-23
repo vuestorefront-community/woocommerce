@@ -1,10 +1,12 @@
 import { Context } from '@vue-storefront/core';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function postCart(context: Context, params: any): Promise<any> {
-  console.log('postCart: Updating cart... ', params);
+export async function getBillingAddress(context: Context): Promise<any> {
+  console.log('getBillingAddress: Fetching billing address...');
 
-  const url = new URL('/wp-json/vsf-wc-api/v1/cart', context.config.api.url);
+  const url = new URL(
+    '/wp-json/vsf-wc-api/v1/address/billing',
+    context.config.api.url
+  );
 
   // Get non-vsf cookies to pass along
   const cookies = Object.keys(context.req.cookies)
@@ -23,8 +25,8 @@ export async function postCart(context: Context, params: any): Promise<any> {
     });
   }
 
-  // Use axios to send a POST request
-  const { data, headers } = await context.client.post(url.href, params, {
+  // Use axios to send a GET request
+  const { data, headers } = await context.client.get(url.href, {
     headers: requestHeaders
   });
 

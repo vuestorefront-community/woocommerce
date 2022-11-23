@@ -1,10 +1,17 @@
 import { Context } from '@vue-storefront/core';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function postCart(context: Context, params: any): Promise<any> {
-  console.log('postCart: Updating cart... ', params);
+export async function postBillingAddress(
+  context: Context,
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  params: any
+): Promise<any> {
+  console.log('postBillingAddress: Updating billing address... ', params);
 
-  const url = new URL('/wp-json/vsf-wc-api/v1/cart', context.config.api.url);
+  const url = new URL(
+    '/wp-json/vsf-wc-api/v1/address/billing',
+    context.config.api.url
+  );
 
   // Get non-vsf cookies to pass along
   const cookies = Object.keys(context.req.cookies)

@@ -1,15 +1,15 @@
 import { Context } from '@vue-storefront/core';
-import { PostRegisterParams } from '../../types';
+import { UpdateShippingAddressParams } from '../../types';
 import { ComposableFunctionArgs } from '~/composables/types';
 
-export const postRegisterCommand = {
+export const updateShippingAddressCommand = {
   execute: async (
     context: Context,
-    params: ComposableFunctionArgs<PostRegisterParams>
+    params: ComposableFunctionArgs<UpdateShippingAddressParams>
   ): Promise<any> => {
-    // console.log('[WooCommerce] register params input:', JSON.stringify(params, null, 2));
+    // console.log('[WooCommerce] update shipping address params input:', JSON.stringify(params, null, 2));
 
-    const data = await context.$woocommerce.api.postRegister(params);
+    const data = await context.$woocommerce.api.postShippingAddress(params);
 
     if (data.error) {
       throw new Error(

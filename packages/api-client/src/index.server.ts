@@ -10,6 +10,10 @@ import { postRegister } from './api/postRegister';
 import { postToken } from './api/postToken';
 import { getCart } from './api/getCart';
 import { postCart } from './api/postCart';
+import { getBillingAddress } from './api/getBillingAddress';
+import { postBillingAddress } from './api/postBillingAddress';
+import { getShippingAddress } from './api/getShippingAddress';
+import { postShippingAddress } from './api/postShippingAddress';
 
 function onCreate(settings) {
   const client = axios.create({
@@ -33,10 +37,12 @@ const { createApiClient } = apiClientFactory<any, any>({
     postRegister,
     postToken,
     getCart,
-    postCart
+    postCart,
+    getBillingAddress,
+    postBillingAddress,
+    getShippingAddress,
+    postShippingAddress
   }
 });
 
-export {
-  createApiClient
-};
+export { createApiClient };

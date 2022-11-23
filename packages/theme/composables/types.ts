@@ -1,4 +1,3 @@
-
 export type CustomQuery = Record<string, string>;
 
 export declare type ComposableFunctionArgs<T> = T & {
@@ -6,41 +5,41 @@ export declare type ComposableFunctionArgs<T> = T & {
 };
 
 export declare type Product = {
-  id?: number,
-  type?: string,
-  title?: string,
-  description?: string,
-  slug?: string,
+  id?: number;
+  type?: string;
+  title?: string;
+  description?: string;
+  slug?: string;
   price?: {
-    original?: string,
-    current?: string
-  },
-  sku?: string,
-  sales?: number,
-  inStock?: boolean,
-  coverImage?: string,
-  parent?: number,
-  featured?: boolean,
-  categories?: Array<string>,
-  galleryImages?: Array<string>,
-  attributes?: Record<string, string>,
-  variants?: Array<Product>
-}
+    original?: string;
+    current?: string;
+  };
+  sku?: string;
+  sales?: number;
+  inStock?: boolean;
+  coverImage?: string;
+  parent?: number;
+  featured?: boolean;
+  categories?: Array<string>;
+  galleryImages?: Array<string>;
+  attributes?: Record<string, string>;
+  variants?: Array<Product>;
+};
 
 export declare type GetProductsPaginatedSearchParams = {
-  page?: number,
-  itemsPerPage?: number,
-  categorySlug?: string,
-  sort?: string,
-  filters?: Record<string, Array<string>>,
-  paginate?: boolean
-}
+  page?: number;
+  itemsPerPage?: number;
+  categorySlug?: string;
+  sort?: string;
+  filters?: Record<string, Array<string>>;
+  paginate?: boolean;
+};
 
 export declare type GetProductSingleSearchParams = {
-  id: number
-}
+  id: number;
+};
 
-export declare type GetCategorySearchParams = Record<string, unknown>
+export declare type GetCategorySearchParams = Record<string, unknown>;
 
 export declare type Category = {
   type?: string;
@@ -117,9 +116,30 @@ interface CartContents {
   type: string;
   slug: string;
   sku: string;
-  image: string
+  image: string;
 }
 
 export interface Cart {
-  contents: CartContents
+  contents: CartContents;
 }
+
+export interface BillingAddress {
+  firstName: string;
+  lastname: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  country: string;
+  postcode: string;
+  state: string;
+  phone: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ShippingAddress extends BillingAddress {}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface UpdateShippingAddressParams extends BillingAddress {}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface UpdateBillingAddressParams extends BillingAddress {}

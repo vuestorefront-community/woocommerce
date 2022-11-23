@@ -6,6 +6,8 @@ import useCategory from './useCategory';
 import useFacet from './useFacet';
 import useUser from './useUser';
 import useCart from './useCart';
+import useBillingAddress from './useBillingAddress';
+import useShippingAddress from './useShippingAddress';
 
 export {
   useUiHelpers,
@@ -15,5 +17,7 @@ export {
   useCategory,
   useFacet,
   useUser,
-  useCart
+  useCart,
+  useBillingAddress,
+  useShippingAddress
 };
