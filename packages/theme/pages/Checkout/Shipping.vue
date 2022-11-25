@@ -43,35 +43,29 @@
           />
         </ValidationProvider>
         <ValidationProvider
-          name="streetName"
+          name="addressLine1"
           rules="required"
           v-slot="{ errors }"
           slim
         >
           <SfInput
-            v-e2e="'shipping-streetName'"
-            v-model="form.streetName"
-            label="Street name"
-            name="streetName"
+            v-e2e="'shipping-addressLine1'"
+            v-model="form.addressLine1"
+            label="Address Line 1"
+            name="addressLine1"
             class="form__element form__element--half"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
         </ValidationProvider>
-        <ValidationProvider
-          name="apartment"
-          rules="required"
-          v-slot="{ errors }"
-          slim
-        >
+        <ValidationProvider name="addressLine2" v-slot="{ errors }" slim>
           <SfInput
-            v-e2e="'shipping-apartment'"
-            v-model="form.apartment"
-            label="House/Apartment number"
-            name="apartment"
+            v-e2e="'shipping-addressLine2'"
+            v-model="form.addressLine2"
+            label="Address Line 2"
+            name="addressLine2"
             class="form__element form__element--half form__element--half-even"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -113,10 +107,7 @@
             v-model="form.country"
             label="Country"
             name="country"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-            "
+            class="form__element form__element--half form__select sf-select--underlined"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -131,16 +122,16 @@
           </SfSelect>
         </ValidationProvider>
         <ValidationProvider
-          name="zipCode"
+          name="postcode"
           rules="required|min:2"
           v-slot="{ errors }"
           slim
         >
           <SfInput
-            v-e2e="'shipping-zipcode'"
-            v-model="form.postalCode"
-            label="Zip-code"
-            name="zipCode"
+            v-e2e="'shipping-postcode'"
+            v-model="form.postcode"
+            label="Postal Code"
+            name="postcode"
             class="form__element form__element--half form__element--half-even"
             required
             :valid="!errors[0]"
@@ -187,9 +178,8 @@
 
 <script>
 import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
-import { ref, useRouter } from '@nuxtjs/composition-api';
-import { onSSR } from '@vue-storefront/core';
-import { useShipping } from '@vue-storefront/woocommerce';
+import { ref, useRouter, useAsync } from '@nuxtjs/composition-api';
+import { useShippingAddress } from '~/composables';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 
@@ -197,7 +187,8 @@ const COUNTRIES = [
   { key: 'US', label: 'United States' },
   { key: 'UK', label: 'United Kingdom' },
   { key: 'IT', label: 'Italy' },
-  { key: 'PL', label: 'Poland' }
+  { key: 'PL', label: 'Poland' },
+  { key: 'ZA', label: 'South Africa' }
 ];
 
 extend('required', {
@@ -228,27 +219,17 @@ export default {
   setup() {
     const router = useRouter();
     const isFormSubmitted = ref(false);
-    const { load, save, loading } = useShipping();
+    const { get, update, loading, address } = useShippingAddress();
 
-    const form = ref({
-      firstName: '',
-      lastName: '',
-      streetName: '',
-      apartment: '',
-      city: '',
-      state: '',
-      country: '',
-      postalCode: '',
-      phone: null
-    });
+    const form = ref(address);
 
     const handleFormSubmit = async () => {
-      await save({ shippingDetails: form.value });
+      await update(form.value);
       isFormSubmitted.value = true;
     };
 
-    onSSR(async () => {
-      await load();
+    useAsync(() => {
+      get();
     });
 
     return {

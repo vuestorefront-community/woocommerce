@@ -1,9 +1,5 @@
 <template>
   <div>
-    <p>
-      <b>Please implement vendor-specific VsfShippingProvider component in the 'components/Checkout' directory</b>
-    </p>
-
     <SfRadio
       v-e2e="'shipping-method'"
       v-for="method in shippingMethods"
@@ -11,7 +7,7 @@
       :label="method.label"
       :value="method.value"
       :description="method.description"
-      :selected ="selectedMethod"
+      :selected="selectedMethod"
       name="shippingMethod"
       class="form__radio shipping"
       @change="selectMethod(method.value)"
@@ -41,8 +37,7 @@ import { SfButton, SfRadio } from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
 
 const SHIPPING_METHODS = [
-  { label: 'Express US', value: 'express', description: 'Same day delivery' },
-  { label: 'Standard US', value: 'standard', description: 'Delivery in 5-6 working days' }
+  { label: 'Free Shipping', value: 'free', description: 'Shipping at no cost' }
 ];
 
 export default {
@@ -56,7 +51,7 @@ export default {
   setup() {
     const selectedMethod = ref(null);
 
-    const selectMethod = method => selectedMethod.value = method;
+    const selectMethod = (method) => (selectedMethod.value = method);
 
     return {
       shippingMethods: SHIPPING_METHODS,

@@ -81,10 +81,7 @@
         <SfProperty
           name="Total price"
           :value="$n(totals.total, 'currency')"
-          class="
-            sf-property--full-width sf-property--large
-            summary__property-total
-          "
+          class="sf-property--full-width sf-property--large summary__property-total"
         />
 
         <VsfPaymentProvider @status="isPaymentReady = true" />
@@ -138,14 +135,13 @@ import {
   SfAccordion,
   SfLink
 } from '@storefront-ui/vue';
-import { onSSR } from '@vue-storefront/core';
-import { ref, computed, useRouter } from '@nuxtjs/composition-api';
+import { ref, computed, useRouter, useAsync } from '@nuxtjs/composition-api';
 import {
   useMakeOrder,
-  useCart,
   cartGetters,
   orderGetters
 } from '@vue-storefront/woocommerce';
+import { useCart } from '~/composables';
 import { addBasePath } from '@vue-storefront/core';
 
 export default {
@@ -167,14 +163,16 @@ export default {
   },
   setup(props, context) {
     const router = useRouter();
-    const { cart, load, setCart } = useCart();
+    const { cart, get } = useCart();
+    const products = computed(() => cartGetters.getItems(cart.value));
+    const totals = computed(() => cartGetters.getTotals(cart.value));
     const { order, make, loading } = useMakeOrder();
 
     const isPaymentReady = ref(false);
     const terms = ref(false);
 
-    onSSR(async () => {
-      await load();
+    useAsync(() => {
+      get();
     });
 
     const processOrder = async () => {
@@ -184,7 +182,7 @@ export default {
         query: { order: orderGetters.getId(order.value) }
       };
       router.push(context.root.localePath(thankYouPath));
-      setCart(null);
+      // setCart(null);
     };
 
     return {
@@ -193,8 +191,8 @@ export default {
       isPaymentReady,
       terms,
       loading,
-      products: computed(() => cartGetters.getItems(cart.value)),
-      totals: computed(() => cartGetters.getTotals(cart.value)),
+      products: products,
+      totals: totals,
       tableHeaders: ['Description', 'Size', 'Color', 'Quantity', 'Amount'],
       cartGetters,
       processOrder

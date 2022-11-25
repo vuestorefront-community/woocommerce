@@ -1,5 +1,5 @@
 <template>
-  <b>Please implement vendor-specific CartPreview component in the 'components/Checkout' directory</b>
+  <b>Cart Summary coming soon...</b>
 </template>
 
 <script>

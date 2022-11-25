@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <SfTabs
+    <!-- <SfTabs
       v-if="edittingAddress"
       key="edit-address"
       :open-tab="1"
@@ -10,16 +10,16 @@
         <p class="message">
           {{ $t('Contact details updated') }}
         </p>
-
-        <BillingAddressForm
-          :address="activeAddress"
-          :isNew="isNewAddress"
-          @submit="saveAddress"
-        />
       </SfTab>
-    </SfTabs>
+    </SfTabs> -->
 
-    <SfTabs v-else :open-tab="1" key="address-list" class="tab-orphan">
+    <BillingAddressForm
+      :address="activeAddress"
+      :isNew="isNewAddress"
+      @submit="saveAddress"
+    />
+
+    <!-- <SfTabs v-else :open-tab="1" key="address-list" class="tab-orphan">
       <SfTab title="Billing details">
         <p class="message">
           {{ $t('Manage billing addresses') }}
@@ -61,7 +61,7 @@
           {{ $t('Add new address') }}
         </SfButton>
       </SfTab>
-    </SfTabs>
+    </SfTabs> -->
   </transition>
 </template>
 <script>
@@ -137,7 +137,7 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .message {
   font-family: var(--font-family--primary);
   line-height: 1.6;
