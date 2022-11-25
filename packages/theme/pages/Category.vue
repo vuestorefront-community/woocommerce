@@ -105,7 +105,9 @@
               :score-rating="productGetters.getAverageRating(product)"
               :add-to-cart-disabled="!product.inStock"
               :is-in-wishlist="isInWishlist({ product })"
-              :is-added-to-cart="cartGetters.isInCart(cart, productGetters.getId(product))"
+              :is-added-to-cart="
+                cartGetters.isInCart(cart, productGetters.getId(product))
+              "
               :link="
                 localePath(
                   `/p/${productGetters.getId(product)}/${productGetters.getSlug(
@@ -119,7 +121,7 @@
                   ? addItemToWishlist({ product })
                   : removeProductFromWishlist(product)
               "
-              @click:add-to-cart="addToCart({product, quantity: 1})"
+              @click:add-to-cart="addToCart({ product, quantity: 1 })"
             />
           </transition-group>
           <transition-group
@@ -165,7 +167,7 @@
               @click:add-to-cart="
                 addToCart({
                   product,
-                  quantity: Number(productsQuantity[product._id]),
+                  quantity: Number(productsQuantity[product._id])
                 })
               "
             >
@@ -355,7 +357,6 @@ export default {
     };
 
     const addToCart = ({ product, quantity }) => {
-
       addItemToCart({
         id: productGetters.getId(product),
         quantity
@@ -367,7 +368,6 @@ export default {
         ...th.getFacetsFromURL(),
         categorySlug: currentCategory()
       });
-      console.log(products);
     });
 
     useAsync(() => {

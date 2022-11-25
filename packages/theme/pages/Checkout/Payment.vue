@@ -40,7 +40,7 @@
           class="table__data"
           v-for="(value, key) in cartGetters.getItemAttributes(product, [
             'size',
-            'color',
+            'color'
           ])"
           :key="key"
         >
@@ -84,7 +84,7 @@
           class="sf-property--full-width sf-property--large summary__property-total"
         />
 
-        <VsfPaymentProvider @status="isPaymentReady = true" />
+        <VsfPaymentProvider @status="selectMethod" />
 
         <SfCheckbox
           v-e2e="'terms'"
@@ -109,7 +109,7 @@
             {{ $t('Go back') }}
           </SfButton>
           <SfButton
-            :disabled="loading || !isPaymentReady || !terms"
+            :disabled="loading || isPaymentReady || !terms"
             class="summary__action-button"
             @click="processOrder"
           >
@@ -136,12 +136,8 @@ import {
   SfLink
 } from '@storefront-ui/vue';
 import { ref, computed, useRouter, useAsync } from '@nuxtjs/composition-api';
-import {
-  useMakeOrder,
-  cartGetters,
-  orderGetters
-} from '@vue-storefront/woocommerce';
-import { useCart } from '~/composables';
+import { cartGetters } from '@vue-storefront/woocommerce';
+import { useCart, useOrder } from '~/composables';
 import { addBasePath } from '@vue-storefront/core';
 
 export default {
@@ -158,28 +154,38 @@ export default {
     SfProperty,
     SfAccordion,
     SfLink,
-    VsfPaymentProvider: () =>
-      import('~/components/Checkout/VsfPaymentProvider')
+    VsfPaymentProvider: () => import('~/components/Checkout/VsfPaymentProvider')
   },
   setup(props, context) {
     const router = useRouter();
     const { cart, get } = useCart();
+    const { place, loading } = useOrder();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const { order, make, loading } = useMakeOrder();
+    const selectedMethod = ref(null);
 
     const isPaymentReady = ref(false);
     const terms = ref(false);
+
+    const selectMethod = (method) => {
+      selectedMethod.value = method;
+      if (selectMethod.value) {
+        isPaymentReady.value = true;
+      }
+    };
 
     useAsync(() => {
       get();
     });
 
     const processOrder = async () => {
-      await make();
+      const response = await place({
+        total: totals.value.total,
+        paymentMethod: selectedMethod.value
+      });
       const thankYouPath = {
         name: 'thank-you',
-        query: { order: orderGetters.getId(order.value) }
+        query: { order: response.id }
       };
       router.push(context.root.localePath(thankYouPath));
       // setCart(null);
@@ -195,7 +201,8 @@ export default {
       totals: totals,
       tableHeaders: ['Description', 'Size', 'Color', 'Quantity', 'Amount'],
       cartGetters,
-      processOrder
+      processOrder,
+      selectMethod
     };
   }
 };

@@ -14,6 +14,9 @@ import { getBillingAddress } from './api/getBillingAddress';
 import { postBillingAddress } from './api/postBillingAddress';
 import { getShippingAddress } from './api/getShippingAddress';
 import { postShippingAddress } from './api/postShippingAddress';
+import { getPaymentMethod } from './api/getPaymentMethod';
+import { postOrder } from './api/postOrder';
+import { getOrder } from './api/getOrder';
 
 function onCreate(settings) {
   const client = axios.create({
@@ -41,7 +44,10 @@ const { createApiClient } = apiClientFactory<any, any>({
     getBillingAddress,
     postBillingAddress,
     getShippingAddress,
-    postShippingAddress
+    postShippingAddress,
+    getPaymentMethod,
+    postOrder,
+    getOrder
   }
 });
 

@@ -6,7 +6,7 @@
       title="Thank you for your order!"
       :image="{
         mobile: addBasePath('/thankyou/bannerM.png'),
-        desktop: addBasePath('/thankyou/bannerD.png'),
+        desktop: addBasePath('/thankyou/bannerD.png')
       }"
     >
       <template #description>
@@ -39,9 +39,9 @@
             <p class="contact__email">{{ companyDetails.email }}</p>
           </div>
         </div>
-        <SfButton class="order__notifications-button button-size"
-          >{{ $t('Allow order notifications') }}</SfButton
-        >
+        <SfButton class="order__notifications-button button-size">{{
+          $t('Allow order notifications')
+        }}</SfButton>
       </div>
       <div class="additional-info">
         <div>
@@ -70,16 +70,17 @@
         </div>
       </div>
     </section>
-    <SfButton class="back-button color-secondary button-size"
-      >{{ $t('Go back to shop') }}</SfButton
-    >
+    <SfButton class="back-button color-secondary button-size">{{
+      $t('Go back to shop')
+    }}</SfButton>
   </div>
 </template>
 
 <script>
+import { ref, useRoute, useAsync } from '@nuxtjs/composition-api';
 import { SfHeading, SfButton, SfCallToAction } from '@storefront-ui/vue';
-import { ref } from '@nuxtjs/composition-api';
 import { addBasePath } from '@vue-storefront/core';
+import { useOrder } from '~/composables';
 
 export default {
   components: {
@@ -89,6 +90,12 @@ export default {
   },
   setup(props, context) {
     context.emit('changeStep', 4);
+    const route = useRoute();
+    const id = route.value.query.order;
+
+    const { get } = useOrder();
+
+    const orderDetails = ref(null);
 
     const companyDetails = ref({
       name: 'Divante Headquarter',
@@ -96,12 +103,16 @@ export default {
       city: 'Wroclaw, Poland',
       email: 'demo@vuestorefront.io'
     });
-    const orderNumber = ref('80932031-030-00');
+
+    useAsync(() => {
+      orderDetails.value = get({ id: id });
+    });
 
     return {
       addBasePath,
       companyDetails,
-      orderNumber
+      id,
+      orderNumber: id
     };
   }
 };

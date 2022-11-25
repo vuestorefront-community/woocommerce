@@ -1,23 +1,19 @@
 <template>
   <div>
-    <p>
-      <b>Please implement vendor-specific VsfPaymentProvider component in the 'components/Checkout' directory</b>
-    </p>
-
     <SfRadio
       v-e2e="'payment-method'"
-      v-for="method in shippingMethods"
-      :key="method.value"
-      :label="method.label"
-      :value="method.value"
+      v-for="method in paymentMethods"
+      :key="method.id"
+      :label="method.title"
+      :value="method.id"
       :description="method.description"
-      :selected ="selectedMethod"
+      :selected="selectedMethod"
       name="shippingMethod"
       class="form__radio shipping"
-      @change="selectMethod(method.value)"
+      @change="selectMethod(method.id)"
     >
       <div class="shipping__label">
-        {{ method.label }}
+        {{ method.title }}
       </div>
     </SfRadio>
   </div>
@@ -25,15 +21,8 @@
 
 <script>
 import { SfButton, SfRadio } from '@storefront-ui/vue';
-import { ref } from '@nuxtjs/composition-api';
-
-const SHIPPING_METHODS = [
-  { label: 'Visa Debit', value: 'visa_debit' },
-  { label: 'MasterCard', value: 'master_card' },
-  { label: 'VisaElectron', value: 'visa_electron' },
-  { label: 'Cash on delivery', value: 'cash' },
-  { label: 'Check', value: 'check' }
-];
+import { usePaymentMethod } from '~/composables';
+import { ref, useAsync, computed } from '@nuxtjs/composition-api';
 
 export default {
   name: 'VsfPaymentProvider',
@@ -44,15 +33,22 @@ export default {
   },
 
   setup(props, { emit }) {
+    const { methods: methodsRaw, get } = usePaymentMethod();
     const selectedMethod = ref(null);
+
+    const methods = computed(() => methodsRaw.value);
 
     const selectMethod = (method) => {
       selectedMethod.value = method;
-      emit('status');
+      emit('status', method);
     };
 
+    useAsync(() => {
+      get();
+    });
+
     return {
-      shippingMethods: SHIPPING_METHODS,
+      paymentMethods: methods,
       selectedMethod,
       selectMethod
     };

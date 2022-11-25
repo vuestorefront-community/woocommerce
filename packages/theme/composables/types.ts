@@ -143,3 +143,18 @@ export interface UpdateShippingAddressParams extends BillingAddress {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface UpdateBillingAddressParams extends BillingAddress {}
+
+export interface PaymentMethod {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface PlaceOrderParams {
+  paymentMethod: string;
+  total: string;
+}
+
+export interface GetOrderParams {
+  id: number;
+}
