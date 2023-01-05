@@ -22,7 +22,7 @@
 <script>
 import { SfButton, SfRadio } from '@storefront-ui/vue';
 import { usePaymentMethod } from '~/composables';
-import { ref, useAsync, computed } from '@nuxtjs/composition-api';
+import { ref, useAsync } from '@nuxtjs/composition-api';
 
 export default {
   name: 'VsfPaymentProvider',
@@ -33,10 +33,8 @@ export default {
   },
 
   setup(props, { emit }) {
-    const { methods: methodsRaw, get } = usePaymentMethod();
+    const { methods, get } = usePaymentMethod();
     const selectedMethod = ref(null);
-
-    const methods = computed(() => methodsRaw.value);
 
     const selectMethod = (method) => {
       selectedMethod.value = method;

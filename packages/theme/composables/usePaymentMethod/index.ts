@@ -28,7 +28,7 @@ export function usePaymentMethod(): UsePaymentMethodInterface {
       loading.value = true;
       error.value.get = null;
       const response = await getPaymentMethodsCommand.execute(context);
-      paymentMethodStore.$patch(response);
+      paymentMethodStore.$patch({ paymentMethods: response });
     } catch (err) {
       error.value.get = err;
       console.error('usePaymentMethod/get', err);
@@ -39,7 +39,7 @@ export function usePaymentMethod(): UsePaymentMethodInterface {
 
   return {
     get,
-    methods: computed(() => paymentMethodStore.$state),
+    methods: computed(() => paymentMethodStore.paymentMethods),
     loading: readonly(loading),
     error: readonly(error)
   };

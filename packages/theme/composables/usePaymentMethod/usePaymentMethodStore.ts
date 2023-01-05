@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia';
 import type { PaymentMethod } from '../types';
 
+interface PaymentMethodState {
+  paymentMethods: Array<PaymentMethod>;
+}
+
 export const usePaymentMethodStore = defineStore('payment-method', {
-  state: (): Array<PaymentMethod> => []
+  state: (): PaymentMethodState => ({
+    paymentMethods: []
+  })
 });
