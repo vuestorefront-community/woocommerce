@@ -27,11 +27,19 @@ export function useUser(): UseUserInterface {
 
   // Get user state from cookie
   if (process.client) {
-    userStore.$patch({
-      token: decodeURIComponent(getCookie('vsf-user-token')),
-      email: decodeURIComponent(getCookie('vsf-user-email')),
-      displayName: decodeURIComponent(getCookie('vsf-user-display-name'))
-    });
+    if (getCookie('vsf-user-token')) {
+      userStore.$patch({
+        token: decodeURIComponent(getCookie('vsf-user-token')),
+        email: decodeURIComponent(getCookie('vsf-user-email')),
+        displayName: decodeURIComponent(getCookie('vsf-user-display-name'))
+      });
+    } else {
+      userStore.$patch({
+        token: null,
+        email: null,
+        displayName: null
+      });
+    }
   }
 
   const { app } = useContext();
