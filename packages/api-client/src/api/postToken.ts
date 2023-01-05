@@ -40,6 +40,8 @@ export async function postToken(context: Context, params: any): Promise<any> {
 
   if (data.token) {
     context.res.cookie('vsf-user-token', data.token);
+    context.res.cookie('vsf-user-email', data.user_email);
+    context.res.cookie('vsf-user-display-name', data.user_display_name);
   }
 
   // Return data from the API

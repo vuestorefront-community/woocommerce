@@ -9,6 +9,7 @@ import type {
   UseUserPostTokenParams
 } from './useUser';
 import { useUserStore } from './useUserStore';
+import { deleteCookie, getCookie } from '~/helpers/utils/cookieFunctions';
 
 /**
  * Allows user authentication.
@@ -24,12 +25,12 @@ export function useUser(): UseUserInterface {
 
   const userStore = useUserStore();
 
-  // Get user state from localStorage
+  // Get user state from cookie
   if (process.client) {
     userStore.$patch({
-      token: localStorage.getItem('pinia_user_token'),
-      email: localStorage.getItem('pinia_user_email'),
-      displayName: localStorage.getItem('pinia_user_display_name')
+      token: decodeURIComponent(getCookie('vsf-user-token')),
+      email: decodeURIComponent(getCookie('vsf-user-email')),
+      displayName: decodeURIComponent(getCookie('vsf-user-display-name'))
     });
   }
 
@@ -63,12 +64,6 @@ export function useUser(): UseUserInterface {
         email: data.user_email,
         displayName: data.user_display_name
       });
-
-      if (process.client) {
-        localStorage.setItem('pinia_user_token', data.token);
-        localStorage.setItem('pinia_user_email', data.user_email);
-        localStorage.setItem('pinia_user_display_name', data.user_display_name);
-      }
     } catch (err) {
       error.value.login = err;
       console.error('useUser/login', err);
@@ -78,17 +73,15 @@ export function useUser(): UseUserInterface {
   };
 
   const logout = async () => {
-    userStore.$patch(
-      {
-        token: null,
-        email: null,
-        displayName: null
-      }
-    );
+    userStore.$patch({
+      token: null,
+      email: null,
+      displayName: null
+    });
 
-    localStorage.removeItem('pinia_user_token');
-    localStorage.removeItem('pinia_user_email');
-    localStorage.removeItem('pinia_user_display_name');
+    deleteCookie('vsf-user-token');
+    deleteCookie('vsf-user-email');
+    deleteCookie('vsf-user-display-name');
   };
 
   return {

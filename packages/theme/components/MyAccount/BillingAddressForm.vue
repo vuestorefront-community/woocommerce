@@ -140,7 +140,7 @@
         </ValidationProvider>
         <ValidationProvider
           name="phone"
-          rules="required|digits:9"
+          rules="required|digits:10"
           v-slot="{ errors }"
           slim
         >
@@ -217,7 +217,7 @@ export default {
     ValidationProvider,
     ValidationObserver
   },
-  setup(props, context) {
+  setup() {
     const router = useRouter();
     const { get, update, address } = useBillingAddress();
 
@@ -225,7 +225,6 @@ export default {
 
     const handleFormSubmit = async () => {
       await update(form.value);
-      router.push(context.root.localePath({ name: 'payment' }));
     };
 
     useAsync(() => {
