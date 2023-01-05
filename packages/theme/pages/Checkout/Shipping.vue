@@ -59,13 +59,19 @@
             :errorMessage="errors[0]"
           />
         </ValidationProvider>
-        <ValidationProvider name="addressLine2" v-slot="{ errors }" slim>
+        <ValidationProvider
+          name="addressLine2"
+          rules="required"
+          v-slot="{ errors }"
+          slim
+        >
           <SfInput
             v-e2e="'shipping-addressLine2'"
             v-model="form.addressLine2"
             label="Address Line 2"
             name="addressLine2"
             class="form__element form__element--half form__element--half-even"
+            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -87,13 +93,14 @@
             :errorMessage="errors[0]"
           />
         </ValidationProvider>
-        <ValidationProvider name="state" slim>
+        <ValidationProvider name="state" rules="required" slim>
           <SfInput
             v-e2e="'shipping-state'"
             v-model="form.state"
             label="State/Province"
             name="state"
             class="form__element form__element--half form__element--half-even"
+            required
           />
         </ValidationProvider>
         <ValidationProvider

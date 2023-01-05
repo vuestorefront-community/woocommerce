@@ -4,7 +4,7 @@ import type { BillingAddress } from '../types';
 export const useBillingAddressStore = defineStore('billing-address', {
   state: (): BillingAddress => ({
     firstName: null,
-    lastname: null,
+    lastName: null,
     addressLine1: null,
     addressLine2: null,
     city: null,

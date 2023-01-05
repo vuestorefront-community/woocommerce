@@ -125,7 +125,7 @@ export interface Cart {
 
 export interface BillingAddress {
   firstName: string;
-  lastname: string;
+  lastName: string;
   addressLine1: string;
   addressLine2: string;
   city: string;
