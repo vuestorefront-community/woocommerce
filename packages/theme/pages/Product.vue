@@ -193,23 +193,26 @@ export default {
 
     const product = computed(() => {
       let product = productGetters.getSingleProduct(singleProduct.value);
+      let variant = null;
 
       if (
         product?.variants &&
         product.variants.length > 0 &&
         Object.keys(selectedOptions?.value?.filters || {}).length > 0
       ) {
-        product = product.variants.find((variant) => {
-          return Object.entries(selectedOptions.value.filters).every(
-            ([key, value]) => {
-              return Object.entries(variant.attributes).some(
-                ([attKey, attValue]) => {
-                  return attKey === key && attValue === value;
-                }
-              );
-            }
-          );
+        variant = product.variants.find((variant) => {
+          return Object.entries(variant.attributes).every(([key, value]) => {
+            return Object.entries(selectedOptions.value.filters).some(
+              ([attKey, attValue]) => {
+                return attKey === key && attValue === value;
+              }
+            );
+          });
         });
+      }
+
+      if (variant) {
+        product = variant;
       }
 
       return product;
