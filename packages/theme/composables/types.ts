@@ -117,6 +117,7 @@ interface CartContents {
   slug: string;
   sku: string;
   image: string;
+  attributes?: Record<string, string>;
 }
 
 export interface Cart {

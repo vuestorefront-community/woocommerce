@@ -3,22 +3,27 @@ import { CategoryGetters, AgnosticCategoryTree } from '../types';
 import type { Category } from '@vue-storefront/woocommerce-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getTree(categories: Category[], currentCategory: string): AgnosticCategoryTree {
-
+function getTree(
+  categories: Category[],
+  currentCategory: string
+): AgnosticCategoryTree {
   // Build hashtable used to construct category tree
   const hashTable = Object.create(null);
-  categories.forEach(category => hashTable[category.id] = {
-    label: category.title,
-    slug: category.slug,
-    slugPath: category.category_slug_path,
-    items: [],
-    isCurrent: category.category_slug_path === currentCategory,
-    count: category.count
-  });
+  categories.forEach(
+    (category) =>
+      (hashTable[category.id] = {
+        label: category.title,
+        slug: category.slug,
+        slugPath: category.category_slug_path,
+        items: [],
+        isCurrent: category.category_slug_path === currentCategory,
+        count: category.count
+      })
+  );
 
   // Construct category tree
   const categoryTree = [];
-  categories.forEach(category => {
+  categories.forEach((category) => {
     if (category.parent_id && hashTable[category.parent_id]) {
       hashTable[category.parent_id].items.push(hashTable[category.id]);
     } else {
@@ -44,19 +49,28 @@ function getTree(categories: Category[], currentCategory: string): AgnosticCateg
   // have no children, i.e. we cannot go deeper so that there is always useful information.
   path.every((slug) => {
     for (let i = 0; i < categoryTreeRoot.items.length; i++) {
-      if (categoryTreeRoot.items[i].slug === `${slug}/` || categoryTreeRoot.items[i].slug === slug) {
-
+      if (
+        categoryTreeRoot.items[i].slug === `${slug}/` ||
+        categoryTreeRoot.items[i].slug === slug
+      ) {
         const previousTree = categoryTreeRoot;
 
         categoryTreeRoot = categoryTreeRoot.items[i];
 
         // If the currently selected root's child is the selected category, but it has no children
         // then the root should be higher up.
-        if (categoryTreeRoot.items.every((item) => item?.items?.length === 0) && previousTree.label) {
+        if (
+          categoryTreeRoot.items.every((item) => item?.items?.length === 0) &&
+          previousTree.label
+        ) {
           categoryTreeRoot = previousTree;
         }
 
-        if (categoryTreeRoot.items.some((item) => item.slugPath === currentCategory)) {
+        if (
+          categoryTreeRoot.items.some(
+            (item) => item.slugPath === currentCategory
+          )
+        ) {
           return false;
         }
       }
@@ -77,20 +91,23 @@ function getSlug(category: Category): string {
 }
 
 function getParentCategories(categories: Category[]): Category[] {
-  return categories.filter(cat => cat.parent_id === 0);
+  return categories.filter((cat) => cat.parent_id === 0);
 }
 
 function getCategoryBreadcrumbs(slugPath: string): any {
   const breadcrumbs = [];
   let path = '/c';
 
-  slugPath.split('/').filter((slug) => Boolean(slug)).forEach((slug) => {
-    path = `${path}/${slug}`;
-    breadcrumbs.push({
-      text: slug.toUpperCase(),
-      link: path
+  slugPath
+    .split('/')
+    .filter((slug) => Boolean(slug))
+    .forEach((slug) => {
+      path = `${path}/${slug}`;
+      breadcrumbs.push({
+        text: slug.toUpperCase(),
+        link: path
+      });
     });
-  });
 
   return breadcrumbs;
 }

@@ -1,6 +1,9 @@
 import { Context, AgnosticFacetSearchParams } from '@vue-storefront/core';
 
-export async function getFacet(context: Context, params: AgnosticFacetSearchParams): Promise<any> {
+export async function getFacet(
+  context: Context,
+  params: AgnosticFacetSearchParams
+): Promise<any> {
   // console.log('getFacet: Fetching facets');
 
   // Prepare getProduct query parameters
@@ -15,7 +18,7 @@ export async function getFacet(context: Context, params: AgnosticFacetSearchPara
   // Add each filter to the list of parameters and combine filter values into comma separated string
   const attributes = params?.filters || {};
 
-  Object.keys(attributes).forEach(key => {
+  Object.keys(attributes).forEach((key) => {
     if (attributes[key].length > 0) {
       getProductParams[key] = attributes[key].join(',');
     }
@@ -23,7 +26,7 @@ export async function getFacet(context: Context, params: AgnosticFacetSearchPara
 
   const url = new URL('/wp-json/vsf-wc-api/v1/facets', context.config.api.url);
 
-  Object.keys(getProductParams || {}).forEach(key => {
+  Object.keys(getProductParams || {}).forEach((key) => {
     url.searchParams.set(key, getProductParams[key]);
   });
 

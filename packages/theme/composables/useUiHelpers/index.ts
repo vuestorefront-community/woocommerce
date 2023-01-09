@@ -1,4 +1,3 @@
-
 import { useRoute, useRouter } from '@nuxtjs/composition-api';
 
 const nonFilters = new Set(['sort', 'term', 'itemsPerPage']);
@@ -8,7 +7,7 @@ const reduceFilters = (query) => (prev, curr) => {
 
   return {
     ...prev,
-    [curr]: makeArray ? query[curr] : [query[curr]]
+    [curr]: !makeArray ? query[curr] : [query[curr]]
   };
 };
 
@@ -18,14 +17,16 @@ const useUiHelpers = () => {
   const router = useRouter();
   const { query } = route.value;
 
-  const getFiltersDataFromUrl = (onlyFilters) => Object.keys(query)
-    .filter((f) => (onlyFilters ? !nonFilters.has(f) : nonFilters.has(f)))
-    .reduce(reduceFilters(query), {});
+  const getFiltersDataFromUrl = (onlyFilters) => {
+    return Object.keys(query)
+      .filter((f) => (onlyFilters ? !nonFilters.has(f) : nonFilters.has(f)))
+      .reduce(reduceFilters(query), {});
+  };
 
   const getFacetsFromURL = () => {
     return {
       filters: getFiltersDataFromUrl(true),
-      sort: query.sort as string || '',
+      sort: (query.sort as string) || '',
       itemsPerPage: Number.parseInt(query.itemsPerPage as string, 10) || 20,
       page: Number.parseInt(query.page as string, 10) || 1
     };
@@ -64,7 +65,8 @@ const useUiHelpers = () => {
   };
 
   // eslint-disable-next-line
-  const isFacetColor = (facet: any): boolean => facet.id === 'pa_colour' || facet.id === 'pa_color';
+  const isFacetColor = (facet: any): boolean =>
+    facet.id === 'pa_colour' || facet.id === 'pa_color';
 
   // eslint-disable-next-line
   const isFacetCheckbox = (facet): boolean => {

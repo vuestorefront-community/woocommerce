@@ -26,14 +26,19 @@ export function useProduct(): UseProductInterface {
   const { app } = useContext();
   const context = app.$vsf;
 
-  const getProductsPaginated = async (searchParams: UseProductGetPaginatedParams) => {
+  const getProductsPaginated = async (
+    searchParams: UseProductGetPaginatedParams
+  ) => {
     // console.log(`useProduct/getProductsPaginated`, searchParams);
     Object.assign(searchParams, { paginate: true });
 
     try {
       loading.value = true;
       error.value.search = null;
-      productStore.products = await getProductsPaginatedCommand.execute(context, searchParams);
+      productStore.products = await getProductsPaginatedCommand.execute(
+        context,
+        searchParams
+      );
     } catch (err) {
       error.value.search = err;
       console.error('useProduct/getProductsPaginated', err);
@@ -50,7 +55,10 @@ export function useProduct(): UseProductInterface {
     try {
       loading.value = true;
       error.value.search = null;
-      productStore.product = await getProductSingleCommand.execute(context, searchParams);
+      productStore.product = await getProductSingleCommand.execute(
+        context,
+        searchParams
+      );
     } catch (err) {
       error.value.search = err;
       console.error('useProduct/getProductSingle', err);

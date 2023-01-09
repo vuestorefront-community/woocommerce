@@ -50,7 +50,11 @@
           <div v-for="(option, att) in options" :key="option.id">
             <div
               v-if="
-                (att === 'pa_colour' || att === 'pa_color') && option.length > 1
+                (att === 'pa_colour' ||
+                  (att === 'pa_color') |
+                    (att === 'color') |
+                    (att === 'colour')) &&
+                option.length > 1
               "
               class="product__colors desktop-only"
             >
@@ -59,7 +63,10 @@
                 v-for="(color, i) in option"
                 :key="i"
                 :color="color"
-                :selected="selectedOptions.filters.pa_colour == color"
+                :selected="
+                  selectedOptions.filters.pa_color == color ||
+                  selectedOptions.filters.pa_colour == color
+                "
                 class="product__color"
                 @click="updateFilter({ [att]: color })"
               />
@@ -69,7 +76,9 @@
               v-e2e="'size-select'"
               :value="selectedOptions.filters[att]"
               @input="(size) => updateFilter({ [att]: size })"
-              :label="att"
+              :label="
+                att.replace('pa_', '').replace(/^\w/, (c) => c.toUpperCase())
+              "
               class="sf-select--underlined product__select-size"
               :required="true"
             >
@@ -82,7 +91,7 @@
             v-e2e="'product_add-to-cart'"
             :stock="0"
             v-model="qty"
-            :disabled="loading || !product.inStock"
+            :disabled="loading || !(product && product.inStock) || !isSimple"
             class="product__add-to-cart"
             @click="add({ id: product.id, quantity: parseInt(qty) })"
           />
@@ -180,10 +189,35 @@ export default {
     const { changeFilters, getFacetsFromURL } = useUiHelpers();
     const { add, loading } = useCart();
 
-    const product = computed(() =>
-      productGetters.getSingleProduct(singleProduct.value)
-    );
     const selectedOptions = ref(getFacetsFromURL());
+
+    const product = computed(() => {
+      let product = productGetters.getSingleProduct(singleProduct.value);
+
+      if (
+        product?.variants &&
+        product.variants.length > 0 &&
+        Object.keys(selectedOptions?.value?.filters || {}).length > 0
+      ) {
+        product = product.variants.find((variant) => {
+          return Object.entries(selectedOptions.value.filters).every(
+            ([key, value]) => {
+              return Object.entries(variant.attributes).some(
+                ([attKey, attValue]) => {
+                  return attKey === key && attValue === value;
+                }
+              );
+            }
+          );
+        });
+      }
+
+      return product;
+    });
+
+    const isSimple = computed(
+      () => (product?.value?.variants || []).length === 0
+    );
 
     const breadcrumbs = computed(() =>
       productGetters.getProductBreadcrumbs(
@@ -228,7 +262,8 @@ export default {
       productGallery,
       productLoading,
       selectedOptions,
-      breadcrumbs
+      breadcrumbs,
+      isSimple
     };
   },
   components: {
@@ -360,6 +395,7 @@ export default {
     margin: 0 var(--spacer-sm);
     @include for-desktop {
       margin: 0;
+      margin-top: var(--spacer-xl);
     }
   }
   &__colors {

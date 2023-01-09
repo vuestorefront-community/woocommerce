@@ -42,10 +42,10 @@ function getItemKey(item: any): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getItemAttributes(item: CartItem, filterByAttributeName?: Array<string>): Record<string, AgnosticAttribute | string> {
-  return {
-    color: 'red'
-  };
+function getItemAttributes(
+  item: CartItem
+): Record<string, AgnosticAttribute | string> {
+  return item?.attributes || {};
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types

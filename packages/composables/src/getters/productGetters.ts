@@ -1,11 +1,10 @@
-import {
-  AgnosticPagination
-} from '@vue-storefront/core';
-import {
-  AgnosticPrice,
-  ProductGetters
-} from '../types';
-import type { Product, ProductFilter, ProductsResult } from '@vue-storefront/woocommerce-api';
+import { AgnosticPagination } from '@vue-storefront/core';
+import { AgnosticPrice, ProductGetters } from '../types';
+import type {
+  Product,
+  ProductFilter,
+  ProductsResult
+} from '@vue-storefront/woocommerce-api';
 
 function getProducts(productsResult: ProductsResult): Product[] {
   return productsResult?.products || [];
@@ -31,7 +30,10 @@ function getGallery(product: Product): string[] {
 }
 
 function getCoverImage(product: Product): string {
-  return product?.coverImage || 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg';
+  return (
+    product?.coverImage ||
+    'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg'
+  );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -50,7 +52,8 @@ function getFiltered(products: Product[], filters: ProductFilter): Product[] {
       sku: 'black-jacket',
       sales: 0,
       inStock: true,
-      coverImage: 'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg',
+      coverImage:
+        'https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081223_1_large.jpg',
       parent: 0,
       featured: false,
       categories: [],
@@ -64,13 +67,19 @@ function getFiltered(products: Product[], filters: ProductFilter): Product[] {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getAttributes(product: Product, filterByAttributeName?: string[]): any {
+function getAttributes(product: Product): any {
   const attributes = {};
 
   Object.values(product?.variants || {}).forEach((variant) => {
     Object.keys(variant.attributes).forEach((attName) => {
-      if (!attributes[attName] || !attributes[attName].includes(variant.attributes[attName]))
-        attributes[attName] = [...(attributes[attName] || []), variant.attributes[attName]].sort();
+      if (
+        !attributes[attName] ||
+        !attributes[attName].includes(variant.attributes[attName])
+      )
+        attributes[attName] = [
+          ...(attributes[attName] || []),
+          variant.attributes[attName]
+        ].sort();
     });
   });
 
@@ -96,13 +105,31 @@ function getFilteredAttributes(product: Product, filters: any = {}): any {
 
   configurations.forEach((config) => {
     Object.keys(config).forEach((attribute) => {
-      if (Object.keys(config).filter((c) => c !== attribute).reduce((total, curr) => (total && (!filters[curr] || filters[curr].includes(config[curr]))), true) && (!attributes[attribute] || !attributes[attribute].includes(config[attribute]))) {
-        attributes[attribute] = [...(attributes[attribute] || []), config[attribute]].sort();
+      if (
+        Object.keys(config)
+          .filter((c) => c !== attribute)
+          .reduce(
+            (total, curr) =>
+              total && (!filters[curr] || filters[curr].includes(config[curr])),
+            true
+          ) &&
+        (!attributes[attribute] ||
+          !attributes[attribute].includes(config[attribute]))
+      ) {
+        attributes[attribute] = [
+          ...(attributes[attribute] || []),
+          config[attribute]
+        ];
       }
     });
   });
 
-  return attributes;
+  // Sort the attributes by key and return
+  return Object.fromEntries(
+    Object.keys(attributes)
+      .sort()
+      .map((key) => [key, attributes[key]])
+  );
 }
 
 function getDescription(product: Product): string {

@@ -36,15 +36,8 @@
           </div>
           <div class="product-sku">{{ cartGetters.getItemSku(product) }}</div>
         </SfTableData>
-        <SfTableData
-          class="table__data"
-          v-for="(value, key) in cartGetters.getItemAttributes(product, [
-            'size',
-            'color'
-          ])"
-          :key="key"
-        >
-          {{ value }}
+        <SfTableData class="table__data" v-for="att in attributes" :key="key">
+          {{ cartGetters.getItemAttributes(product)[att] }}
         </SfTableData>
         <SfTableData class="table__data">{{
           cartGetters.getItemQty(product)
@@ -163,6 +156,23 @@ export default {
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const selectedMethod = ref(null);
+    const attributes = computed(() => [
+      ...new Set(
+        [].concat(
+          ...(products?.value || []).map((product) =>
+            Object.keys(cartGetters.getItemAttributes(product))
+          )
+        )
+      )
+    ]);
+
+    const tableHeaders = computed(() => [
+      ...['Description'],
+      ...attributes.value.map((att) =>
+        att.replace('pa_', '').replace(/^\w/, (c) => c.toUpperCase())
+      ),
+      ...['Quantity', 'Amount']
+    ]);
 
     const isPaymentReady = ref(false);
     const terms = ref(false);
@@ -199,10 +209,11 @@ export default {
       loading,
       products: products,
       totals: totals,
-      tableHeaders: ['Description', 'Size', 'Color', 'Quantity', 'Amount'],
+      tableHeaders,
       cartGetters,
       processOrder,
-      selectMethod
+      selectMethod,
+      attributes
     };
   }
 };
@@ -249,6 +260,7 @@ export default {
 }
 .product-price {
   --price-font-size: var(--font-size--base);
+  justify-content: flex-end;
 }
 .summary {
   &__terms {

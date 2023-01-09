@@ -33,7 +33,7 @@
                   $n(cartGetters.getItemPrice(product).special, 'currency')
                 "
                 :stock="99999"
-                @click:remove="remove({key: cartGetters.getItemKey(product)})"
+                @click:remove="remove({ key: cartGetters.getItemKey(product) })"
                 class="collected-product"
               >
                 <template #configuration>
@@ -44,7 +44,11 @@
                         ['color', 'size']
                       )"
                       :key="key"
-                      :name="key"
+                      :name="
+                        key
+                          .replace('pa_', '')
+                          .replace(/^\w/, (c) => c.toUpperCase())
+                      "
                       :value="attribute"
                     />
                   </div>
@@ -56,10 +60,16 @@
                       :qty="cartGetters.getItemQty(product)"
                       :min="0"
                       class="sf-collected-product__quantity-selector"
-                      @input="updateQuantity({
+                      @input="
+                        updateQuantity({
                           key: cartGetters.getItemKey(product),
-                          quantity: Number($event) === 1 && Number($event) === cartGetters.getItemQty(product) ? 0 :  Number($event)
-                        })"
+                          quantity:
+                            Number($event) === 1 &&
+                            Number($event) === cartGetters.getItemQty(product)
+                              ? 0
+                              : Number($event)
+                        })
+                      "
                     />
                   </div>
                 </template>
@@ -89,10 +99,7 @@
           <div v-if="totalItems">
             <SfProperty
               name="Subtotal price"
-              class="
-                sf-property--full-width sf-property--large
-                my-cart__total-price
-              "
+              class="sf-property--full-width sf-property--large my-cart__total-price"
             >
               <template #value>
                 <SfPrice
