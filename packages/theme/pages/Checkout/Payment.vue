@@ -34,10 +34,15 @@
           <div class="product-title">
             {{ cartGetters.getItemName(product) }}
           </div>
+          <div class="product-sku">
+            {{
+              Object.keys(cartGetters.getItemAttributes(product))
+                .sort()
+                .map((key) => cartGetters.getItemAttributes(product)[key])
+                .join(' - ')
+            }}
+          </div>
           <div class="product-sku">{{ cartGetters.getItemSku(product) }}</div>
-        </SfTableData>
-        <SfTableData class="table__data" v-for="att in attributes" :key="key">
-          {{ cartGetters.getItemAttributes(product)[att] }}
         </SfTableData>
         <SfTableData class="table__data">{{
           cartGetters.getItemQty(product)
@@ -156,23 +161,28 @@ export default {
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const selectedMethod = ref(null);
-    const attributes = computed(() => [
-      ...new Set(
-        [].concat(
-          ...(products?.value || []).map((product) =>
-            Object.keys(cartGetters.getItemAttributes(product))
-          )
-        )
-      )
-    ]);
 
-    const tableHeaders = computed(() => [
-      ...['Description'],
-      ...attributes.value.map((att) =>
-        att.replace('pa_', '').replace(/^\w/, (c) => c.toUpperCase())
-      ),
-      ...['Quantity', 'Amount']
-    ]);
+    // This code was used to display each product's attributes as
+    // collumns in the table
+    // const attributes = computed(() => [
+    //   ...new Set(
+    //     [].concat(
+    //       ...(products?.value || []).map((product) =>
+    //         Object.keys(cartGetters.getItemAttributes(product))
+    //       )
+    //     )
+    //   )
+    // ]);
+
+    // const tableHeaders = computed(() => [
+    //   ...['Description'],
+    //   ...attributes.value.map((att) =>
+    //     att.replace('pa_', '').replace(/^\w/, (c) => c.toUpperCase())
+    //   ),
+    //   ...['Quantity', 'Amount']
+    // ]);
+
+    const tableHeaders = ['Description', 'Quantity', 'Amount'];
 
     const isPaymentReady = ref(false);
     const terms = ref(false);
@@ -212,8 +222,7 @@ export default {
       tableHeaders,
       cartGetters,
       processOrder,
-      selectMethod,
-      attributes
+      selectMethod
     };
   }
 };

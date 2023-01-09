@@ -40,8 +40,7 @@
                   <div class="collected-product__properties">
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
-                        product,
-                        ['color', 'size']
+                        product
                       )"
                       :key="key"
                       :name="

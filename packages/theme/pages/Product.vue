@@ -65,7 +65,9 @@
                 :color="color"
                 :selected="
                   selectedOptions.filters.pa_color == color ||
-                  selectedOptions.filters.pa_colour == color
+                  selectedOptions.filters.pa_colour == color ||
+                  selectedOptions.filters.colour == color ||
+                  selectedOptions.filters.color == color
                 "
                 class="product__color"
                 @click="updateFilter({ [att]: color })"
